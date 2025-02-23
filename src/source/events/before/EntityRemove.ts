@@ -15,7 +15,7 @@ export class EntityRemove extends BaseEventHandler<EntityRemoveBeforeEvent, Enti
         this._callback = this._SIGNAL.subscribe(event => {
             const entity = event.removedEntity;
             if (entity.typeId === 'xigmaguns:smoke_grenade') {
-                SmokeBomb.create(entity.dimension, entity.location, 200);
+                SmokeBomb.create(entity.dimension, entity.location, 300);
             }
         });
     }
