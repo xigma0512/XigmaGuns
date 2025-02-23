@@ -23,6 +23,8 @@
 						"on_other_hit": true
 					}
 				},
+                "hit_sound": "xigmaguns.smoke",
+                "hit_ground_sound": "xigmaguns.smoke",
 				"anchor": 1,
 				"power": 1,
 				"gravity": 0.05,

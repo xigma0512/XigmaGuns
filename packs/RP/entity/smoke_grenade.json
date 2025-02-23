@@ -7,13 +7,13 @@
 				"default": "entity_alphatest"
 			},
 			"textures": {
-				"default": "textures/entity/smoke-grenade"
+				"default": "textures/entity/smoke_grenade"
 			},
 			"geometry": {
-				"default": "geometry.smoke-grenade"
+				"default": "geometry.smoke_grenade"
 			},
 			"render_controllers": [
-				"controller.render.smoke-grenade"
+				"controller.render.smoke_grenade"
 			],
 			"spawn_egg": {
 				"base_color": "#000000",

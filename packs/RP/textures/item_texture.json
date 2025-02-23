@@ -1,7 +1,7 @@
 {
 	"texture_data": {
-		"smoke-grenade": {
-			"textures": "textures/items/smoke-grenade"
+		"smoke_grenade": {
+			"textures": "textures/items/smoke_grenade"
 		}
 	}
 }
