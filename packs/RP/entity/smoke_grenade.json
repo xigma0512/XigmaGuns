@@ -14,11 +14,7 @@
 			},
 			"render_controllers": [
 				"controller.render.smoke_grenade"
-			],
-			"spawn_egg": {
-				"base_color": "#000000",
-				"overlay_color": "#FFFFFF"
-			}
+			]
 		}
 	}
 }
