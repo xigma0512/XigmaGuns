@@ -4,7 +4,7 @@
         "authors": ["xigma0512"]
     },
     "header": {
-        "name": "Xigma Guns",
+        "name": "Xigma Guns v1.0",
         "description": "",
         "uuid": "8ff542c8-16b1-4785-9555-22044889a54d",
         "version": [1,0,0],
@@ -31,8 +31,8 @@
             "version": "1.18.0-beta"
         },
         {
-            "module_name": "7e0b9313-5b05-418d-a5c0-fe0c09b88f22",
-            "version": "1.0.0"
+            "uuid": "7e0b9313-5b05-418d-a5c0-fe0c09b88f22",
+            "version": [1,0,0]
         }
     ]
 }
