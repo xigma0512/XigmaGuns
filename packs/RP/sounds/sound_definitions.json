@@ -1,0 +1,25 @@
+{
+    "format_version": "1.14.0",
+    "sound_definitions": {
+        "xigmaguns.smoke_grenade": {
+            "sounds": [
+                {
+                    "name": "sounds/smoke_grenade",
+                    "volume": 2.0
+                } 
+            ],
+            "category": "ambient",
+            "max_distance": 30.0
+        },
+        "xigmaguns.smoke": {
+            "sounds": [
+                {
+                    "name": "sounds/smoke",
+                    "volume": 1.0
+                }
+            ],
+            "category": "player",
+            "max_distance": 30.0
+        }
+    }
+}
