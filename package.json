@@ -1,5 +1,8 @@
 {
     "scripts": {
         "compile": "tsc && node copy.js"
+    },
+    "dependencies": {
+        "@minecraft/server": "^1.18.0-beta.1.21.60-stable"
     }
 }

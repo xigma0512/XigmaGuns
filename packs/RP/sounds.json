@@ -1,0 +1,18 @@
+{
+    "entity_sounds": {
+        "entities": {
+            "xigmaguns:smoke_grenade": {
+                "events": {
+                    "death": {
+                        "sound": "xigmaguns.smoke_grenade",
+                        "volume": 2
+                    },
+                    "shoot": {
+                        "sound": "xigmaguns:smoke",
+                        "volume": 1
+                    }
+                }
+            }
+        }
+    }
+}

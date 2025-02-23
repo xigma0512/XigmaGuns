@@ -1,0 +1,20 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "xigmaguns:smoke_grenade",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"textures": {
+				"default": "textures/entity/smoke_grenade"
+			},
+			"geometry": {
+				"default": "geometry.smoke_grenade"
+			},
+			"render_controllers": [
+				"controller.render.smoke_grenade"
+			]
+		}
+	}
+}
