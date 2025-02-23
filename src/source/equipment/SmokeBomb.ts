@@ -12,7 +12,9 @@ export class SmokeBomb {
 
     private run(taskId: number) {
         if (--this._timer <= 0) system.clearRun(taskId); 
-        for (let i=0; i<2; i++) this._dimension.spawnParticle('minecraft:huge_explosion_emitter', this._location);
+        for (let i=0; i<2; i++) 
+            try { this._dimension.spawnParticle('minecraft:huge_explosion_emitter', this._location); } 
+            catch { }
     }
 
     static create(dimension: Dimension, location: Vector3, timer: number) {
