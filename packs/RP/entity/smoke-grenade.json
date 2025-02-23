@@ -1,0 +1,24 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "xigmaguns:smoke_grenade",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"textures": {
+				"default": "textures/entity/smoke-grenade"
+			},
+			"geometry": {
+				"default": "geometry.smoke-grenade"
+			},
+			"render_controllers": [
+				"controller.render.smoke-grenade"
+			],
+			"spawn_egg": {
+				"base_color": "#000000",
+				"overlay_color": "#FFFFFF"
+			}
+		}
+	}
+}
