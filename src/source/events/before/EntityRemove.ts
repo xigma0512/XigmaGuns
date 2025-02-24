@@ -3,7 +3,7 @@ import { EntityRemoveBeforeEvent, EntityRemoveBeforeEventSignal } from "@minecra
 import { world } from "@minecraft/server";
 import { BaseEventHandler } from "../BaseEventHandler";
 
-import { SmokeBomb } from "../../equipment/SmokeBomb";
+import { SmokeBomb } from "../../entity/weapon/equipment/SmokeBomb";
 
 export class EntityRemove extends BaseEventHandler<EntityRemoveBeforeEvent, EntityRemoveBeforeEventSignal> implements EventHandler {
 
