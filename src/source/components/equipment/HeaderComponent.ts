@@ -1,12 +1,12 @@
-import { WeaponComponent } from "./WeaponComponent";
+import { EquipmentComponent } from "./EquipmentComponent";
 
-export class WeaponHeaderComponent extends WeaponComponent {
-    
+export class EquipmentHeaderComponent extends EquipmentComponent {
+
     readonly name: string;
     readonly description: string[];
-    
+
     constructor(name: string, description: string[]) {
-        super('weapon:header');
+        super('equipment:header');
 
         this.name = name;
         this.description = description;

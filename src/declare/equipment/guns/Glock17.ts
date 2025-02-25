@@ -1,14 +1,14 @@
 export const Glock17: IGunData = {
     components: {
-        'weapon:header': {
+        'equipment:header': {
             name: 'Glock17',
             description: ['I\'m Glock17']
         },
-        'weapon:item': {
+        'equipment:item': {
             typeId: 'xigmaguns:glock17',
             amount: 1
         },
-        'weapon:magazine': {
+        'equipment:magazine': {
             ammo: 12,
             count: 3
         }

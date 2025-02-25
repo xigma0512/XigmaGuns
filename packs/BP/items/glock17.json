@@ -9,7 +9,7 @@
         },
         "components": {
             "minecraft:tags": {
-                "tags": ["xigmaguns:weapon"]
+                "tags": ["xigmaguns:equipment"]
             },
             "minecraft:display_name": {
                 "value": "Glock17"

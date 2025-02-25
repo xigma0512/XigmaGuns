@@ -1,15 +1,15 @@
-import { WeaponComponent } from "./WeaponComponent";
+import { EquipmentComponent } from "./EquipmentComponent";
 
 import { ItemStack } from "@minecraft/server";
 
-export class WeaponItemComponent extends WeaponComponent {
+export class EquipmentItemComponent extends EquipmentComponent {
 
     readonly typeId: string;
     readonly amount: number;
     readonly item: ItemStack;
 
     constructor(typeId: string, amount: number) {
-        super('weapon:item');
+        super('equipment:item');
 
         this.typeId = typeId;
         this.amount = amount;

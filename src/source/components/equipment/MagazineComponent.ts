@@ -1,13 +1,13 @@
-import { WeaponComponent } from "./WeaponComponent";
+import { EquipmentComponent } from "./EquipmentComponent";
 
-export class WeaponMagazineComponent extends WeaponComponent {
+export class EquipmentMagazineComponent extends EquipmentComponent {
     
     ammo: number;
     storageAmmo: number;
     readonly capacity: number;
 
     constructor(ammo: number, count: number = 1) {
-        super('weapon:magazine');
+        super('equipment:magazine');
         
         this.ammo = ammo;
         this.capacity = ammo;

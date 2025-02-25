@@ -1,4 +1,4 @@
-import { IGunEntity } from "../../entity/weapon/gun/Gun";
+import { IGunEntity } from "../../entity/equipment/gun/Gun";
 
 export class GunActionSystem {
 

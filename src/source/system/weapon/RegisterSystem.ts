@@ -1,17 +1,17 @@
-import { Gun } from "../../entity/weapon/gun/Gun";
-import { IWeaponEntity } from "../../entity/weapon/Weapon";
+import { Gun } from "../../entity/equipment/gun/Gun";
+import { IEquipmentEntity } from "../../entity/equipment/Equipment";
 
 import { CryptoUtils } from "../../../utils/Crypto";
 
-export class WeaponRegisterSystem {
+export class EquipmentRegisterSystem {
 
-    private static _weapons = new Map<string, IWeaponEntity>;
-    static get getWeapons() { return this._weapons; }
+    private static _Equipments = new Map<string, IEquipmentEntity>;
+    static get getEquipments() { return this._Equipments; }
 
     static registerGun(data: IGunData) {
         const uuid = CryptoUtils.randomUUID();
-        this._weapons.set(uuid, new Gun(uuid, data));
+        this._Equipments.set(uuid, new Gun(uuid, data));
         
-        return this._weapons.get(uuid) as Gun;
+        return this._Equipments.get(uuid) as Gun;
     }
 }

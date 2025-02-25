@@ -1,7 +1,7 @@
-declare enum WeaponTypes {
+declare enum EquipmentTypes {
     Gun = 'Gun',
     Melee = 'Melee',
-    Equipment = 'Equipment'
+    Weapon = 'Weapon'
 }
 
 declare enum GunTypes {
@@ -9,20 +9,20 @@ declare enum GunTypes {
     Unknown = 'Unknown',
 }
 
-declare type WeaponType = keyof typeof WeaponTypes;
+declare type EquipmentType = keyof typeof EquipmentTypes;
 declare type GunType = keyof typeof GunTypes;
 
 declare interface IGunData {
     components: {
-        'weapon:header': {
+        'equipment:header': {
             name: GunType,
             description: string[]
         },
-        'weapon:item': {
+        'equipment:item': {
             typeId: string,
             amount: number
         },
-        'weapon:magazine': {
+        'equipment:magazine': {
             ammo: number,
             count: number
         }
