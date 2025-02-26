@@ -6,7 +6,7 @@ import { ItemComponent } from "../../components/ItemComponent";
 export declare interface IEquipmentEntity {
     readonly uuid: string;
     readonly type: EquipmentType;
-    readonly components: Map<keyof ComponentTypes, Component>;
+    readonly components: Map<keyof ComponentTypes, Component | Component[]>;
 }
 
 export class Equipment implements IEquipmentEntity {
@@ -14,7 +14,7 @@ export class Equipment implements IEquipmentEntity {
     readonly uuid: string;
     readonly type: EquipmentType;
 
-    readonly components = new Map<keyof ComponentTypes, Component>;
+    readonly components = new Map<keyof ComponentTypes, Component | Component[]>;
 
     constructor(uuid: string, type: EquipmentType) {
         this.uuid = uuid;
