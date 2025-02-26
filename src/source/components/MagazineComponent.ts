@@ -7,7 +7,7 @@ export class MagazineComponent extends Component {
     readonly capacity: number;
 
     constructor(ammo: number, count: number = 1) {
-        super('equipment:magazine');
+        super('xigmaguns:magazine');
         
         this.ammo = ammo;
         this.capacity = ammo;

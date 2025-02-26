@@ -22,8 +22,8 @@ export class Equipment implements IEquipmentEntity {
     }
 
     protected setItem() {
-        const headerComp = this.components.get('equipment:header') as HeaderComponent;
-        const itemComp = this.components.get('equipment:item') as ItemComponent;
+        const headerComp = this.components.get('xigmaguns:header') as HeaderComponent;
+        const itemComp = this.components.get('xigmaguns:item') as ItemComponent;
 
         itemComp.item.nameTag = headerComp.name;
         itemComp.item.setLore(headerComp.description);

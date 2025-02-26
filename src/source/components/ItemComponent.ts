@@ -9,7 +9,7 @@ export class ItemComponent extends Component {
     readonly item: ItemStack;
 
     constructor(typeId: string, amount: number) {
-        super('equipment:item');
+        super('xigmaguns:item');
 
         this.typeId = typeId;
         this.amount = amount;

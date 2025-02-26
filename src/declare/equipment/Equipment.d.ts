@@ -14,15 +14,15 @@ declare type GunType = keyof typeof GunTypes;
 
 declare interface IGunData {
     components: {
-        'equipment:header': {
+        'xigmaguns:header': {
             name: GunType,
             description: string[]
         },
-        'equipment:item': {
+        'xigmaguns:item': {
             typeId: string,
             amount: number
         },
-        'equipment:magazine': {
+        'xigmaguns:magazine': {
             ammo: number,
             count: number
         }

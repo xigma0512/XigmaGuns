@@ -6,7 +6,7 @@ export class HeaderComponent extends Component {
     readonly description: string[];
 
     constructor(name: string, description: string[]) {
-        super('equipment:header');
+        super('xigmaguns:header');
 
         this.name = name;
         this.description = description;

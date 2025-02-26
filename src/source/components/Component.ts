@@ -3,9 +3,9 @@ import { ItemComponent } from "./ItemComponent";
 import { MagazineComponent } from "./MagazineComponent";
 
 export declare type ComponentTypes = {
-    'equipment:header': HeaderComponent;
-    'equipment:item': ItemComponent;
-    'equipment:magazine': MagazineComponent;
+    'xigmaguns:header': HeaderComponent;
+    'xigmaguns:item': ItemComponent;
+    'xigmaguns:magazine': MagazineComponent;
 }
 
 export class Component {

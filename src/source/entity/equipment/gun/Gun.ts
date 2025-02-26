@@ -15,15 +15,15 @@ export class Gun extends Equipment implements IGunEntity {
         super(uuid, 'Gun');
 
         this.components
-            .set('equipment:header', new HeaderComponent(data.components["equipment:header"].name, data.components["equipment:header"].description))
-            .set('equipment:item', new ItemComponent(data.components["equipment:item"].typeId, data.components["equipment:item"].amount))
-            .set('equipment:magazine', new MagazineComponent(data.components["equipment:magazine"].ammo, data.components["equipment:magazine"].count));
+            .set('xigmaguns:header', new HeaderComponent(data.components["xigmaguns:header"].name, data.components["xigmaguns:header"].description))
+            .set('xigmaguns:item', new ItemComponent(data.components["xigmaguns:item"].typeId, data.components["xigmaguns:item"].amount))
+            .set('xigmaguns:magazine', new MagazineComponent(data.components["xigmaguns:magazine"].ammo, data.components["xigmaguns:magazine"].count));
         
         this.setItem();
     }
 
     fire() {
-        const magazineComp = this.components.get('equipment:magazine') as MagazineComponent;
+        const magazineComp = this.components.get('xigmaguns:magazine') as MagazineComponent;
 
         if (magazineComp.ammo === 0) return this.reload();
         
@@ -32,7 +32,7 @@ export class Gun extends Equipment implements IGunEntity {
     }
 
     reload() {
-        const magazineComp = this.components.get('equipment:magazine') as MagazineComponent;
+        const magazineComp = this.components.get('xigmaguns:magazine') as MagazineComponent;
 
         if (magazineComp.ammo === magazineComp.capacity) return false;
 
