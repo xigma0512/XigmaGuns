@@ -11,20 +11,3 @@ declare enum GunTypes {
 
 declare type EquipmentType = keyof typeof EquipmentTypes;
 declare type GunType = keyof typeof GunTypes;
-
-declare interface IGunData {
-    components: {
-        'xigmaguns:header': {
-            name: GunType,
-            description: string[]
-        },
-        'xigmaguns:item': {
-            typeId: string,
-            amount: number
-        },
-        'xigmaguns:magazine': {
-            ammo: number,
-            count: number
-        }
-    }
-}

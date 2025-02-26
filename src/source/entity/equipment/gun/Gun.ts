@@ -11,13 +11,13 @@ export declare interface IGunEntity extends IEquipmentEntity {
 
 export class Gun extends Equipment implements IGunEntity {
 
-    constructor(uuid: string, data: IGunData) {
+    constructor(uuid: string, data: ComponentDataType) {
         super(uuid, 'Gun');
 
         this.components
-            .set('xigmaguns:header', new HeaderComponent(data.components["xigmaguns:header"].name, data.components["xigmaguns:header"].description))
-            .set('xigmaguns:item', new ItemComponent(data.components["xigmaguns:item"].typeId, data.components["xigmaguns:item"].amount))
-            .set('xigmaguns:magazine', new MagazineComponent(data.components["xigmaguns:magazine"].ammo, data.components["xigmaguns:magazine"].count));
+            .set('xigmaguns:header', new HeaderComponent(data["xigmaguns:header"]?.name, data["xigmaguns:header"]?.description))
+            .set('xigmaguns:item', new ItemComponent(data["xigmaguns:item"]?.typeId, data["xigmaguns:item"]?.amount))
+            .set('xigmaguns:magazine', new MagazineComponent(data["xigmaguns:magazine"]?.ammo, data["xigmaguns:magazine"]?.count));
         
         this.setItem();
     }
