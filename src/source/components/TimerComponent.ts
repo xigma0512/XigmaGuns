@@ -6,9 +6,9 @@ export class TimerComponent extends Component {
     readonly duration: number;
     readonly interval: number;
     readonly tickFunction: (t: number) => void;
-
-    private timer = 0;
-    private taskId = -1;
+    
+    private _timer = 0;
+    private _taskId = -1;
 
     constructor(duration: number, interval: number, tickFunction: (timer: number) => void) {
         super('xigmaguns:timer');
@@ -18,15 +18,17 @@ export class TimerComponent extends Component {
         this.tickFunction = tickFunction;
     }
 
+    get taskId() { return this._taskId; }
+
     execute() {
-        this.taskId = system.runInterval(() => {
-                this.tickFunction(this.timer++);
-                if (this.timer === this.duration) this.kill();
+        this._taskId = system.runInterval(() => {
+                this.tickFunction(this._timer++);
+                if (this._timer === this.duration) this.kill();
             }, this.interval);
     }
 
     kill() {
-        system.clearRun(this.taskId);
+        system.clearRun(this._taskId);
     }
 
 }
