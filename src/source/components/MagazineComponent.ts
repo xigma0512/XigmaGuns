@@ -1,0 +1,16 @@
+import { Component } from "./Component";
+
+export class MagazineComponent extends Component {
+    
+    ammo: number;
+    storageAmmo: number;
+    readonly capacity: number;
+
+    constructor(ammo: number = 1, count: number = 1) {
+        super('xigmaguns:magazine');
+        
+        this.ammo = ammo;
+        this.capacity = ammo;
+        this.storageAmmo = ammo * count;
+    }
+}

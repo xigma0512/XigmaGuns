@@ -7,7 +7,7 @@
         "experimentalDecorators": true,
         "sourceMap": false,
         "pretty": true,
-        "forceConsistentCasingInFileNames": true,
+        "forceConsistentCasingInFileNames": false,
         "strict": true,
         "allowUnreachableCode": true,
         "allowUnusedLabels": true,
