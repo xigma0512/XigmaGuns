@@ -17,7 +17,8 @@ export class Gun extends Equipment implements IGunEntity {
         this.components
             .set('xigmaguns:header', new HeaderComponent(data["xigmaguns:header"]?.name, data["xigmaguns:header"]?.description))
             .set('xigmaguns:item', new ItemComponent(data["xigmaguns:item"]?.typeId, data["xigmaguns:item"]?.amount))
-            .set('xigmaguns:magazine', new MagazineComponent(data["xigmaguns:magazine"]?.ammo, data["xigmaguns:magazine"]?.count));
+            .set('xigmaguns:magazine', new MagazineComponent(data["xigmaguns:magazine"]?.ammo, data["xigmaguns:magazine"]?.count))
+            .set('xigmaguns:timer', []);
         
         this.setItem();
     }
@@ -25,7 +26,7 @@ export class Gun extends Equipment implements IGunEntity {
     fire() {
         const magazineComp = this.components.get('xigmaguns:magazine') as MagazineComponent;
 
-        if (magazineComp.ammo === 0) return this.reload();
+        if (magazineComp.ammo === 0) return false;
         
         magazineComp.ammo --;
         return true;
