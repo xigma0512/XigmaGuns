@@ -1,7 +1,7 @@
 declare enum EquipmentTypes {
     Gun = 'Gun',
     Melee = 'Melee',
-    Weapon = 'Weapon'
+    Throwable = 'Throwable'
 }
 
 declare enum GunTypes {
