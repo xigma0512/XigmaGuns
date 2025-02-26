@@ -6,7 +6,7 @@ import { CryptoUtils } from "../../../utils/Crypto";
 export class EquipmentRegisterSystem {
 
     private static _equipments = new Map<string, IEquipmentEntity>;
-    static get getequipments() { return this._equipments; }
+    static get getEquipments() { return this._equipments; }
 
     static registerGun(data: ComponentDataType) {
         const uuid = CryptoUtils.randomUUID();
