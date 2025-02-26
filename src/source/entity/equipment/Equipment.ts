@@ -1,12 +1,12 @@
-import { EquipmentComponent, EquipmentComponentTypes } from "../../components/Equipment/EquipmentComponent";
+import { Component, ComponentTypes } from "../../components/Component";
 
-import { EquipmentHeaderComponent } from "../../components/Equipment/HeaderComponent";
-import { EquipmentItemComponent } from "../../components/Equipment/ItemComponent";
+import { HeaderComponent } from "../../components/HeaderComponent";
+import { ItemComponent } from "../../components/ItemComponent";
 
 export declare interface IEquipmentEntity {
     readonly uuid: string;
     readonly type: EquipmentType;
-    readonly components: Map<keyof EquipmentComponentTypes, EquipmentComponent>;
+    readonly components: Map<keyof ComponentTypes, Component>;
 }
 
 export class Equipment implements IEquipmentEntity {
@@ -14,7 +14,7 @@ export class Equipment implements IEquipmentEntity {
     readonly uuid: string;
     readonly type: EquipmentType;
 
-    readonly components = new Map<keyof EquipmentComponentTypes, EquipmentComponent>;
+    readonly components = new Map<keyof ComponentTypes, Component>;
 
     constructor(uuid: string, type: EquipmentType) {
         this.uuid = uuid;
@@ -22,8 +22,8 @@ export class Equipment implements IEquipmentEntity {
     }
 
     protected setItem() {
-        const headerComp = this.components.get('equipment:header') as EquipmentHeaderComponent;
-        const itemComp = this.components.get('equipment:item') as EquipmentItemComponent;
+        const headerComp = this.components.get('equipment:header') as HeaderComponent;
+        const itemComp = this.components.get('equipment:item') as ItemComponent;
 
         itemComp.item.nameTag = headerComp.name;
         itemComp.item.setLore(headerComp.description);

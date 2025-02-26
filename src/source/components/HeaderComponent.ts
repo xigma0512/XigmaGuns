@@ -1,6 +1,6 @@
-import { EquipmentComponent } from "./EquipmentComponent";
+import { Component } from "./Component";
 
-export class EquipmentHeaderComponent extends EquipmentComponent {
+export class HeaderComponent extends Component {
 
     readonly name: string;
     readonly description: string[];

@@ -1,8 +1,8 @@
-import { EquipmentComponent } from "./EquipmentComponent";
+import { Component } from "./Component";
 
 import { ItemStack } from "@minecraft/server";
 
-export class EquipmentItemComponent extends EquipmentComponent {
+export class ItemComponent extends Component {
 
     readonly typeId: string;
     readonly amount: number;

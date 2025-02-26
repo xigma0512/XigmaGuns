@@ -1,6 +1,6 @@
-import { EquipmentComponent } from "./EquipmentComponent";
+import { Component } from "./Component";
 
-export class EquipmentMagazineComponent extends EquipmentComponent {
+export class MagazineComponent extends Component {
     
     ammo: number;
     storageAmmo: number;

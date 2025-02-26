@@ -1,8 +1,8 @@
 import { Equipment, IEquipmentEntity } from "../Equipment";
 
-import { EquipmentHeaderComponent } from "../../../components/equipment/HeaderComponent";
-import { EquipmentItemComponent } from "../../../components/equipment/ItemComponent";
-import { EquipmentMagazineComponent } from "../../../components/equipment/MagazineComponent";
+import { HeaderComponent } from "../../../components/HeaderComponent";
+import { ItemComponent } from "../../../components/ItemComponent";
+import { MagazineComponent } from "../../../components/MagazineComponent";
 
 export declare interface IGunEntity extends IEquipmentEntity {
     fire(): boolean;
@@ -15,15 +15,15 @@ export class Gun extends Equipment implements IGunEntity {
         super(uuid, 'Gun');
 
         this.components
-            .set('equipment:header', new EquipmentHeaderComponent(data.components["equipment:header"].name, data.components["equipment:header"].description))
-            .set('equipment:item', new EquipmentItemComponent(data.components["equipment:item"].typeId, data.components["equipment:item"].amount))
-            .set('equipment:magazine', new EquipmentMagazineComponent(data.components["equipment:magazine"].ammo, data.components["equipment:magazine"].count));
+            .set('equipment:header', new HeaderComponent(data.components["equipment:header"].name, data.components["equipment:header"].description))
+            .set('equipment:item', new ItemComponent(data.components["equipment:item"].typeId, data.components["equipment:item"].amount))
+            .set('equipment:magazine', new MagazineComponent(data.components["equipment:magazine"].ammo, data.components["equipment:magazine"].count));
         
         this.setItem();
     }
 
     fire() {
-        const magazineComp = this.components.get('equipment:magazine') as EquipmentMagazineComponent;
+        const magazineComp = this.components.get('equipment:magazine') as MagazineComponent;
 
         if (magazineComp.ammo === 0) return this.reload();
         
@@ -32,7 +32,7 @@ export class Gun extends Equipment implements IGunEntity {
     }
 
     reload() {
-        const magazineComp = this.components.get('equipment:magazine') as EquipmentMagazineComponent;
+        const magazineComp = this.components.get('equipment:magazine') as MagazineComponent;
 
         if (magazineComp.ammo === magazineComp.capacity) return false;
 
