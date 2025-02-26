@@ -5,13 +5,13 @@ import { CryptoUtils } from "../../../utils/Crypto";
 
 export class EquipmentRegisterSystem {
 
-    private static _Equipments = new Map<string, IEquipmentEntity>;
-    static get getEquipments() { return this._Equipments; }
+    private static _equipments = new Map<string, IEquipmentEntity>;
+    static get getequipments() { return this._equipments; }
 
-    static registerGun(data: IGunData) {
+    static registerGun(data: ComponentDataType) {
         const uuid = CryptoUtils.randomUUID();
-        this._Equipments.set(uuid, new Gun(uuid, data));
+        this._equipments.set(uuid, new Gun(uuid, data));
         
-        return this._Equipments.get(uuid) as Gun;
+        return this._equipments.get(uuid) as Gun;
     }
 }
