@@ -1,6 +1,6 @@
 import { Entity } from "../entity/Entity";
 
-import { CryptoUtils } from "../../utils/Crypto";
+import { Utils } from "../../utils/Utils";
 
 import { Entity as mcEntity } from "@minecraft/server";
 import { ItemStack } from "@minecraft/server";
@@ -22,7 +22,7 @@ export class EntityManager {
     }
 
     static registerEntity(entity: Entity) {
-        const uuid = CryptoUtils.randomUUID();
+        const uuid = Utils.randomUUID();
         this._entities.set(uuid, entity);
         return uuid;
     }

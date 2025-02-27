@@ -1,4 +1,4 @@
-export class CryptoUtils {
+export class Utils {
     static randomUUID() {
         let d = new Date().getTime();
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
