@@ -9,10 +9,10 @@ export class Glock17 extends Entity {
         super(uuid, 'Gun');
 
         this.components
-            .set('xigmaguns:header', new HeaderComponent(data["xigmaguns:header"]?.name, data["xigmaguns:header"]?.description))
-            .set('xigmaguns:item', new ItemComponent(data["xigmaguns:item"]?.typeId, data["xigmaguns:item"]?.amount))
-            .set('xigmaguns:magazine', new MagazineComponent(data["xigmaguns:magazine"]?.ammo, data["xigmaguns:magazine"]?.count))
-            .set('xigmaguns:timer', []);
+            .set('header', new HeaderComponent(data["header"]?.name, data["header"]?.description))
+            .set('item', new ItemComponent(data["item"]?.typeId, data["item"]?.amount))
+            .set('magazine', new MagazineComponent(data["magazine"]?.ammo, data["magazine"]?.count))
+            .set('timer', []);
     }
 
 }

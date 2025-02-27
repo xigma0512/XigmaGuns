@@ -18,8 +18,8 @@ export class GunActionSystem {
         if (gunEntity === undefined) return false;
 
         (function(gunEntity: IGunEntity) {
-            const timerTable = gunEntity.components.get('xigmaguns:timer') as TimerComponent[];
-            const itemComp = gunEntity.components.get('xigmaguns:item') as ItemComponent;
+            const timerTable = gunEntity.components.get('timer') as TimerComponent[];
+            const itemComp = gunEntity.components.get('item') as ItemComponent;
 
             const timerComp = new TimerComponent(3600, 20, () => {
                 if (gunEntity.fire()) return console.warn('shoot!!!');
@@ -44,8 +44,8 @@ export class GunActionSystem {
         if (gunEntity === undefined) return false;
 
         (function(gunEntity: IGunEntity){
-            const timerTable = gunEntity.components.get('xigmaguns:timer') as TimerComponent[];
-            const itemComp = gunEntity.components.get('xigmaguns:item') as ItemComponent;
+            const timerTable = gunEntity.components.get('timer') as TimerComponent[];
+            const itemComp = gunEntity.components.get('item') as ItemComponent;
 
             const taskId = itemComp.item.getDynamicProperty('xigmaguns:taskId.fire') as number;
 

@@ -11,7 +11,7 @@ export class TimerComponent extends Component {
     private _taskId = -1;
 
     constructor(duration: number, interval: number, tickFunction: (timer: number) => void) {
-        super('xigmaguns:timer');
+        super('timer');
 
         this.duration = duration;
         this.interval = interval;

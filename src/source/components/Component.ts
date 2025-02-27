@@ -4,10 +4,10 @@ import { MagazineComponent } from "./MagazineComponent";
 import { TimerComponent } from "./TimerComponent";
 
 export declare type ComponentTypes = {
-    'xigmaguns:header': HeaderComponent;
-    'xigmaguns:item': ItemComponent;
-    'xigmaguns:magazine': MagazineComponent;
-    'xigmaguns:timer': TimerComponent;
+    'header': HeaderComponent;
+    'item': ItemComponent;
+    'magazine': MagazineComponent;
+    'timer': TimerComponent;
 }
 
 export class Component {
