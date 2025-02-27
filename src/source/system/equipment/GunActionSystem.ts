@@ -1,7 +1,7 @@
 import { ItemComponent } from "../../components/ItemComponent";
 import { TimerComponent } from "../../components/TimerComponent";
 
-import { EquipmentRegisterSystem } from "./RegisterSystem";
+import { EntityManager } from "../EntityManager";
 import { IGunEntity } from "../../entity/equipment/gun/Gun";
 
 import { ItemStack } from "@minecraft/server";
@@ -14,7 +14,7 @@ export class GunActionSystem {
         const uuid = item.getDynamicProperty('xigmaguns:uuid') as string;
         if (uuid === undefined) return false;
 
-        const gunEntity = EquipmentRegisterSystem.getEquipments.get(uuid) as IGunEntity;
+        const gunEntity = EntityManager.getEntities().get(uuid) as IGunEntity;
         if (gunEntity === undefined) return false;
 
         (function(gunEntity: IGunEntity) {
@@ -40,7 +40,7 @@ export class GunActionSystem {
         const uuid = item.getDynamicProperty('xigmaguns:uuid') as string;
         if (uuid === undefined) return false;
 
-        const gunEntity = EquipmentRegisterSystem.getEquipments.get(uuid) as IGunEntity;
+        const gunEntity = EntityManager.getEntities().get(uuid) as IGunEntity;
         if (gunEntity === undefined) return false;
 
         (function(gunEntity: IGunEntity){
