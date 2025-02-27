@@ -1,23 +1,18 @@
-import { Component, ComponentTypes } from "../../components/Component";
+import { Entity, IEntity } from "../Entity";
 
 import { HeaderComponent } from "../../components/HeaderComponent";
 import { ItemComponent } from "../../components/ItemComponent";
 
-export declare interface IEquipmentEntity {
-    readonly uuid: string;
+export declare interface IEquipmentEntity extends IEntity {
     readonly type: EquipmentType;
-    readonly components: Map<keyof ComponentTypes, Component | Component[]>;
 }
 
-export class Equipment implements IEquipmentEntity {
+export class Equipment extends Entity {
     
-    readonly uuid: string;
     readonly type: EquipmentType;
 
-    readonly components = new Map<keyof ComponentTypes, Component | Component[]>;
-
     constructor(uuid: string, type: EquipmentType) {
-        this.uuid = uuid;
+        super(uuid);
         this.type = type;
     }
 
