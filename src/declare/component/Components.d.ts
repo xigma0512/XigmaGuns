@@ -1,8 +1,8 @@
 declare type ComponentDataType = {
-    'xigmaguns:header'?: IHeaderComponent;
-    'xigmaguns:item'?: IItemComponent;
-    'xigmaguns:magazine'?: IMagazineComponent;
-    'xigmaguns:timer'?: ITimerComponent;
+    'header'?: IHeaderComponent;
+    'item'?: IItemComponent;
+    'magazine'?: IMagazineComponent;
+    'timer'?: ITimerComponent[];
 }
 
 declare interface IHeaderComponent {

@@ -1,14 +1,15 @@
 export const Glock17: ComponentDataType = {
-    'xigmaguns:header': {
+    'header': {
         name: 'Glock17',
         description: ['I\'m Glock17']
     },
-    'xigmaguns:item': {
-        typeId: 'xigmaguns:glock17',
+    'item': {
+        typeId: 'glock17',
         amount: 1
     },
-    'xigmaguns:magazine': {
+    'magazine': {
         ammo: 12,
         count: 3
-    }
+    },
+    'timer': []
 }
