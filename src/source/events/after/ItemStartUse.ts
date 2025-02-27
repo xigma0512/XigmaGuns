@@ -1,9 +1,9 @@
 import { ItemStartUseAfterEvent, ItemStartUseAfterEventSignal } from "@minecraft/server";
 
-import { world } from "@minecraft/server";
 import { BaseEventHandler } from "../BaseEventHandler";
+import { GunFireSystem } from "../../system/gun/GunFireSystem";
 
-import { GunActionSystem } from "../../system/gun/GunActionSystem";
+import { world } from "@minecraft/server";
 
 export class ItemStartUse extends BaseEventHandler<ItemStartUseAfterEvent, ItemStartUseAfterEventSignal> implements EventHandler {
 
@@ -14,7 +14,7 @@ export class ItemStartUse extends BaseEventHandler<ItemStartUseAfterEvent, ItemS
     subscribe() {
         this._callback = this._SIGNAL.subscribe(event => {
             if (event.itemStack.hasTag('xigmaguns:gun')) {
-                GunActionSystem.startFire(event.itemStack);
+                GunFireSystem.startFire(event.itemStack);
             }
         });
     }
