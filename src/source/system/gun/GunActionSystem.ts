@@ -2,7 +2,7 @@ import { ItemComponent } from "../../components/ItemComponent";
 import { TimerComponent } from "../../components/TimerComponent";
 
 import { EntityManager } from "../EntityManager";
-import { IGunEntity } from "../../entity/equipment/gun/Gun";
+import { IGunEntity } from "../../entity/Glock17";
 
 import { ItemStack } from "@minecraft/server";
 

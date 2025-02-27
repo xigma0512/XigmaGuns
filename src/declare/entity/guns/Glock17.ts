@@ -10,5 +10,6 @@ export const Glock17: ComponentDataType = {
     'xigmaguns:magazine': {
         ammo: 12,
         count: 3
-    }
+    },
+    'xigmaguns:timer': []
 }

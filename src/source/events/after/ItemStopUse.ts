@@ -3,7 +3,7 @@ import { ItemStopUseAfterEvent, ItemStopUseAfterEventSignal } from "@minecraft/s
 import { world, ItemStack } from "@minecraft/server";
 import { BaseEventHandler } from "../BaseEventHandler";
 
-import { GunActionSystem } from "../../system/equipment/GunActionSystem";
+import { GunActionSystem } from "../../system/gun/GunActionSystem";
 
 export class ItemStopUse extends BaseEventHandler<ItemStopUseAfterEvent, ItemStopUseAfterEventSignal> implements EventHandler {
 

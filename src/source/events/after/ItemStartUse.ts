@@ -3,7 +3,7 @@ import { ItemStartUseAfterEvent, ItemStartUseAfterEventSignal } from "@minecraft
 import { world } from "@minecraft/server";
 import { BaseEventHandler } from "../BaseEventHandler";
 
-import { GunActionSystem } from "../../system/equipment/GunActionSystem";
+import { GunActionSystem } from "../../system/gun/GunActionSystem";
 
 export class ItemStartUse extends BaseEventHandler<ItemStartUseAfterEvent, ItemStartUseAfterEventSignal> implements EventHandler {
 
