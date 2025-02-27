@@ -1,16 +1,10 @@
-import { ComponentTypes, Component } from "../components/Component";
+import { Component, ComponentTypes } from "../components/Component";
 
-export interface IEntity {
-    readonly uuid: string;
-    readonly type: EntityType;
-    readonly components: Map<keyof ComponentTypes, Component | Component[]>;
-}
-
-export class Entity implements IEntity {
+export class Entity {
 
     readonly uuid: string;
     readonly type: EntityType;
-    readonly components = new Map;
+    readonly components = new Map<keyof ComponentTypes, Component | Component[]>;
 
     constructor(uuid: string, type: EntityType) {
         this.uuid = uuid;
