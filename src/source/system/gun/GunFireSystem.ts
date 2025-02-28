@@ -13,8 +13,8 @@ export class GunFireSystem {
         if (item === undefined) return false;
 
         (function(entity: Entity) {
-            const timerTable = entity.components.get('timer') as TimerComponent[];
-            const itemComp = entity.components.get('item') as ItemComponent;
+            const timerTable = entity.getComponent('timer') as TimerComponent[];
+            const itemComp = entity.getComponent('item') as ItemComponent;
 
             const timerComp = new TimerComponent(3600, 20, () => {
                 if (GunFireSystem.consumeAmmo(entity)) return console.warn('shoot!!!');
@@ -33,8 +33,8 @@ export class GunFireSystem {
         if (item === undefined) return false;
 
         (function(entity: Entity){
-            const timerTable = entity.components.get('timer') as TimerComponent[];
-            const itemComp = entity.components.get('item') as ItemComponent;
+            const timerTable = entity.getComponent('timer') as TimerComponent[];
+            const itemComp = entity.getComponent('item') as ItemComponent;
 
             const taskId = itemComp.item.getDynamicProperty('xigmaguns:taskId.fire') as number;
 
@@ -46,7 +46,7 @@ export class GunFireSystem {
                 return true;
             });
             
-            entity.components.set('timer', newTable);
+            entity.setComponent('timer', newTable);
 
         })(EntityManager.getEntity(item));
 
@@ -54,7 +54,7 @@ export class GunFireSystem {
     }
 
     private static consumeAmmo(entity: Entity) {
-        const magazineComp = entity.components.get('magazine') as MagazineComponent;
+        const magazineComp = entity.getComponent('magazine') as MagazineComponent;
         if (magazineComp.ammo === 0) return false;
         magazineComp.ammo--;
         return true;
