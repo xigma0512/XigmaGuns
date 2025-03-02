@@ -3,25 +3,34 @@ declare type ComponentDataType = {
     'item'?: IItemComponent;
     'magazine'?: IMagazineComponent;
     'timer'?: ITimerComponent[];
+    'particle'?: IParticleComponent;
 }
 
 declare interface IHeaderComponent {
-    name: string;
-    description: string[];
+    readonly name: string;
+    readonly description: string;
 }
 
 declare interface IItemComponent {
-    typeId: string;
-    amount: number;
+    readonly typeId: string;
+    readonly amount: number;
+    readonly nametag: string;
+    readonly lore: string[];
 }
 
 declare interface IMagazineComponent {
-    ammo: number;
-    count: number;
+    readonly ammo: number;
+    readonly count: number;
 }
 
 declare interface ITimerComponent {
-    duration: number;
-    interval: number;
-    tickFunction: (timer: number) => void;
+    readonly duration: number;
+    readonly interval: number;
+    readonly tickFunction: (timer: number) => void;
+}
+
+declare interface IParticleComponent {
+    readonly typeId: string;
+    readonly interval: number;
+    readonly duration: number;
 }

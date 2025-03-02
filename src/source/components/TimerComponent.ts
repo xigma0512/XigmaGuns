@@ -10,21 +10,23 @@ export class TimerComponent extends Component {
     private _timer = 0;
     private _taskId = -1;
 
-    constructor(duration: number, interval: number, tickFunction: (timer: number) => void) {
+    constructor(data: ITimerComponent | undefined) {
         super('timer');
 
-        this.duration = duration;
-        this.interval = interval;
-        this.tickFunction = tickFunction;
+        this.duration = data?.duration ?? 20;
+        this.interval = data?.interval ?? 1;
+        this.tickFunction = data?.tickFunction ?? function(){};
     }
 
     get taskId() { return this._taskId; }
 
     execute() {
+        this.tickFunction(this._timer);
         this._taskId = system.runInterval(() => {
                 this.tickFunction(this._timer++);
                 if (this._timer === this.duration) this.kill();
             }, this.interval);
+        return this._taskId;
     }
 
     kill() {

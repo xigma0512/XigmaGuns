@@ -6,11 +6,11 @@ export class MagazineComponent extends Component {
     storageAmmo: number;
     readonly capacity: number;
 
-    constructor(ammo: number = 1, count: number = 1) {
+    constructor(data: IMagazineComponent | undefined) {
         super('magazine');
         
-        this.ammo = ammo;
-        this.capacity = ammo;
-        this.storageAmmo = ammo * count;
+        this.ammo = data?.ammo ?? 12;
+        this.capacity = this.ammo;
+        this.storageAmmo = this.ammo * (data?.count ?? 3);
     }
 }

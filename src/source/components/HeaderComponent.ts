@@ -3,12 +3,12 @@ import { Component } from "./Component";
 export class HeaderComponent extends Component {
 
     readonly name: string;
-    readonly description: string[];
+    readonly description: string;
 
-    constructor(name: string = 'unknown', description: string[] = []) {
+    constructor(data: IHeaderComponent | undefined) {
         super('header');
 
-        this.name = name;
-        this.description = description;
+        this.name = data?.name ?? 'unknown';
+        this.description = data?.description ?? '';
     }
 }

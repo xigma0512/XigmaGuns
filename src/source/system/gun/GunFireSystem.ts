@@ -12,19 +12,21 @@ export class GunFireSystem {
     static startFire(item: ItemStack) {
         if (item === undefined) return false;
 
-        (function(entity: Entity) {
-            const timerTable = entity.components.get('timer') as TimerComponent[];
-            const itemComp = entity.components.get('item') as ItemComponent;
+        const entity = EntityManager.getEntity(item) as Entity;
+        if (entity === undefined) return false;
 
-            const timerComp = new TimerComponent(3600, 20, () => {
+        const timerTable = entity.getComponent('timer') as TimerComponent[];
+        const itemComp = entity.getComponent('item') as ItemComponent;
+        const timerComp = new TimerComponent({
+            duration: 3600,
+            interval: 20,
+            tickFunction() {
                 if (GunFireSystem.consumeAmmo(entity)) return console.warn('shoot!!!');
                 console.warn('no enough bullet');
-            });
-            timerComp.execute();
-            itemComp.item.setDynamicProperty('xigmaguns:taskId.fire', timerComp.taskId);
-
-            timerTable.push(timerComp);
-        })(EntityManager.getEntity(item));
+            }
+        });
+        itemComp.item.setDynamicProperty('xigmaguns:taskId.fire', timerComp.execute());
+        timerTable.push(timerComp);
 
         return true;
     }
@@ -32,29 +34,24 @@ export class GunFireSystem {
     static stopFire(item: ItemStack) {
         if (item === undefined) return false;
 
-        (function(entity: Entity){
-            const timerTable = entity.components.get('timer') as TimerComponent[];
-            const itemComp = entity.components.get('item') as ItemComponent;
+        const entity = EntityManager.getEntity(item) as Entity;
+        if (entity === undefined) return false;
 
-            const taskId = itemComp.item.getDynamicProperty('xigmaguns:taskId.fire') as number;
+        const timerTable = entity.getComponent('timer') as TimerComponent[];
+        const itemComp = entity.getComponent('item') as ItemComponent;
 
-            const newTable = timerTable.filter(component => {
-                if (component.taskId === taskId) {
-                    component.kill();
-                    return false;
-                }
-                return true;
-            });
-            
-            entity.components.set('timer', newTable);
-
-        })(EntityManager.getEntity(item));
-
+        const taskId = itemComp.item.getDynamicProperty('xigmaguns:taskId.fire') as number;
+        entity.setComponent('timer', timerTable.filter(comp => {
+            if (comp.taskId !== taskId) return true;
+            comp.kill();
+            return false;
+        }));
+        
         return true;
     }
 
     private static consumeAmmo(entity: Entity) {
-        const magazineComp = entity.components.get('magazine') as MagazineComponent;
+        const magazineComp = entity.getComponent('magazine') as MagazineComponent;
         if (magazineComp.ammo === 0) return false;
         magazineComp.ammo--;
         return true;
