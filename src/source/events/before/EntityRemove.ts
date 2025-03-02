@@ -1,9 +1,10 @@
-import { EntityRemoveBeforeEvent, EntityRemoveBeforeEventSignal } from "@minecraft/server";
+import { EntityRemoveBeforeEvent, EntityRemoveBeforeEventSignal, system } from "@minecraft/server";
 
 import { world } from "@minecraft/server";
 import { BaseEventHandler } from "../BaseEventHandler";
 
-import { SmokeBomb } from "../../entity/equipment/throwable/SmokeBomb";
+import { SmokeGenerator } from "../../system/SmokeGenerator";
+import { EntityManager } from "../../system/EntityManager";
 
 export class EntityRemove extends BaseEventHandler<EntityRemoveBeforeEvent, EntityRemoveBeforeEventSignal> implements EventHandler {
 
@@ -13,10 +14,16 @@ export class EntityRemove extends BaseEventHandler<EntityRemoveBeforeEvent, Enti
 
     subscribe() {
         this._callback = this._SIGNAL.subscribe(event => {
-            const entity = event.removedEntity;
-            if (entity.typeId === 'xigmaguns:smoke_grenade') {
-                SmokeBomb.create(entity.dimension, entity.location, 300);
+            const removedEntity = event.removedEntity;
+
+            const entity = EntityManager.getEntity(removedEntity);
+            if (entity === undefined) return;
+
+            if (entity.hasComponent('particle')) {
+                SmokeGenerator.create(removedEntity.dimension, removedEntity.location, entity);
             }
+
+            EntityManager.unRegisterEntity(removedEntity);
         });
     }
 
