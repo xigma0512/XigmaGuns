@@ -1,14 +1,13 @@
+import { EntityType } from "../../declare/entity/Entity";
 import { Component, ComponentTypes } from "../components/Component";
 
 export class Entity {
 
     readonly uuid: string;
-    readonly type: EntityType;
     protected readonly components = new Map<keyof ComponentTypes, Component | Component[]>;
 
-    constructor(uuid: string, type: EntityType) {
+    constructor(uuid: string) {
         this.uuid = uuid;
-        this.type = type;
     }
 
     hasComponent(componentId: keyof ComponentTypes) {

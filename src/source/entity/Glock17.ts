@@ -1,3 +1,4 @@
+import { GunData } from "../../declare/entity/Guns";
 import { HeaderComponent } from "../components/HeaderComponent";
 import { ItemComponent } from "../components/ItemComponent";
 import { MagazineComponent } from "../components/MagazineComponent";
@@ -5,13 +6,14 @@ import { Entity } from "./Entity";
 
 export class Glock17 extends Entity {
 
-    constructor(uuid: string, data: ComponentDataType) {
-        super(uuid, 'Gun');
+    constructor(uuid: string) {
+        super(uuid);
 
+        const DATA = GunData.Glock17;
         this.components
-            .set('header', new HeaderComponent(data.header))
-            .set('item', new ItemComponent(data.item))
-            .set('magazine', new MagazineComponent(data.magazine))
+            .set('header', new HeaderComponent(DATA.header))
+            .set('item', new ItemComponent(DATA.item))
+            .set('magazine', new MagazineComponent(DATA.magazine))
             .set('timer', []);
     }
 
