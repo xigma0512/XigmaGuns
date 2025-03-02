@@ -9,9 +9,9 @@ export class Glock17 extends Entity {
         super(uuid, 'Gun');
 
         this.components
-            .set('header', new HeaderComponent(data["header"]?.name, data["header"]?.description))
-            .set('item', new ItemComponent(data["item"]?.typeId, data["item"]?.amount))
-            .set('magazine', new MagazineComponent(data["magazine"]?.ammo, data["magazine"]?.count))
+            .set('header', new HeaderComponent(data.header))
+            .set('item', new ItemComponent(data.item))
+            .set('magazine', new MagazineComponent(data.magazine))
             .set('timer', []);
     }
 

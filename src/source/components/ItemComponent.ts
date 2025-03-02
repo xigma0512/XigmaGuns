@@ -8,11 +8,11 @@ export class ItemComponent extends Component {
     readonly amount: number;
     readonly item: ItemStack;
 
-    constructor(typeId: string = 'glock17', amount: number = 1) {
+    constructor(data: IItemComponent | undefined) {
         super('item');
 
-        this.typeId = typeId;
-        this.amount = amount;
+        this.typeId = data?.typeId ?? 'minecraft:stick';
+        this.amount = data?.amount ?? 1;
 
         this.item = new ItemStack(this.typeId, this.amount);
     }
