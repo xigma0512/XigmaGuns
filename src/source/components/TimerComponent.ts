@@ -21,10 +21,12 @@ export class TimerComponent extends Component {
     get taskId() { return this._taskId; }
 
     execute() {
+        this.tickFunction(this._timer);
         this._taskId = system.runInterval(() => {
                 this.tickFunction(this._timer++);
                 if (this._timer === this.duration) this.kill();
             }, this.interval);
+        return this._taskId;
     }
 
     kill() {
