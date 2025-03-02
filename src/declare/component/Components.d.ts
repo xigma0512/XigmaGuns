@@ -7,12 +7,14 @@ declare type ComponentDataType = {
 
 declare interface IHeaderComponent {
     name: string;
-    description: string[];
+    description: string;
 }
 
 declare interface IItemComponent {
     typeId: string;
     amount: number;
+    nametag: string;
+    lore: string[];
 }
 
 declare interface IMagazineComponent {
