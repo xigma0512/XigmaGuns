@@ -59,7 +59,7 @@
                 },
                 "queue_command": {
                     "command": [
-                        "playsound xigmaguns.smoke_grenade @a ~~~ 0.5 1"
+                        "playsound xigmaguns.smoke_grenade @a ~~~ 3 1"
                     ]
                 }
             },
