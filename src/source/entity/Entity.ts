@@ -1,4 +1,3 @@
-import { EntityType } from "../../declare/entity/Entity";
 import { Component, ComponentTypes } from "../components/Component";
 
 export class Entity {
