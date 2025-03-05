@@ -1,4 +1,4 @@
-import { ThrowableData } from "../../declare/entity/Throwables";
+import { ThrowableData } from "../../declare/entityData/Throwables";
 import { ParticleComponent } from "../components/ParticleComponent";
 import { Entity } from "./Entity";
 

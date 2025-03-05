@@ -1,4 +1,4 @@
-import { GunData } from "../../declare/entity/Guns";
+import { GunData } from "../../declare/entityData/Guns";
 import { HeaderComponent } from "../components/HeaderComponent";
 import { ItemComponent } from "../components/ItemComponent";
 import { MagazineComponent } from "../components/MagazineComponent";

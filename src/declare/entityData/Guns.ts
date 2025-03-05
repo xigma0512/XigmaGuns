@@ -13,8 +13,13 @@ export namespace GunData {
                 'lore2'
             ]
         },
+        'gun': {
+            damage: 3,
+            range: 40,
+            fireRate: 7
+        },
         'magazine': {
-            ammo: 12,
+            ammo: 30,
             count: 3
         },
         'timer': []
