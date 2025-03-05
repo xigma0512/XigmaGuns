@@ -2,7 +2,6 @@ import { Entity } from "../entity/Entity";
 
 import { Entity as mcEntity } from "@minecraft/server";
 import { ItemStack } from "@minecraft/server";
-import { Utils } from "../../utils/Utils";
 
 export class EntityManager {
 

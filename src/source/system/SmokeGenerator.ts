@@ -3,14 +3,14 @@ import { ParticleComponent } from "../components/ParticleComponent";
 
 import { Dimension } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";
-import { IntervalTask } from "./timer/TaskManager";
+import { IntervalTask, TaskManager } from "./timer/TaskManager";
 
 export class SmokeGenerator {
 
     static create(dimension: Dimension, location: Vector3, entity: Entity) {
         const particleComp = entity.getComponent('particle') as ParticleComponent;
         
-        new IntervalTask({
+        TaskManager.executeTask(new IntervalTask({
             duration: particleComp.duration,
             interval: particleComp.interval,
             tickFunction() {
@@ -18,7 +18,7 @@ export class SmokeGenerator {
                     try { dimension.spawnParticle(particleComp.typeId, location); } catch { }
                 }
             }
-        }).execute();
+        }));
     }
 
 }

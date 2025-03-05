@@ -16,7 +16,7 @@ export class EntitySpawn extends BaseEventHandler<EntitySpawnAfterEvent, EntityS
         this._callback = this._SIGNAL.subscribe(event => {
             const entity = event.entity;
             if (entity.typeId === 'xigmaguns:smoke_grenade') {
-                EntityManager.registerEntity(new SmokeGrenade());
+                EntityManager.registerEntity(new SmokeGrenade(), entity);
             }
         });
     }

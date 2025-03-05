@@ -15,7 +15,7 @@ import { Player } from "@minecraft/server";
 export class BulletSystem {
 
     static summonBullet(owner: Player, comp: GunComponent) {
-        const entity = new Bullet(Utils.randomUUID());
+        const entity = new Bullet();
         EntityManager.registerEntity(entity);
 
         const bulletComp = entity.getComponent('bullet') as BulletComponent;

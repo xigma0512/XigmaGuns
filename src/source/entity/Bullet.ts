@@ -6,9 +6,9 @@ import { VectorComponent } from "../components/VectorComponent";
 import { Entity } from "./Entity";
 
 export class Bullet extends Entity {
-    constructor(uuid: string) {
-        super(uuid);
-    
+    constructor() {
+        super();
+        
         const DATA = BulletData.Bullet;
         this.components
             .set('bullet', new BulletComponent())
