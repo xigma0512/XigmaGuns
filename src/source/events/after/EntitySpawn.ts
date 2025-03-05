@@ -4,6 +4,7 @@ import { world } from "@minecraft/server";
 import { BaseEventHandler } from "../BaseEventHandler";
 
 import { EntityManager } from "../../system/EntityManager";
+import { SmokeGrenade } from "../../entity/SmokeGrenade";
 
 export class EntitySpawn extends BaseEventHandler<EntitySpawnAfterEvent, EntitySpawnAfterEventSignal> implements EventHandler {
 
@@ -15,7 +16,7 @@ export class EntitySpawn extends BaseEventHandler<EntitySpawnAfterEvent, EntityS
         this._callback = this._SIGNAL.subscribe(event => {
             const entity = event.entity;
             if (entity.typeId === 'xigmaguns:smoke_grenade') {
-                EntityManager.registerMcEntity('smoke_grenade', entity);
+                EntityManager.registerEntity(new SmokeGrenade());
             }
         });
     }

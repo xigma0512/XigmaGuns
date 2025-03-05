@@ -23,7 +23,7 @@ export class EntityRemove extends BaseEventHandler<EntityRemoveBeforeEvent, Enti
                 SmokeGenerator.create(removedEntity.dimension, removedEntity.location, entity);
             }
 
-            EntityManager.unRegisterEntity(removedEntity);
+            EntityManager.unRegisterEntity(entity.uuid);
         });
     }
 

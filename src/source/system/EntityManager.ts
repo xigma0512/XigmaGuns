@@ -1,11 +1,8 @@
 import { Entity } from "../entity/Entity";
-import { ItemComponent } from "../components/ItemComponent";
-import { EntityType, EntityTypes } from "../../declare/entity/Entity";
-
-import { Utils } from "../../utils/Utils";
 
 import { Entity as mcEntity } from "@minecraft/server";
 import { ItemStack } from "@minecraft/server";
+import { Utils } from "../../utils/Utils";
 
 export class EntityManager {
 
@@ -18,28 +15,13 @@ export class EntityManager {
         return this._entities.get(uuid);
     }
 
-    static unRegisterEntity(target: ItemStack | mcEntity) {
-        const uuid = target.getDynamicProperty('xigmaguns:uuid') as string;
-        if (uuid === undefined) return;
+    static unRegisterEntity(uuid: string) {
         this._entities.delete(uuid);
     }
 
-    static registerItem(type: EntityType) {
-        const uuid = Utils.randomUUID();
-        const entity = new EntityTypes[type](uuid);
-        this._entities.set(uuid, entity);
-
-        const itemComp = entity.getComponent('item') as ItemComponent;
-        itemComp.item.setDynamicProperty('xigmaguns:uuid', uuid);
-        return itemComp.item;
+    static registerEntity(entity: Entity, target?: ItemStack | mcEntity) {
+        this._entities.set(entity.uuid, entity);
+        if (target === undefined) return;
+        target.setDynamicProperty('xigmaguns:uuid', entity.uuid);
     }
-
-    static registerMcEntity(type: EntityType, target: mcEntity) {
-        const uuid = Utils.randomUUID();
-        const entity = new EntityTypes[type](uuid);
-        this._entities.set(uuid, entity);
-
-        target.setDynamicProperty('xigmaguns:uuid', uuid);
-    }
-
 }

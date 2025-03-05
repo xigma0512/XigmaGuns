@@ -1,3 +1,4 @@
+import { Utils } from "../../utils/Utils";
 import { Component, ComponentTypes } from "../components/Component";
 
 export class Entity {
@@ -5,8 +6,8 @@ export class Entity {
     readonly uuid: string;
     protected readonly components = new Map<keyof ComponentTypes, Component | Component[]>;
 
-    constructor(uuid: string) {
-        this.uuid = uuid;
+    constructor() {
+        this.uuid = Utils.randomUUID();
     }
 
     hasComponent(componentId: keyof ComponentTypes) {

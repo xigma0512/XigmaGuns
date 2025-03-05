@@ -1,10 +1,11 @@
 import { ThrowableData } from "../../declare/entityData/Throwables";
-import { ParticleComponent } from "../components/ParticleComponent";
 import { Entity } from "./Entity";
 
+import { ParticleComponent } from "../components/ParticleComponent";
+
 export class SmokeGrenade extends Entity {
-    constructor(uuid: string) {
-        super(uuid);
+    constructor() {
+        super();
 
         const DATA = ThrowableData.SmokeGrenade;
         this.components
