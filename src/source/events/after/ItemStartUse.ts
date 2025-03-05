@@ -14,7 +14,7 @@ export class ItemStartUse extends BaseEventHandler<ItemStartUseAfterEvent, ItemS
     subscribe() {
         this._callback = this._SIGNAL.subscribe(event => {
             if (event.itemStack.hasTag('xigmaguns:gun')) {
-                GunFireSystem.startFire(event.itemStack);
+                GunFireSystem.startFire(event.itemStack, event.source);
             }
         });
     }

@@ -1,51 +1,45 @@
 import { Entity } from "../../entity/Entity";
 import { MagazineComponent } from "../../components/MagazineComponent";
-import { TimerComponent } from "../../components/TimerComponent";
-import { ItemComponent } from "../../components/ItemComponent";
+import { BulletSystem } from "./BulletSystem";
+import { GunComponent } from "../../components/GunComponent";
 
+import { IntervalTask, TaskManager } from "../timer/TaskManager";
 import { EntityManager } from "../EntityManager";
 
-import { ItemStack } from "@minecraft/server";
+import { ItemStack, Player } from "@minecraft/server";
 
 export class GunFireSystem {
 
-    static startFire(item: ItemStack) {
-        if (item === undefined) return false;
-
+    static startFire(item: ItemStack, owner: Player) {
+        
         const entity = EntityManager.getEntity(item) as Entity;
         if (entity === undefined) return false;
 
-        const timerTable = entity.getComponent('timer') as TimerComponent[];
-        const itemComp = entity.getComponent('item') as ItemComponent;
-        const timerComp = new TimerComponent({
+        const gunComp = entity.getComponent('gun') as GunComponent;
+
+        const task = new IntervalTask({
             duration: 3600,
-            interval: 20,
+            interval: gunComp.fireRate,
             tickFunction() {
-                if (GunFireSystem.consumeAmmo(entity)) return console.warn('shoot!!!');
-                console.warn('no enough bullet');
+                if (GunFireSystem.consumeAmmo(entity)) {
+                    const bullet = BulletSystem.summonBullet(owner, gunComp);
+                    return BulletSystem.launchBullet(bullet);
+                }
+                owner.onScreenDisplay.setActionBar('YOU HAVE NO AMMO.');
             }
         });
-        itemComp.item.setDynamicProperty('xigmaguns:taskId.fire', timerComp.execute());
-        timerTable.push(timerComp);
+        owner.setDynamicProperty('xigmaguns:task.fire', TaskManager.executeTask(task));
 
         return true;
     }
     
-    static stopFire(item: ItemStack) {
-        if (item === undefined) return false;
+    static stopFire(item: ItemStack, owner: Player) {
 
         const entity = EntityManager.getEntity(item) as Entity;
         if (entity === undefined) return false;
 
-        const timerTable = entity.getComponent('timer') as TimerComponent[];
-        const itemComp = entity.getComponent('item') as ItemComponent;
-
-        const taskId = itemComp.item.getDynamicProperty('xigmaguns:taskId.fire') as number;
-        entity.setComponent('timer', timerTable.filter(comp => {
-            if (comp.taskId !== taskId) return true;
-            comp.kill();
-            return false;
-        }));
+        const taskId = owner.getDynamicProperty('xigmaguns:task.fire') as number;
+        TaskManager.removeTask(taskId);
         
         return true;
     }

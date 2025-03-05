@@ -14,7 +14,7 @@ export class ItemStopUse extends BaseEventHandler<ItemStopUseAfterEvent, ItemSto
     subscribe() {
         this._callback = this._SIGNAL.subscribe(event => {
             if (event.itemStack?.hasTag('xigmaguns:gun')) {
-                GunFireSystem.stopFire(event.itemStack as ItemStack);
+                GunFireSystem.stopFire(event.itemStack as ItemStack, event.source);
             }
         });
     }
