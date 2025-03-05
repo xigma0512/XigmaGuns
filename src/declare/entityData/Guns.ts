@@ -21,7 +21,6 @@ export namespace GunData {
         'magazine': {
             ammo: 30,
             count: 3
-        },
-        'timer': []
+        }
     }
 }

@@ -13,8 +13,7 @@ export class Glock17 extends Entity {
         this.components
             .set('header', new HeaderComponent(DATA.header))
             .set('item', new ItemComponent(DATA.item))
-            .set('magazine', new MagazineComponent(DATA.magazine))
-            .set('timer', []);
+            .set('magazine', new MagazineComponent(DATA.magazine));
     }
 
 }
