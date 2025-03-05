@@ -4,6 +4,10 @@ declare type ComponentDataType = {
     'magazine'?: IMagazineComponent;
     'timer'?: ITimerComponent[];
     'particle'?: IParticleComponent;
+    'position'?: IPositionComponent;
+    'vector'?: IVectorComponent;
+    'gun'?: IGunComponent;
+    'bullet'?: IBulletComponent;
 }
 
 declare interface IHeaderComponent {
@@ -34,3 +38,24 @@ declare interface IParticleComponent {
     readonly interval: number;
     readonly duration: number;
 }
+
+declare interface IPositionComponent {
+    x: number;
+    y: number;
+    z: number;
+    dimension: string;
+}
+
+declare interface IVectorComponent {
+    readonly x: number;
+    readonly y: number;
+    readonly z: number;
+}
+
+declare interface IGunComponent {
+    readonly damage: number;
+    readonly range: number;
+    readonly fireRate: number;
+}
+
+declare interface IBulletComponent { }
