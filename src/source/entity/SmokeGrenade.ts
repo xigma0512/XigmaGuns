@@ -8,7 +8,6 @@ export class SmokeGrenade extends Entity {
 
         const DATA = ThrowableData.SmokeGrenade;
         this.components
-            .set('particle', new ParticleComponent(DATA.particle))
-            .set('timer', []);
+            .set('particle', new ParticleComponent(DATA.particle));
     }
 }
