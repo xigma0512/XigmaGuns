@@ -16,8 +16,8 @@ export class VectorComponent extends Component {
     get z() { return this._z; }
 
     setVector(v3: Vector3) {
-        this._x = v3.x / 10;
-        this._y = v3.y / 10;
-        this._z = v3.z / 10;
+        this._x = v3.x;
+        this._y = v3.y;
+        this._z = v3.z;
     }
 }

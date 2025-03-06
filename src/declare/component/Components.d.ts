@@ -49,6 +49,7 @@ declare interface IGunComponent {
     readonly damage: number;
     readonly range: number;
     readonly fireRate: number;
+    readonly offset: number;
 }
 
 declare interface IBulletComponent { }
