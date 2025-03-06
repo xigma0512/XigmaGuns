@@ -1,99 +1,100 @@
 import { Bullet } from "../../entity/Bullet";
 import { EntityManager } from "../EntityManager";
-
-import { BulletComponent } from "../../components/BulletComponent";
-import { PositionComponent } from "../../components/PositionComponent";
-import { VectorComponent } from "../../components/VectorComponent";
-import { ParticleComponent } from "../../components/ParticleComponent";
 import { GunComponent } from "../../components/GunComponent";
 
-import { Utils } from "../../../utils/Utils";
-
-import { world } from "@minecraft/server";
-import { Player } from "@minecraft/server";
+import { system } from "@minecraft/server";
+import { Player, Entity } from "@minecraft/server";
+import { EntityProjectileComponent } from "@minecraft/server";
+import { Vector3 } from "@minecraft/server";
 
 export class BulletSystem {
 
     static summonBullet(owner: Player, comp: GunComponent) {
-        const entity = new Bullet();
-        EntityManager.registerEntity(entity);
+        const viewDirection = owner.getViewDirection();
+        const headLocation = owner.getHeadLocation();
 
-        const bulletComp = entity.getComponent('bullet') as BulletComponent;
+        const bullet = new Bullet();
+        
+        const bulletComp = bullet.getComponent('bullet');
         bulletComp.setInfo(owner, comp.damage, comp.range);
+        
+        const position = bullet.getComponent('position');
+        position.x = headLocation.x + viewDirection.x;
+        position.y = headLocation.y + viewDirection.y + 0.1;
+        position.z = headLocation.z + viewDirection.z;
 
-        const positionComp = entity.getComponent('position') as PositionComponent;
-        const head = owner.getHeadLocation();
-        positionComp.x = head.x;
-        positionComp.y = head.y + 0.1;
-        positionComp.z = head.z;
-        positionComp.dimension = owner.dimension.id;
+        const entity = owner.dimension.spawnEntity('xigmaguns:bullet', {
+            x: position.x,
+            y: position.y,
+            z: position.z
+        });
         
-        const vectorComp = entity.getComponent('vector') as VectorComponent;
-        vectorComp.setVector(owner.getViewDirection());
-        
-        return entity;
+        const projectile = entity.getComponent('projectile') as EntityProjectileComponent;
+        projectile.owner = owner;
+        projectile.shoot({
+            x: viewDirection.x * 200,
+            y: viewDirection.y * 200,
+            z: viewDirection.z * 200,
+        }, {uncertainty: comp.offset});
+
+        const vector = bullet.getComponent('vector');
+        const projectileVec = projectile.entity.getVelocity();
+        projectileVec.x /= 200;
+        projectileVec.y /= 200;
+        projectileVec.z /= 200;
+        vector.setVector(projectileVec);
+
+        EntityManager.registerEntity(bullet, entity);
+        system.run(() => BulletSystem.launchLocus(entity, entity.location));
+        // BUG: 第一發子彈會無法顯示粒子
+        // 原因是 `entity.location` 依舊停留在射擊點
+        // 但是子彈在system.run執行的這個時刻 已經射擊出去了 (確定，因為有擊中生物)
+        // 並且無法解釋為什麼 連續射擊的第二發不會有這個問題
     }
 
-    static launchBullet(entity: Bullet) {
-        let dist = 0;
+    static launchLocus(entity: Entity, dest: Vector3) {
+
+        const bullet = EntityManager.getEntity(entity);
+        if (bullet === undefined) return;
+
+        const bulletComp = bullet.getComponent('bullet');
+        const position = bullet.getComponent('position');
+        const vector = bullet.getComponent('vector');
+
+        let distance = 0;
         while(true) {
-            const bulletComp = entity.getComponent('bullet') as BulletComponent;
-            const position = entity.getComponent('position') as PositionComponent;
-            const particle = entity.getComponent('particle') as ParticleComponent;
-            const vector = entity.getComponent('vector') as VectorComponent;
+            if (distance++ < 10) continue;
+            
+            try { entity.dimension.spawnParticle('xigmaguns:locus', { x: position.x, y: position.y, z: position.z}); } catch { }
+            
+            position.x += vector.x / 5;
+            position.y += vector.y / 5;
+            position.z += vector.z / 5;
 
-            const hitBlock = BulletState.getBlockHit(entity);
-            if (!(hitBlock === undefined || hitBlock.isAir)) break;
-            
-            const hitPlayer = BulletState.getPlayerHit(entity);
-            if (hitPlayer) {
-                Utils.applyDamage(hitPlayer.target, bulletComp.owner as Player, bulletComp.damage);
-                break;
-            }
-            
-            if (dist >= 10) 
-                world.getDimension(position.dimension).spawnParticle(particle.typeId, {x: position.x, y: position.y, z: position.z});
-            
-            position.x += vector.x;
-            position.y += vector.y;
-            position.z += vector.z;
-            dist ++;
+            const dx = dest.x - position.x;
+            const dy = dest.y - position.y;
+            const dz = dest.z - position.z;
+            const vec2dest = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            const vecLength = Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
 
-            if (dist >= bulletComp.range * 10) break;
+            if (vec2dest <= vecLength) break;            
+            if (distance >= bulletComp.range * 5) break;
         }
-        EntityManager.unRegisterEntity(entity.uuid);
-    }
-}
 
-class BulletState {
-    
-    static getBlockHit(bullet: Bullet) {
-        const position = bullet.getComponent('position') as PositionComponent;
-        const block = world.getDimension(position.dimension).getBlock({ x: position.x, y: position.y, z: position.z});
-        return block;
+        EntityManager.unRegisterEntity(bullet.uuid);
     }
 
-    static getPlayerHit(bullet: Bullet) {
-        const bulletComp = bullet.getComponent('bullet') as BulletComponent;
-        const position = bullet.getComponent('position') as PositionComponent;
+    static getHitType(hitLocation: Vector3, target: Player): BulletHitType {
+        const targetPosition = target.location;
 
-        for (const target of world.getAllPlayers()) {
-
-            if (target.name === bulletComp.owner?.name) continue;
-            const pos = target.location;
-
-            const distance = {
-                x: Math.abs(position.x - pos.x),
-                y: position.y - pos.y,
-                z: Math.abs(position.z - pos.z)
-            }
-
-            if (distance.x > 0.3 || distance.z > 0.3) continue;
-            if (distance.y > 1.8 || distance.y < 0) continue;
-            if (Math.abs(distance.y) <= 0.8) return { target, type: 'leg' };
-            if (Math.abs(distance.y) <= 1.45) return { target, type: 'body' };
-            return { target, type: 'head' };
+        const distance = {
+            x: Math.abs(hitLocation.x - targetPosition.x),
+            y: hitLocation.y - targetPosition.y,
+            z: Math.abs(hitLocation.z - targetPosition.z)
         }
-    }
 
+        if (Math.abs(distance.y) <= 0.85) return 'legs';
+        if (Math.abs(distance.y) <= 1.45) return 'body';
+        return 'head';
+    }
 }

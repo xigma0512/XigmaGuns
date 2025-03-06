@@ -1,4 +1,4 @@
-import { world } from "@minecraft/server";
+import { EntityDieAfterEvent, EntityDieAfterEventSignal, world } from "@minecraft/server";
 import { EventHandler } from "./EventHandler";
 
 import { EntitySpawnAfterEvent, EntitySpawnAfterEventSignal } from "@minecraft/server";
@@ -22,6 +22,12 @@ export namespace AfterEvents {
     export class ItemStopUseEvent extends EventHandler<ItemStopUseAfterEvent, ItemStopUseAfterEventSignal> {
         constructor(func: (event: ItemStopUseAfterEvent) => void) {
             super(world.afterEvents.itemStopUse, func);
+        }
+    }
+
+    export class EntityDie extends EventHandler<EntityDieAfterEvent, EntityDieAfterEventSignal> {
+        constructor(func: (event: EntityDieAfterEvent) => void) {
+            super(world.afterEvents.entityDie, func);
         }
     }
 

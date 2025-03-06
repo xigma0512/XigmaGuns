@@ -5,13 +5,14 @@ import { GunComponent } from "../../components/GunComponent";
 
 import { IntervalTask, TaskManager } from "../timer/TaskManager";
 import { EntityManager } from "../EntityManager";
+import { AfterEvents } from "../../event/Events";
 
-import { ItemStack, Player } from "@minecraft/server";
+import { ItemStack, Player, system } from "@minecraft/server";
 
 export class GunFireSystem {
 
     static startFire(item: ItemStack, owner: Player) {
-        
+
         const entity = EntityManager.getEntity(item) as Entity;
         if (entity === undefined) return false;
 
@@ -22,26 +23,32 @@ export class GunFireSystem {
             interval: gunComp.fireRate,
             tickFunction() {
                 if (GunFireSystem.consumeAmmo(entity)) {
-                    const bullet = BulletSystem.summonBullet(owner, gunComp);
-                    return BulletSystem.launchBullet(bullet);
+                    return BulletSystem.summonBullet(owner, gunComp);
                 }
                 owner.onScreenDisplay.setActionBar('YOU HAVE NO AMMO.');
             }
         });
-        owner.setDynamicProperty('xigmaguns:task.fire', TaskManager.executeTask(task));
+        this.fireInterruption(TaskManager.executeTask(task), owner.name);
 
         return true;
     }
     
-    static stopFire(item: ItemStack, owner: Player) {
+    private static fireInterruption(taskId: number, ownerName: string) {
+        const [stopUseItem, playerDie] = [
+            new AfterEvents.ItemStopUseEvent(ev => {
+                if (ev.source.name === ownerName) stopFire();
+            }),
+            new AfterEvents.EntityDie(ev => {
+                if (!(ev.deadEntity instanceof Player)) return;
+                if (ev.deadEntity.name === ownerName) stopFire();
+            })
+        ];
 
-        const entity = EntityManager.getEntity(item) as Entity;
-        if (entity === undefined) return false;
-
-        const taskId = owner.getDynamicProperty('xigmaguns:task.fire') as number;
-        TaskManager.removeTask(taskId);
-        
-        return true;
+        const stopFire = () => {
+            TaskManager.removeTask(taskId);
+            stopUseItem.unsubscribe();
+            playerDie.unsubscribe();
+        }
     }
 
     private static consumeAmmo(entity: Entity) {
