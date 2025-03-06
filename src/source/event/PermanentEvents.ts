@@ -13,13 +13,13 @@ export abstract class PermanentEvents {
             if (ev.itemStack.hasTag('xigmaguns:gun')) {
                 GunFireSystem.startFire(ev.itemStack, ev.source);
             }
-        }).subscribe();
+        });
 
         new AfterEvents.EntitySpawnEvent(ev => {
             if (ev.entity.typeId === 'xigmaguns:smoke_grenade') {
                 EntityManager.registerEntity(new SmokeGrenade(), ev.entity);
             }
-        }).subscribe();
+        });
 
         new BeforeEvents.EntityRemoveEvent(ev => {
             const entity = EntityManager.getEntity(ev.removedEntity);
@@ -30,7 +30,7 @@ export abstract class PermanentEvents {
             }
 
             EntityManager.unRegisterEntity(entity.uuid);
-        }).subscribe();
+        });
 
     }
 
