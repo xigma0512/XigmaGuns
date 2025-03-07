@@ -9,19 +9,19 @@ export abstract class PermanentEvents {
 
     static register() {
         
-        new AfterEvents.ItemStartUseEvent(ev => {
+        new AfterEvents.ItemStartUse(ev => {
             if (ev.itemStack.hasTag('xigmaguns:gun')) {
                 GunFireSystem.startFire(ev.itemStack, ev.source);
             }
         });
 
-        new AfterEvents.EntitySpawnEvent(ev => {
+        new AfterEvents.EntitySpawn(ev => {
             if (ev.entity.typeId === 'xigmaguns:smoke_grenade') {
                 EntityManager.registerEntity(new SmokeGrenade(), ev.entity);
             }
         });
 
-        new BeforeEvents.EntityRemoveEvent(ev => {
+        new BeforeEvents.EntityRemove(ev => {
             const entity = EntityManager.getEntity(ev.removedEntity);
             if (entity === undefined) return;
 
