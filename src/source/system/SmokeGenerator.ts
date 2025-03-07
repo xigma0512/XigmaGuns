@@ -3,7 +3,7 @@ import { ParticleComponent } from "../components/ParticleComponent";
 
 import { Dimension } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";
-import { IntervalTask, TaskManager } from "./timer/TaskManager";
+import { IntervalTask, TaskManager } from "./TaskManager";
 
 export class SmokeGenerator {
 

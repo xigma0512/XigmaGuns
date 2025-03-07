@@ -1,4 +1,4 @@
-import { GunData } from "../../declare/entityData/Guns";
+import { GunData } from "./data/Guns";
 import { Entity } from "./Entity";
 
 import { GunComponent } from "../components/GunComponent";

@@ -1,4 +1,4 @@
-import { BulletData } from "../../declare/entityData/Bullet";
+import { BulletData } from "./data/Bullet";
 import { BulletComponent } from "../components/BulletComponent";
 import { ParticleComponent } from "../components/ParticleComponent";
 import { PositionComponent } from "../components/PositionComponent";

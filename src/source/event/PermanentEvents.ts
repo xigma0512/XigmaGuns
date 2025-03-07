@@ -1,7 +1,7 @@
 import { AfterEvents, BeforeEvents } from "./Events";
 
 import { EntityManager } from "../system/EntityManager";
-import { GunFireSystem } from "../system/gun/GunFireSystem";
+import { GunFireSystem } from "../system/combat/GunFireSystem";
 import { SmokeGrenade } from "../entity/SmokeGrenade";
 import { SmokeGenerator } from "../system/SmokeGenerator";
 

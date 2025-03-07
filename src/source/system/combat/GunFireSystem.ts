@@ -3,7 +3,7 @@ import { MagazineComponent } from "../../components/MagazineComponent";
 import { BulletSystem } from "./BulletSystem";
 import { GunComponent } from "../../components/GunComponent";
 
-import { IntervalTask, TaskManager } from "../timer/TaskManager";
+import { IntervalTask, TaskManager } from "../TaskManager";
 import { EntityManager } from "../EntityManager";
 import { AfterEvents } from "../../event/Events";
 
@@ -35,7 +35,7 @@ export class GunFireSystem {
     
     private static fireInterruption(taskId: number, ownerName: string) {
         const [stopUseItem, playerDie] = [
-            new AfterEvents.ItemStopUseEvent(ev => {
+            new AfterEvents.ItemStopUse(ev => {
                 if (ev.source.name === ownerName) stopFire();
             }),
             new AfterEvents.EntityDie(ev => {
