@@ -24,7 +24,8 @@
             },
             "minecraft:use_modifiers": {
                 "use_duration": 4000
-            }
+            },
+            "minecraft:hand_equipped": true
         }
     }
 }
