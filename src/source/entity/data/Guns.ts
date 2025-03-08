@@ -17,7 +17,8 @@ export namespace GunData {
             damage: 3,
             range: 40,
             fireRate: 7,
-            offset: 0
+            offset: 0,
+            reload_time: 30
         },
         'magazine': {
             ammo: 30,

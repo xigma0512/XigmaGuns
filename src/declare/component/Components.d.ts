@@ -50,6 +50,7 @@ declare interface IGunComponent {
     readonly range: number;
     readonly fireRate: number;
     readonly offset: number;
+    readonly reload_time: number;
 }
 
 declare interface IBulletComponent { }
