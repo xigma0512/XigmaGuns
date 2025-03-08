@@ -10,17 +10,25 @@ export class CustomEventTrigger {
 
     private static hotbarChange() {
         const hotbarSelection = new Map<string, number>();
-        system.runInterval(() => {
-            for (const player of world.getAllPlayers()) {
-                if (hotbarSelection.get(player.id) !== undefined) {
-                    const currentSelect = player.selectedSlotIndex;
-                    const previousSelect = hotbarSelection.get(player.id) as number;
+        const taskIds = new Map<string, number>();
+
+        world.afterEvents.playerSpawn.subscribe(ev => {
+            taskIds.set(ev.player.id, system.runInterval(() => {
+                if (hotbarSelection.get(ev.player.id) !== undefined) {
+                    const currentSelect = ev.player.selectedSlotIndex;
+                    const previousSelect = hotbarSelection.get(ev.player.id) as number;
                     if (currentSelect !== previousSelect) {
-                        customEvents.playerChangeHotbar.trigger(PlayerChangeHotbarEvent.create(player, previousSelect, currentSelect));
+                        customEvents.playerChangeHotbar.trigger(PlayerChangeHotbarEvent.create(ev.player, previousSelect, currentSelect));
                     }
                 }
-                hotbarSelection.set(player.id, player.selectedSlotIndex);
-            }
+                hotbarSelection.set(ev.player.id, ev.player.selectedSlotIndex);
+            }));
+        });
+
+        world.beforeEvents.playerLeave.subscribe(ev => {
+            const id = taskIds.get(ev.player.id);
+            if (id === undefined) return;
+            system.clearRun(id);
         });
     }
 }
