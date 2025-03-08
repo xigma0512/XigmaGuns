@@ -1,11 +1,14 @@
 import { EntityDieAfterEvent, EntityDieAfterEventSignal, world } from "@minecraft/server";
 import { EventHandler } from "./EventHandler";
+import { customEvents } from "./custom/CustomEventManager";
 
 import { EntitySpawnAfterEvent, EntitySpawnAfterEventSignal } from "@minecraft/server";
 import { ItemStartUseAfterEvent, ItemStartUseAfterEventSignal } from "@minecraft/server";
 import { ItemStopUseAfterEvent, ItemStopUseAfterEventSignal } from "@minecraft/server";
 
 import { EntityRemoveBeforeEvent, EntityRemoveBeforeEventSignal } from "@minecraft/server";
+
+import { PlayerChangeHotbarEvent, PlayerChangeHotbarEventSignal } from "./custom/PlayerChangeHotbar";
 
 export namespace AfterEvents {
     
@@ -40,6 +43,16 @@ export namespace BeforeEvents {
     export class EntityRemove extends EventHandler<EntityRemoveBeforeEvent, EntityRemoveBeforeEventSignal> {
         constructor(func: (event: EntityRemoveBeforeEvent) => void) {
             super(world.beforeEvents.entityRemove, func);
+        }
+    }
+
+}
+
+export namespace CustomEvents {
+
+    export class PlayerChangeHotbar extends EventHandler<PlayerChangeHotbarEvent, PlayerChangeHotbarEventSignal> {
+        constructor(func: (event: PlayerChangeHotbarEvent) => void) {
+            super(customEvents.playerChangeHotbar, func);
         }
     }
 
