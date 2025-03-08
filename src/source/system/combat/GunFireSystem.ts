@@ -5,9 +5,9 @@ import { GunComponent } from "../../components/GunComponent";
 
 import { IntervalTask, TaskManager } from "../TaskManager";
 import { EntityManager } from "../EntityManager";
-import { AfterEvents } from "../../event/Events";
 
-import { ItemStack, Player, system } from "@minecraft/server";
+import { world } from "@minecraft/server";
+import { ItemStack, Player } from "@minecraft/server";
 
 export class GunFireSystem {
 
@@ -35,10 +35,10 @@ export class GunFireSystem {
     
     private static fireInterruption(taskId: number, ownerName: string) {
         const [stopUseItem, playerDie] = [
-            new AfterEvents.ItemStopUse(ev => {
+            world.afterEvents.itemStopUse.subscribe(ev => {
                 if (ev.source.name === ownerName) stopFire();
             }),
-            new AfterEvents.EntityDie(ev => {
+            world.afterEvents.entityDie.subscribe(ev => {
                 if (!(ev.deadEntity instanceof Player)) return;
                 if (ev.deadEntity.name === ownerName) stopFire();
             })
@@ -46,8 +46,8 @@ export class GunFireSystem {
 
         const stopFire = () => {
             TaskManager.removeTask(taskId);
-            stopUseItem.unsubscribe();
-            playerDie.unsubscribe();
+            world.afterEvents.itemStopUse.unsubscribe(stopUseItem);
+            world.afterEvents.entityDie.subscribe(playerDie);
         }
     }
 
