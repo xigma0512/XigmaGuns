@@ -13,10 +13,16 @@ export namespace GunData {
                 'lore2'
             ]
         },
-        'magazine': {
-            ammo: 12,
-            count: 3
+        'gun': {
+            damage: 3,
+            range: 40,
+            fireRate: 7,
+            offset: 0,
+            reload_time: 30
         },
-        'timer': []
+        'magazine': {
+            ammo: 30,
+            count: 3
+        }
     }
 }

@@ -1,14 +1,14 @@
-import { ThrowableData } from "../../declare/entity/Throwables";
-import { ParticleComponent } from "../components/ParticleComponent";
+import { ThrowableData } from "./data/Throwables";
 import { Entity } from "./Entity";
 
+import { ParticleComponent } from "../components/ParticleComponent";
+
 export class SmokeGrenade extends Entity {
-    constructor(uuid: string) {
-        super(uuid);
+    constructor() {
+        super();
 
         const DATA = ThrowableData.SmokeGrenade;
         this.components
-            .set('particle', new ParticleComponent(DATA.particle))
-            .set('timer', []);
+            .set('particle', new ParticleComponent(DATA.particle));
     }
 }

@@ -1,0 +1,1 @@
+declare type BulletHitType = 'head' | 'body' | 'legs';

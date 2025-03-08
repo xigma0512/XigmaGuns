@@ -1,3 +1,3 @@
-import { EventManager } from "./source/events/EventManager";
+import { PermanentEvents } from "./source/event/PermanentEvents";
 
-EventManager.registerListeners();
+PermanentEvents.register();

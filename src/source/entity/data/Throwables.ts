@@ -4,8 +4,7 @@ export namespace ThrowableData {
             typeId: 'minecraft:huge_explosion_emitter',
             interval: 1,
             duration: 300
-        },
-        'timer': []
+        }
     }
     
 }
