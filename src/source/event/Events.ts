@@ -1,11 +1,13 @@
-import { EntityDieAfterEvent, EntityDieAfterEventSignal, world } from "@minecraft/server";
+import { system, world } from "@minecraft/server";
+
 import { EventHandler } from "./EventHandler";
 import { customEvents } from "./custom/CustomEventManager";
 
 import { EntitySpawnAfterEvent, EntitySpawnAfterEventSignal } from "@minecraft/server";
+import { EntityDieAfterEvent, EntityDieAfterEventSignal } from "@minecraft/server";
 import { ItemStartUseAfterEvent, ItemStartUseAfterEventSignal } from "@minecraft/server";
 import { ItemStopUseAfterEvent, ItemStopUseAfterEventSignal } from "@minecraft/server";
-
+import { ScriptEventCommandMessageAfterEvent, ScriptEventCommandMessageAfterEventSignal } from "@minecraft/server";
 import { EntityRemoveBeforeEvent, EntityRemoveBeforeEventSignal } from "@minecraft/server";
 
 import { PlayerChangeHotbarEvent, PlayerChangeHotbarEventSignal } from "./custom/PlayerChangeHotbar";
@@ -36,6 +38,11 @@ export namespace AfterEvents {
         }
     }
 
+    export class ScriptEventReceive extends EventHandler<ScriptEventCommandMessageAfterEvent, ScriptEventCommandMessageAfterEventSignal> {
+        constructor(func: (event: ScriptEventCommandMessageAfterEvent) => void) {
+            super(system.afterEvents.scriptEventReceive, func);
+        }
+    }
 }
 
 export namespace BeforeEvents {
