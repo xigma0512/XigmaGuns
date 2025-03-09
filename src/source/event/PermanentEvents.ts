@@ -14,7 +14,7 @@ export abstract class PermanentEvents {
         
         world.afterEvents.itemStartUse.subscribe(ev => {
             if (ev.itemStack.hasTag('xigmaguns:gun')) {
-                GunFireSystem.startFire(ev.itemStack, ev.source);
+                GunFireSystem.create(ev.source, ev.itemStack);
             }
         });
 
