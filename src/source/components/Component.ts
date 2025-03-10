@@ -1,4 +1,5 @@
 import { BulletComponent } from "./BulletComponent";
+import { DamageComponent } from "./DamageComponent";
 import { GunComponent } from "./GunComponent";
 import { HeaderComponent } from "./HeaderComponent";
 import { ItemComponent } from "./ItemComponent";
@@ -16,6 +17,7 @@ export declare type ComponentTypes = {
     'vector': VectorComponent;
     'gun': GunComponent;
     'bullet': BulletComponent;
+    'damage': DamageComponent;
 }
 
 export class Component {
