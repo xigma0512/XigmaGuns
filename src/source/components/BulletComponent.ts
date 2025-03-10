@@ -1,10 +1,11 @@
 import { Player } from "@minecraft/server";
 import { Component } from "./Component";
+import { DamageComponent } from "./DamageComponent";
 
 export class BulletComponent extends Component {
 
     private _owner?: Player;
-    private _damage?: IDamageComponent;
+    private _damage?: DamageComponent;
 
     constructor() {
         super('bullet');
@@ -13,7 +14,7 @@ export class BulletComponent extends Component {
     get owner() { return this._owner!; }
     get damage() { return this._damage!; }
 
-    init(owner: Player, damage: IDamageComponent) {
+    init(owner: Player, damage: DamageComponent) {
         this._owner = owner;
         this._damage = damage;
     }

@@ -1,22 +1,23 @@
 import { Bullet } from "../../entity/Bullet";
 import { EntityManager } from "../EntityManager";
-import { GunComponent } from "../../components/GunComponent";
 
 import { system } from "@minecraft/server";
-import { Player, Entity } from "@minecraft/server";
+import { Player, Entity as mcEntity } from "@minecraft/server";
 import { EntityProjectileComponent } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";
+import { Entity } from "../../entity/Entity";
 
 export class BulletSystem {
 
-    static summonBullet(owner: Player, comp: GunComponent) {
+    static summonBullet(owner: Player, gunEntity: Entity) {
         const viewDirection = owner.getViewDirection();
         const headLocation = owner.getHeadLocation();
+        const [damageComp, gunComp] = [gunEntity.getComponent('damage')!, gunEntity.getComponent('gun')!];
 
         const bullet = new Bullet();
         
         const bulletComp = bullet.getComponent('bullet')!;
-        bulletComp.setInfo(owner, comp.damage, comp.range);
+        bulletComp.init(owner, damageComp);
         
         const position = bullet.getComponent('position')!;
         position.x = headLocation.x + viewDirection.x;
@@ -29,13 +30,13 @@ export class BulletSystem {
             z: position.z
         });
         
-        const projectile = entity.getComponent('projectile') as EntityProjectileComponent;
+        const projectile = entity.getComponent('projectile')!;
         projectile.owner = owner;
         projectile.shoot({
             x: viewDirection.x * 200,
             y: viewDirection.y * 200,
             z: viewDirection.z * 200,
-        }, {uncertainty: comp.offset});
+        }, {uncertainty: gunComp.offset});
 
         const vector = bullet.getComponent('vector')!;
         const projectileVec = projectile.entity.getVelocity();
@@ -52,7 +53,7 @@ export class BulletSystem {
         // 並且無法解釋為什麼 連續射擊的第二發不會有這個問題
     }
 
-    static launchLocus(entity: Entity, dest: Vector3) {
+    static launchLocus(entity: mcEntity, dest: Vector3) {
 
         const bullet = EntityManager.getEntity(entity);
         if (bullet === undefined) return;
@@ -77,8 +78,7 @@ export class BulletSystem {
             const vec2dest = Math.sqrt(dx * dx + dy * dy + dz * dz);
             const vecLength = Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
 
-            if (vec2dest <= vecLength) break;            
-            if (distance >= bulletComp.range * 5) break;
+            if (vec2dest <= vecLength) break;
         }
 
         EntityManager.unRegisterEntity(bullet.uuid);

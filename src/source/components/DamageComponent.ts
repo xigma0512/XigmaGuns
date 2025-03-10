@@ -14,4 +14,10 @@ export class DamageComponent extends Component {
         this.far = data?.far ?? {head:0, body: 0, legs: 0};
     }
 
+    getDamage(d: DistanceType) {
+        if (d === 'near') return this.near;
+        if (d === 'medium') return this.medium;
+        return this.far;
+    }
+
 }
