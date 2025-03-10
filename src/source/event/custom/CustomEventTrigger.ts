@@ -16,7 +16,7 @@ export class CustomEventTrigger {
             taskIds.set(ev.player.id, system.runInterval(() => {
                 if (hotbarSelection.get(ev.player.id) !== undefined) {
                     const currentSelect = ev.player.selectedSlotIndex;
-                    const previousSelect = hotbarSelection.get(ev.player.id) as number;
+                    const previousSelect = hotbarSelection.get(ev.player.id)!;
                     if (currentSelect !== previousSelect) {
                         customEvents.playerChangeHotbar.trigger(PlayerChangeHotbarEvent.create(ev.player, previousSelect, currentSelect));
                     }

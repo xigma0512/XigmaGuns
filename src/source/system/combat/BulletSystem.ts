@@ -15,10 +15,10 @@ export class BulletSystem {
 
         const bullet = new Bullet();
         
-        const bulletComp = bullet.getComponent('bullet');
+        const bulletComp = bullet.getComponent('bullet')!;
         bulletComp.setInfo(owner, comp.damage, comp.range);
         
-        const position = bullet.getComponent('position');
+        const position = bullet.getComponent('position')!;
         position.x = headLocation.x + viewDirection.x;
         position.y = headLocation.y + viewDirection.y + 0.1;
         position.z = headLocation.z + viewDirection.z;
@@ -37,7 +37,7 @@ export class BulletSystem {
             z: viewDirection.z * 200,
         }, {uncertainty: comp.offset});
 
-        const vector = bullet.getComponent('vector');
+        const vector = bullet.getComponent('vector')!;
         const projectileVec = projectile.entity.getVelocity();
         projectileVec.x /= 200;
         projectileVec.y /= 200;
@@ -57,9 +57,9 @@ export class BulletSystem {
         const bullet = EntityManager.getEntity(entity);
         if (bullet === undefined) return;
 
-        const bulletComp = bullet.getComponent('bullet');
-        const position = bullet.getComponent('position');
-        const vector = bullet.getComponent('vector');
+        const bulletComp = bullet.getComponent('bullet')!;
+        const position = bullet.getComponent('position')!;
+        const vector = bullet.getComponent('vector')!;
 
         let distance = 0;
         while(true) {

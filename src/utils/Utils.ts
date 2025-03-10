@@ -1,5 +1,4 @@
 import { Player } from "@minecraft/server";
-import { EntityDamageCause } from "@minecraft/server";
 
 export class Utils {
     
@@ -17,7 +16,7 @@ export class Utils {
         
         const health = target.getComponent('health');
         health?.setCurrentValue(health.currentValue - damage);
-        target.playSound('random.hurt');
+        if (target instanceof Player) target.playSound('random.hurt');
         attacker.playSound('game.player.hurt')
     }
 }

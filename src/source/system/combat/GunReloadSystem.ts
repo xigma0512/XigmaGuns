@@ -21,7 +21,7 @@ export class GunReloadSystem {
 
     private constructor(owner: Player, weaponItem: ItemStack) {
         this._owner = owner;
-        this._entity = EntityManager.getEntity(weaponItem) as Entity;
+        this._entity = EntityManager.getEntity(weaponItem)!;
         if (this._entity === undefined) throw '[ERROR] 找不到實體資料';
 
         this.beginning();
@@ -30,8 +30,8 @@ export class GunReloadSystem {
     private beginning() {
         if (this._owner.hasTag('xigmaguns:reloading')) return;
 
-        const gun = this._entity.getComponent('gun');
-        const magazine = this._entity.getComponent('magazine');
+        const gun = this._entity.getComponent('gun')!;
+        const magazine = this._entity.getComponent('magazine')!;
         if (magazine.ammo === magazine.capacity) return;
         if (magazine.storageAmmo === 0) return;
 
@@ -69,7 +69,7 @@ export class GunReloadSystem {
     private completion() {
         this.interruption();
 
-        const magazine = this._entity.getComponent('magazine');
+        const magazine = this._entity.getComponent('magazine')!;
         
         magazine.storageAmmo -= magazine.capacity - magazine.ammo;
         magazine.ammo = magazine.capacity;
