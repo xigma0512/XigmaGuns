@@ -3,7 +3,6 @@ import { EntityManager } from "../EntityManager";
 
 import { system } from "@minecraft/server";
 import { Player, Entity as mcEntity } from "@minecraft/server";
-import { EntityProjectileComponent } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";
 import { Entity } from "../../entity/Entity";
 
@@ -39,18 +38,14 @@ export class BulletSystem {
         }, {uncertainty: gunComp.offset});
 
         const vector = bullet.getComponent('vector')!;
-        const projectileVec = projectile.entity.getVelocity();
+        const projectileVec = entity.getVelocity();
         projectileVec.x /= 200;
         projectileVec.y /= 200;
         projectileVec.z /= 200;
         vector.setVector(projectileVec);
 
         EntityManager.registerEntity(bullet, entity);
-        system.run(() => BulletSystem.launchLocus(entity, entity.location));
-        // BUG: 第一發子彈會無法顯示粒子
-        // 原因是 `entity.location` 依舊停留在射擊點
-        // 但是子彈在system.run執行的這個時刻 已經射擊出去了 (確定，因為有擊中生物)
-        // 並且無法解釋為什麼 連續射擊的第二發不會有這個問題
+        system.runTimeout(() => BulletSystem.launchLocus(entity, entity.location), 2);
     }
 
     static launchLocus(entity: mcEntity, dest: Vector3) {
@@ -58,30 +53,31 @@ export class BulletSystem {
         const bullet = EntityManager.getEntity(entity);
         if (bullet === undefined) return;
 
-        const bulletComp = bullet.getComponent('bullet')!;
+        if (entity.getDynamicProperty('xigmaguns:already_spawn_locus')) return;
+        entity.setDynamicProperty('xigmaguns:already_spawn_locus', true);
+
         const position = bullet.getComponent('position')!;
         const vector = bullet.getComponent('vector')!;
+
+        const originPosition = {x: position.x, y: position.y, z: position.z};
+        const [dx, dy, dz] = [dest.x - position.x, dest.y - position.y, dest.z - position.z];
+        const pos2dest = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
         let distance = 0;
         while(true) {
             if (distance++ < 10) continue;
             
-            try { entity.dimension.spawnParticle('xigmaguns:locus', { x: position.x, y: position.y, z: position.z}); } catch { }
+            try { entity.dimension.spawnParticle('xigmaguns:locus', { x: position.x, y: position.y, z: position.z} ); } catch { }
             
             position.x += vector.x / 5;
             position.y += vector.y / 5;
             position.z += vector.z / 5;
 
-            const dx = dest.x - position.x;
-            const dy = dest.y - position.y;
-            const dz = dest.z - position.z;
-            const vec2dest = Math.sqrt(dx * dx + dy * dy + dz * dz);
-            const vecLength = Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+            const [cdx, cdy, cdz] = [originPosition.x - position.x, originPosition.y - position.y, originPosition.z - position.z];
+            const currentDist = Math.sqrt(cdx * cdx + cdy * cdy + cdz * cdz);
 
-            if (vec2dest <= vecLength) break;
+            if (pos2dest <= currentDist) break;
         }
-
-        EntityManager.unRegisterEntity(bullet.uuid);
     }
 
     static getHitType(hitLocation: Vector3, target: Player): BulletHitType {
