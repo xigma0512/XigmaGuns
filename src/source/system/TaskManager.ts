@@ -17,6 +17,7 @@ export class TaskManager {
 
     static removeTask(taskId: number) {
         this._tasks.get(taskId)?.kill();
+        this._tasks.delete(taskId);
     }
 
 }
@@ -65,7 +66,10 @@ export class TimeoutTask {
     }
 
     execute() {
-        this._taskId = system.runTimeout(this._executeFunction, this._delay);
+        this._taskId = system.runTimeout(() => {
+            this._executeFunction();
+            TaskManager.removeTask(this._taskId);
+        }, this._delay);
         return this._taskId;
     }
 
