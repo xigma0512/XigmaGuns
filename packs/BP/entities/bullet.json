@@ -25,6 +25,13 @@
                 "on_hit": {
                     "stick_in_ground": {
                         "shake_time": 0.1
+                    },
+                    "impact_damage": {
+                        "knockback": false
+                    },
+                    "definition_event": {
+                        "affect_projectile": true,
+                        "event_trigger": "xigmaguns:despawn"
                     }
                 }
             },
