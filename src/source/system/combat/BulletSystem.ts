@@ -1,3 +1,4 @@
+import { Vector } from "../../../utils/Vector";
 import { Bullet } from "../../entity/Bullet";
 import { Entity } from "../../entity/Entity";
 import { EntityManager } from "../EntityManager";
@@ -14,6 +15,7 @@ export class BulletSystem {
         const [damageComp, gunComp] = [gun.getComponent('damage')!, gun.getComponent('gun')!];
 
         const bullet = new Bullet();
+
         const bulletComp = bullet.getComponent('bullet')!;
         bulletComp.init(owner, damageComp);
 
@@ -22,26 +24,14 @@ export class BulletSystem {
         position.y = headLocation.y + viewDirection.y + 0.1;
         position.z = headLocation.z + viewDirection.z;
 
-        const bulletEntity = owner.dimension.spawnEntity('xigmaguns:bullet', {
-            x: position.x,
-            y: position.y,
-            z: position.z
-        });
+        const bulletEntity = owner.dimension.spawnEntity('xigmaguns:bullet', position);
 
         const projectile = bulletEntity.getComponent('projectile')!;
         projectile.owner = owner;
-        projectile.shoot({
-            x: viewDirection.x * 200,
-            y: viewDirection.y * 200,
-            z: viewDirection.z * 200,
-        }, { uncertainty: gunComp.offset });
+        projectile.shoot(Vector.mul(viewDirection, 200), { uncertainty: gunComp.offset });
 
         const vector = bullet.getComponent('vector')!;
-        const projectileVec = bulletEntity.getVelocity();
-        projectileVec.x /= 200;
-        projectileVec.y /= 200;
-        projectileVec.z /= 200;
-        vector.setVector(projectileVec);
+        vector.setVector(viewDirection);
 
         EntityManager.registerEntity(bullet, bulletEntity);
         TaskManager.executeTask(new TimeoutTask({
@@ -61,22 +51,18 @@ export class BulletSystem {
         const position = bullet.getComponent('position')!;
         const vector = bullet.getComponent('vector')!;
 
-        const originPosition = { x: position.x, y: position.y, z: position.z };
-        const [dx, dy, dz] = [dest.x - position.x, dest.y - position.y, dest.z - position.z];
-        const pos2dest = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        let currentPos = { x: position.x, y: position.y, z: position.z }
+        const startPoint = currentPos;
+        const pos2dest = Vector.distance(startPoint, dest);
 
         let distance = 0;
         while (true) {
-            if (distance++ < 15) continue;
+            currentPos = Vector.add(currentPos, Vector.div(vector, 10));
+            
+            if (distance++ < 10) continue;
+            try { bulletEntity.dimension.spawnParticle('xigmaguns:locus', currentPos); } catch { }
 
-            try { bulletEntity.dimension.spawnParticle('xigmaguns:locus', { x: position.x, y: position.y, z: position.z }); } catch { }
-
-            position.x += vector.x / 5;
-            position.y += vector.y / 5;
-            position.z += vector.z / 5;
-
-            const [cdx, cdy, cdz] = [originPosition.x - position.x, originPosition.y - position.y, originPosition.z - position.z];
-            const currentDist = Math.sqrt(cdx * cdx + cdy * cdy + cdz * cdz);
+            const currentDist = Vector.distance(currentPos, startPoint);
 
             if (pos2dest <= currentDist) break;
         }

@@ -1,4 +1,5 @@
 import { Entity } from "../../entity/Entity";
+import { Vector } from "../../../utils/Vector";
 
 import { Player } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";
@@ -46,14 +47,8 @@ export class DamageSystem {
     }
 
     private distance(): DistanceType {
-        const attackLocation = this._attacker.location;
-        const targetLocation = this._target.location;
-        const [dx, dy, dz] = [
-            attackLocation.x - targetLocation.x,
-            attackLocation.y - targetLocation.y,
-            attackLocation.z - targetLocation.z
-        ];
-        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+        const distance = Vector.distance(this._attacker.location, this._target.location);
     
         if (distance <= 15) return 'near';
         if (distance <= 30) return 'medium';
