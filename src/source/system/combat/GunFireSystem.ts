@@ -10,7 +10,7 @@ import { ItemStack, Player } from "@minecraft/server";
 export class GunFireSystem {
 
     private readonly _owner: Player;
-    private readonly _entity: Entity;
+    private readonly _weaponEntity: Entity;
 
     private _taskId = -1;
 
@@ -19,17 +19,17 @@ export class GunFireSystem {
 
     private constructor(owner: Player, weaponItem: ItemStack) {
         this._owner = owner;
-        this._entity = EntityManager.getEntity(weaponItem)!;
-        if (this._entity === undefined) throw '[ERROR] 找不到實體資料';
+        this._weaponEntity = EntityManager.getEntity(weaponItem)!;
+        if (this._weaponEntity === undefined) throw '[ERROR] 找不到實體資料';
 
         this.beginning();
     }
 
     private beginning() {
-        const gunComp = this._entity.getComponent('gun')!;
+        const gunComp = this._weaponEntity.getComponent('gun')!;
 
         const consumeAmmo = () => {
-            const magazineComp = this._entity.getComponent('magazine')!;
+            const magazineComp = this._weaponEntity.getComponent('magazine')!;
             if (magazineComp.ammo === 0) return false;
             magazineComp.ammo--;
             return true;
@@ -40,7 +40,7 @@ export class GunFireSystem {
             interval: gunComp.fireRate,
             tickFunction: () => {
                 if (consumeAmmo()) {
-                    return BulletSystem.summonBullet(this._owner, gunComp);
+                    return BulletSystem.summonBullet(this._owner, this._weaponEntity);
                 }
                 this._owner.onScreenDisplay.setActionBar('YOU HAVE NO AMMO.');
             }
