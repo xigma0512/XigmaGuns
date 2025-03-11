@@ -1,8 +1,9 @@
 import { EntityManager } from "../system/EntityManager";
-import { GunFireSystem } from "../system/combat/GunFireSystem";
 import { SmokeGrenade } from "../entity/SmokeGrenade";
 import { SmokeGenerator } from "../system/SmokeGenerator";
-import { GunReloadSystem } from "../system/combat/GunReloadSystem";
+
+import { GunReloadProcess } from "../system/combat/GunReloadProcess";
+import { GunFireProcess } from "../system/combat/GunFireProcess";
 import { DamageSystem } from "../system/combat/DamageSystem";
 import { BulletSystem } from "../system/combat/BulletSystem";
 
@@ -16,7 +17,7 @@ export abstract class PermanentEvents {
         
         world.afterEvents.itemStartUse.subscribe(ev => {
             if (ev.itemStack.hasTag('xigmaguns:gun')) {
-                GunFireSystem.create(ev.source, ev.itemStack);
+                new GunFireProcess(ev.source, ev.itemStack).execute();
             }
         });
 
@@ -35,11 +36,10 @@ export abstract class PermanentEvents {
             
             if (bullet.hasComponent('bullet')) {
                 const owner = bullet.getComponent('bullet')!.owner!;
-                const hitType = BulletSystem.getHitType(ev.location, target);
-                new DamageSystem(owner, target).applyGunDamage(bullet, hitType);
+                new DamageSystem(owner, target).applyGunDamage(bullet, ev.location);
             }
 
-            BulletSystem.launchLocus(ev.projectile, ev.location);
+            BulletSystem.spawnTrajectory(ev.projectile, ev.location);
         });
 
         world.afterEvents.playerSpawn.subscribe(ev => {
@@ -52,7 +52,7 @@ export abstract class PermanentEvents {
             if (ev.id === 'xigmaguns:reload') {
                 const item = player.getComponent('equippable')?.getEquipmentSlot(EquipmentSlot.Mainhand).getItem();
                 if (item === undefined) return;
-                GunReloadSystem.create(player, item);
+                new GunReloadProcess(player, item).execute();
             }
         });
 
