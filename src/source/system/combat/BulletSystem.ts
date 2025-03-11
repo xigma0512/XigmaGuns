@@ -5,6 +5,7 @@ import { system } from "@minecraft/server";
 import { Player, Entity as mcEntity } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";
 import { Entity } from "../../entity/Entity";
+import { TaskManager, TimeoutTask } from "../TaskManager";
 
 export class BulletSystem {
 
@@ -45,7 +46,10 @@ export class BulletSystem {
         vector.setVector(projectileVec);
 
         EntityManager.registerEntity(bullet, entity);
-        system.runTimeout(() => BulletSystem.launchLocus(entity, entity.location), 2);
+        TaskManager.executeTask(new TimeoutTask({
+            delay: 2,
+            executeFunction: () => BulletSystem.launchLocus(entity, entity.location)
+        }));
     }
 
     static launchLocus(entity: mcEntity, dest: Vector3) {
