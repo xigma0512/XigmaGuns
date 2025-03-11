@@ -14,11 +14,14 @@ export namespace GunData {
             ]
         },
         'gun': {
-            damage: 3,
-            range: 40,
             fireRate: 7,
             offset: 0,
             reload_time: 30
+        },
+        'damage': {
+            near: { head: 10, body: 5, legs: 3 },
+            medium: { head: 8, body: 4, legs: 2 },
+            far: { head: 6, body: 3, legs: 1 }
         },
         'magazine': {
             ammo: 30,

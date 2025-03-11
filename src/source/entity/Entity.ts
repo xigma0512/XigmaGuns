@@ -15,6 +15,6 @@ export class Entity {
     }
 
     getComponent<T extends keyof ComponentTypes>(componentId: T) {
-        return this.components.get(componentId) as ComponentTypes[T];
+        return this.components.get(componentId) as ComponentTypes[T] | undefined;
     }
 }

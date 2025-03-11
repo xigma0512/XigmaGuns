@@ -7,6 +7,7 @@ declare type ComponentDataType = {
     'vector'?: IVectorComponent;
     'gun'?: IGunComponent;
     'bullet'?: IBulletComponent;
+    'damage'?: IDamageComponent;
 }
 
 declare interface IHeaderComponent {
@@ -46,11 +47,15 @@ declare interface IVectorComponent {
 }
 
 declare interface IGunComponent {
-    readonly damage: number;
-    readonly range: number;
     readonly fireRate: number;
     readonly offset: number;
     readonly reload_time: number;
 }
 
 declare interface IBulletComponent { }
+
+declare interface IDamageComponent {
+    readonly near: DamageType;
+    readonly medium: DamageType;
+    readonly far: DamageType;
+}

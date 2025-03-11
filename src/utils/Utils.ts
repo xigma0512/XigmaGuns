@@ -1,6 +1,3 @@
-import { Player } from "@minecraft/server";
-import { EntityDamageCause } from "@minecraft/server";
-
 export class Utils {
     
     static randomUUID() {
@@ -12,12 +9,4 @@ export class Utils {
         });
     }
 
-    static applyDamage(target: Player, attacker: Player, damage: number) {
-        target.setDynamicProperty('xigmaguns:damage.attacker', attacker.name);
-        
-        const health = target.getComponent('health');
-        health?.setCurrentValue(health.currentValue - damage);
-        target.playSound('random.hurt');
-        attacker.playSound('game.player.hurt')
-    }
 }
