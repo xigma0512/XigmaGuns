@@ -1,7 +1,7 @@
-import { Entity } from "../../entity/Entity";
+import { Entity } from "../../../entity/Entity";
 import { BulletSystem } from "./BulletSystem";
-import { IntervalTask, TaskManager } from "../TaskManager";
-import { EntityManager } from "../EntityManager";
+import { IntervalTask, TaskManager } from "../../TaskManager";
+import { EntityManager } from "../../EntityManager";
 
 import { world } from "@minecraft/server";
 import { EntityDieAfterEvent, ItemStopUseAfterEvent } from "@minecraft/server";

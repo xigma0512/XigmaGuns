@@ -1,8 +1,8 @@
-import { Entity } from "../entity/Entity";
+import { Entity } from "../../../entity/Entity";
 
 import { Dimension } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";
-import { IntervalTask, TaskManager } from "./TaskManager";
+import { IntervalTask, TaskManager } from "../../TaskManager";
 
 export class SmokeGenerator {
 

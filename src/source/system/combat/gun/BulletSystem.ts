@@ -1,8 +1,8 @@
-import { Vector } from "../../../utils/Vector";
-import { Bullet } from "../../entity/Bullet";
-import { Entity } from "../../entity/Entity";
-import { EntityManager } from "../EntityManager";
-import { TaskManager, TimeoutTask } from "../TaskManager";
+import { Vector } from "../../../../utils/Vector";
+import { Bullet } from "../../../entity/Bullet";
+import { Entity } from "../../../entity/Entity";
+import { EntityManager } from "../../EntityManager";
+import { TaskManager, TimeoutTask } from "../../TaskManager";
 
 import { Player, Entity as mcEntity } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";

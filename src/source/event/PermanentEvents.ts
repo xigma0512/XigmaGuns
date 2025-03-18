@@ -1,11 +1,11 @@
 import { EntityManager } from "../system/EntityManager";
 import { SmokeGrenade } from "../entity/SmokeGrenade";
-import { SmokeGenerator } from "../system/SmokeGenerator";
+import { SmokeGenerator } from "../system/combat/equipment/SmokeGenerator";
 
-import { GunReloadProcess } from "../system/combat/GunReloadProcess";
-import { GunFireProcess } from "../system/combat/GunFireProcess";
-import { DamageSystem } from "../system/combat/DamageSystem";
-import { BulletSystem } from "../system/combat/BulletSystem";
+import { GunReloadProcess } from "../system/combat/gun/GunReloadProcess";
+import { GunFireProcess } from "../system/combat/gun/GunFireProcess";
+import { DamageSystem } from "../system/combat/gun/DamageSystem";
+import { BulletSystem } from "../system/combat/gun/BulletSystem";
 
 import { system, world } from "@minecraft/server";
 import { Player } from "@minecraft/server";

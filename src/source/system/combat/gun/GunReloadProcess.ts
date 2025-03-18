@@ -1,9 +1,9 @@
-import { Entity } from "../../entity/Entity";
-import { EntityManager } from "../EntityManager";
-import { IntervalTask, TaskManager } from "../TaskManager";
-import { customEvents } from "../../event/custom/CustomEventManager";
+import { Entity } from "../../../entity/Entity";
+import { EntityManager } from "../../EntityManager";
+import { IntervalTask, TaskManager } from "../../TaskManager";
+import { customEvents } from "../../../event/custom/CustomEventManager";
 
-import { PlayerChangeHotbarEvent } from "../../event/custom/PlayerChangeHotbar";
+import { PlayerChangeHotbarEvent } from "../../../event/custom/PlayerChangeHotbar";
 import { EntityDieAfterEvent } from "@minecraft/server";
 
 import { world } from "@minecraft/server";
