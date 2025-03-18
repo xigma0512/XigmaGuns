@@ -4,8 +4,6 @@ import { SmokeGenerator } from "../system/combat/equipment/SmokeGenerator";
 
 import { GunReloadProcess } from "../system/combat/gun/GunReloadProcess";
 import { GunFireProcess } from "../system/combat/gun/GunFireProcess";
-import { DamageSystem } from "../system/combat/gun/DamageSystem";
-import { BulletSystem } from "../system/combat/gun/BulletSystem";
 
 import { system, world } from "@minecraft/server";
 import { Player } from "@minecraft/server";
@@ -25,21 +23,6 @@ export abstract class PermanentEvents {
             if (ev.entity.typeId === 'xigmaguns:smoke_grenade') {
                 EntityManager.registerEntity(new SmokeGrenade(), ev.entity);
             }
-        });
-
-        world.afterEvents.projectileHitEntity.subscribe(ev => {
-            const bullet = EntityManager.getEntity(ev.projectile);
-            if (bullet === undefined) return;
-            
-            const target = ev.getEntityHit().entity!;
-            if (!(target instanceof Player)) return;
-            
-            if (bullet.hasComponent('bullet')) {
-                const owner = bullet.getComponent('bullet')!.owner!;
-                new DamageSystem(owner, target).applyGunDamage(bullet, ev.location);
-            }
-
-            BulletSystem.spawnTrajectory(ev.projectile, ev.location);
         });
 
         world.afterEvents.playerSpawn.subscribe(ev => {

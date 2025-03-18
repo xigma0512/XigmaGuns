@@ -1,18 +1,18 @@
 import { Entity } from "../../../entity/Entity";
 import { Vector } from "../../../../utils/Vector";
 
-import { Player } from "@minecraft/server";
+import { Player, Entity as mcEntity } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";
 
 export class DamageSystem {
 
     private _attacker: Player;
-    private _target: Player;
+    private _target: mcEntity;
     
     private _attackerTeam: number;
     private _targetTeam: number;
 
-    constructor(attacker: Player, target: Player) {
+    constructor(attacker: Player, target: mcEntity) {
         this._attacker = attacker;
         this._target = target;
 
@@ -43,7 +43,7 @@ export class DamageSystem {
         });
 
         this._attacker.playSound('game.player.hurt');
-        this._target.playSound('random.hurt');
+        if (this._target instanceof Player) this._target.playSound('random.hurt');
     }
 
     private distance(): DistanceType {
@@ -55,7 +55,8 @@ export class DamageSystem {
         return 'far';
     }
 
-    private getHitType(hitLocation: Vector3, target: Player): BulletHitType {
+    private getHitType(hitLocation: Vector3, target: mcEntity): BulletHitType {
+        if (!(target instanceof Player)) return 'head';
         const targetPosition = target.location;
 
         const distance = {

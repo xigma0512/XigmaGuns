@@ -1,5 +1,5 @@
 import { Entity } from "../../../entity/Entity";
-import { BulletSystem } from "./BulletSystem";
+import { BulletHandler } from "./BulletHandler";
 import { IntervalTask, TaskManager } from "../../TaskManager";
 import { EntityManager } from "../../EntityManager";
 
@@ -38,7 +38,7 @@ export class GunFireProcess {
             interval: gunComp.fireRate,
             tickFunction: () => {
                 if (consumeAmmo()) {
-                    return BulletSystem.spawnBullet(this._owner, this._weaponEntity);
+                    return new BulletHandler(this._owner, this._weaponEntity);
                 }
                 this._owner.onScreenDisplay.setActionBar('YOU HAVE NO AMMO.');
             }
