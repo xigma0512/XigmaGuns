@@ -1,14 +1,13 @@
-import { EquipmentSlot } from "@minecraft/server";
 import { GunReloadProcess } from "../system/combat/gun/GunReloadProcess";
 
 import { Player } from "@minecraft/server";
 import { ScriptEventCommandMessageAfterEvent } from "@minecraft/server";
+import { Utils } from "../../utils/Utils";
 
 const Scripts = {
     reload: function (player: Player) {
-        const item = player.getComponent('equippable')?.getEquipmentSlot(EquipmentSlot.Mainhand).getItem();
-        if (item === undefined) return;
-        new GunReloadProcess(player, item).execute();
+        const entity = Utils.getHandEquippedItemEntity(player);
+        new GunReloadProcess(player, entity!).execute();
     }
 }
 

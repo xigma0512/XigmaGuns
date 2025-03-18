@@ -17,9 +17,9 @@ export class GunFireProcess {
     private _itemStopUseListener?: EventType<ItemStopUseAfterEvent>;
     private _playerDieListener?: EventType<EntityDieAfterEvent>;
 
-    constructor(owner: Player, weaponItem: ItemStack) {
+    constructor(owner: Player, weaponEntity: Entity) {
         this._owner = owner;
-        this._weaponEntity = EntityManager.getEntity(weaponItem)!;
+        this._weaponEntity = weaponEntity;
         if (this._weaponEntity === undefined) throw '[ERROR] 找不到實體資料';
     }
 

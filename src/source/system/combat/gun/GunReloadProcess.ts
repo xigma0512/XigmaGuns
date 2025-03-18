@@ -12,24 +12,24 @@ import { ItemStack, Player } from "@minecraft/server";
 export class GunReloadProcess {
 
     private readonly _owner: Player;
-    private readonly _entity: Entity;
+    private readonly _weaponEntity: Entity;
 
     private _taskId = -1;
 
     private _changeHotbarListener?: EventType<PlayerChangeHotbarEvent>;
     private _playerDieListener?: EventType<EntityDieAfterEvent>;
 
-    constructor(owner: Player, weaponItem: ItemStack) {
+    constructor(owner: Player, weaponEntity: Entity) {
         this._owner = owner;
-        this._entity = EntityManager.getEntity(weaponItem)!;
-        if (this._entity === undefined) throw '[ERROR] 找不到實體資料';
+        this._weaponEntity = weaponEntity;
+        if (this._weaponEntity === undefined) throw '[ERROR] 找不到實體資料';
     }
 
     execute() {
         if (this._owner.hasTag('xigmaguns:reloading')) return;
 
-        const gun = this._entity.getComponent('gun')!;
-        const magazine = this._entity.getComponent('magazine')!;
+        const gun = this._weaponEntity.getComponent('gun')!;
+        const magazine = this._weaponEntity.getComponent('magazine')!;
         if (magazine.ammo === magazine.capacity) return;
         if (magazine.storageAmmo === 0) return;
 
@@ -67,7 +67,7 @@ export class GunReloadProcess {
     private completion() {
         this.interruption();
 
-        const magazine = this._entity.getComponent('magazine')!;
+        const magazine = this._weaponEntity.getComponent('magazine')!;
         
         magazine.storageAmmo -= magazine.capacity - magazine.ammo;
         magazine.ammo = magazine.capacity;

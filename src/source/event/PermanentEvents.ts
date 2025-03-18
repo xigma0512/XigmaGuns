@@ -7,6 +7,7 @@ import { ScriptCommandHandler } from "../commands/ScriptCommandHandler";
 import { InitSystem } from "../system/InitSystem";
 
 import { system, world } from "@minecraft/server";
+import { Utils } from "../../utils/Utils";
 
 export abstract class PermanentEvents { 
 
@@ -14,7 +15,7 @@ export abstract class PermanentEvents {
         
         world.afterEvents.itemStartUse.subscribe(ev => {
             if (ev.itemStack.hasTag('xigmaguns:gun')) {
-                new GunFireProcess(ev.source, ev.itemStack).execute();
+                new GunFireProcess(ev.source, Utils.getHandEquippedItemEntity(ev.source)!).execute();
             }
         });
 
