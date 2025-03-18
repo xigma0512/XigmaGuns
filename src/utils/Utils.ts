@@ -1,3 +1,8 @@
+import { EntityManager } from "../source/system/EntityManager";
+
+import { Player } from "@minecraft/server";
+import { EquipmentSlot } from "@minecraft/server";
+
 export class Utils {
     
     static randomUUID() {
@@ -7,6 +12,12 @@ export class Utils {
             d = Math.floor(d / 16);
             return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
         });
+    }
+
+    static getHandEquippedItemEntity(player: Player) {
+        const handItem = player.getComponent('equippable')?.getEquipment(EquipmentSlot.Mainhand); 
+        if (handItem === undefined) return;
+        return EntityManager.getEntity(handItem);
     }
 
 }

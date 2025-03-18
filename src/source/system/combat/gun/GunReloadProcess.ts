@@ -1,37 +1,35 @@
-import { Entity } from "../../entity/Entity";
-import { EntityManager } from "../EntityManager";
-import { IntervalTask, TaskManager } from "../TaskManager";
-import { customEvents } from "../../event/custom/CustomEventManager";
+import { Entity } from "../../../entity/Entity";
+import { EntityManager } from "../../EntityManager";
+import { IntervalTask, TaskManager } from "../../TaskManager";
+import { customEvents } from "../../../event/custom/CustomEventManager";
 
-import { PlayerChangeHotbarEvent } from "../../event/custom/PlayerChangeHotbar";
+import { PlayerChangeHotbarEvent } from "../../../event/custom/PlayerChangeHotbar";
 import { EntityDieAfterEvent } from "@minecraft/server";
 
 import { world } from "@minecraft/server";
 import { ItemStack, Player } from "@minecraft/server";
 
-export class GunReloadSystem {
+export class GunReloadProcess {
 
     private readonly _owner: Player;
-    private readonly _entity: Entity;
+    private readonly _weaponEntity: Entity;
 
     private _taskId = -1;
 
     private _changeHotbarListener?: EventType<PlayerChangeHotbarEvent>;
     private _playerDieListener?: EventType<EntityDieAfterEvent>;
 
-    private constructor(owner: Player, weaponItem: ItemStack) {
+    constructor(owner: Player, weaponEntity: Entity) {
         this._owner = owner;
-        this._entity = EntityManager.getEntity(weaponItem)!;
-        if (this._entity === undefined) throw '[ERROR] 找不到實體資料';
-
-        this.beginning();
+        this._weaponEntity = weaponEntity;
+        if (this._weaponEntity === undefined) throw '[ERROR] 找不到實體資料';
     }
 
-    private beginning() {
+    execute() {
         if (this._owner.hasTag('xigmaguns:reloading')) return;
 
-        const gun = this._entity.getComponent('gun')!;
-        const magazine = this._entity.getComponent('magazine')!;
+        const gun = this._weaponEntity.getComponent('gun')!;
+        const magazine = this._weaponEntity.getComponent('magazine')!;
         if (magazine.ammo === magazine.capacity) return;
         if (magazine.storageAmmo === 0) return;
 
@@ -69,7 +67,7 @@ export class GunReloadSystem {
     private completion() {
         this.interruption();
 
-        const magazine = this._entity.getComponent('magazine')!;
+        const magazine = this._weaponEntity.getComponent('magazine')!;
         
         magazine.storageAmmo -= magazine.capacity - magazine.ammo;
         magazine.ammo = magazine.capacity;
@@ -78,10 +76,6 @@ export class GunReloadSystem {
             magazine.storageAmmo = 0;
         }
         this._owner.sendMessage('CompleteReload.');
-    }
-
-    static create(owner: Player, weaponItem: ItemStack) {
-        new this(owner, weaponItem);
     }
 
 }

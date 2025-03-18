@@ -1,16 +1,13 @@
-import { Entity } from "../../entity/Entity";
-import { BulletSystem } from "./BulletSystem";
-import { IntervalTask, TaskManager } from "../TaskManager";
-import { EntityManager } from "../EntityManager";
-
-import { MagazineComponent } from "../../components/MagazineComponent";
-import { GunComponent } from "../../components/GunComponent";
+import { Entity } from "../../../entity/Entity";
+import { BulletHandler } from "./BulletHandler";
+import { IntervalTask, TaskManager } from "../../TaskManager";
+import { EntityManager } from "../../EntityManager";
 
 import { world } from "@minecraft/server";
 import { EntityDieAfterEvent, ItemStopUseAfterEvent } from "@minecraft/server";
 import { ItemStack, Player } from "@minecraft/server";
 
-export class GunFireSystem {
+export class GunFireProcess {
 
     private readonly _owner: Player;
     private readonly _weaponEntity: Entity;
@@ -20,15 +17,13 @@ export class GunFireSystem {
     private _itemStopUseListener?: EventType<ItemStopUseAfterEvent>;
     private _playerDieListener?: EventType<EntityDieAfterEvent>;
 
-    private constructor(owner: Player, weaponItem: ItemStack) {
+    constructor(owner: Player, weaponEntity: Entity) {
         this._owner = owner;
-        this._weaponEntity = EntityManager.getEntity(weaponItem)!;
+        this._weaponEntity = weaponEntity;
         if (this._weaponEntity === undefined) throw '[ERROR] 找不到實體資料';
-
-        this.beginning();
     }
 
-    private beginning() {
+    execute() {
         const gunComp = this._weaponEntity.getComponent('gun')!;
 
         const consumeAmmo = () => {
@@ -43,7 +38,7 @@ export class GunFireSystem {
             interval: gunComp.fireRate,
             tickFunction: () => {
                 if (consumeAmmo()) {
-                    return BulletSystem.summonBullet(this._owner, this._weaponEntity);
+                    return new BulletHandler(this._owner, this._weaponEntity);
                 }
                 this._owner.onScreenDisplay.setActionBar('YOU HAVE NO AMMO.');
             }
@@ -66,10 +61,6 @@ export class GunFireSystem {
         TaskManager.removeTask(this._taskId);
         world.afterEvents.itemStopUse.unsubscribe(this._itemStopUseListener!);
         world.afterEvents.entityDie.unsubscribe(this._playerDieListener!);
-    }
-
-    static create(owner: Player, weaponItem: ItemStack) {
-        new this(owner, weaponItem);
     }
 
 }
