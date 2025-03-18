@@ -1,13 +1,12 @@
 import { EntityManager } from "../system/EntityManager";
 import { SmokeGrenade } from "../entity/SmokeGrenade";
-import { SmokeGenerator } from "../system/combat/equipment/SmokeGenerator";
 
-import { GunReloadProcess } from "../system/combat/gun/GunReloadProcess";
+import { SmokeGenerator } from "../system/combat/equipment/SmokeGenerator";
 import { GunFireProcess } from "../system/combat/gun/GunFireProcess";
+import { ScriptCommandHandler } from "../commands/ScriptCommandHandler";
+import { InitSystem } from "../system/InitSystem";
 
 import { system, world } from "@minecraft/server";
-import { Player } from "@minecraft/server";
-import { EquipmentSlot } from "@minecraft/server";
 
 export abstract class PermanentEvents { 
 
@@ -26,28 +25,17 @@ export abstract class PermanentEvents {
         });
 
         world.afterEvents.playerSpawn.subscribe(ev => {
-            if (!ev.initialSpawn) return;
-            ev.player.setDynamicProperty('xigmaguns:team', 0);
+            if (ev.initialSpawn) {
+                InitSystem.init(ev.player);
+            }
         });
 
         system.afterEvents.scriptEventReceive.subscribe(ev => {
-            const player = ev.sourceEntity as Player;
-            if (ev.id === 'xigmaguns:reload') {
-                const item = player.getComponent('equippable')?.getEquipmentSlot(EquipmentSlot.Mainhand).getItem();
-                if (item === undefined) return;
-                new GunReloadProcess(player, item).execute();
-            }
+            ScriptCommandHandler.execute(ev);
         });
 
         world.beforeEvents.entityRemove.subscribe(ev => {
-            const entity = EntityManager.getEntity(ev.removedEntity);
-            if (entity === undefined) return;
-
-            if (ev.removedEntity.typeId === 'xigmaguns:smoke_grenade') {
-                SmokeGenerator.create(ev.removedEntity.dimension, ev.removedEntity.location, entity);
-            }
-
-            EntityManager.unRegisterEntity(entity.uuid);
+            SmokeGenerator.create(ev.removedEntity);
         });
 
     }
