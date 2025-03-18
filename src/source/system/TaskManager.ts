@@ -32,8 +32,8 @@ export class IntervalTask {
     private _taskId: number = -1;
 
     constructor(DATA: IntervalTaskData) {
-        this._duration = DATA.duration;
-        this._interval = DATA.interval;
+        this._duration = DATA.duration ?? -1;
+        this._interval = DATA.interval ?? 1;
         this._tickFunction = DATA.tickFunction;
     }
 
@@ -41,6 +41,7 @@ export class IntervalTask {
         this._tickFunction(this._timer);
         this._taskId = system.runInterval(() => {
             this._tickFunction(++this._timer);
+            if (this._duration < 0) return;
             if (this._timer >= this._duration) TaskManager.removeTask(this._taskId);
         }, this._interval);
 
@@ -61,7 +62,7 @@ export class TimeoutTask {
     private _taskId: number = -1;
 
     constructor(DATA: TimeoutTaskData) {
-        this._delay = DATA.delay;
+        this._delay = DATA.delay ?? 1;
         this._executeFunction = DATA.executeFunction;
     }
 
