@@ -8,11 +8,13 @@
             "is_summonable": false,
             "scripts": {
                 "animate": [
-                    "reload"
+                    "reload",
+                    "movement"
                 ]
             },
             "animations": {
-                "reload": "controller.animation.reload"
+                "reload": "controller.animation.reload",
+                "movement": "controller.animation.movement"
             }
         },
         "component_groups": {},

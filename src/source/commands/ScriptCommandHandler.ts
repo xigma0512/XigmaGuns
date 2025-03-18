@@ -8,7 +8,9 @@ const Scripts = {
     reload: function (player: Player) {
         const entity = Utils.getHandEquippedItemEntity(player);
         new GunReloadProcess(player, entity!).execute();
-    }
+    },
+    moving: (player: Player) => player.setDynamicProperty('xigmaguns:is_moving', true),
+    stop_moving: (player: Player) => player.setDynamicProperty('xigmaguns:is_moving', false)
 }
 
 export class ScriptCommandHandler {
