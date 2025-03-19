@@ -1,4 +1,5 @@
 import { Player } from "@minecraft/server";
+import { PlayerOffsetManager } from "./combat/gun/OffsetSystem";
 
 export class InitSystem {
     static init(player: Player) {
@@ -7,5 +8,6 @@ export class InitSystem {
             'xigmaguns:offset': 0,
             /* TEST CODE */ 'xigmaguns:team': 0
         });
+        PlayerOffsetManager.register(player);
     }
 }

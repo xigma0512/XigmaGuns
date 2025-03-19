@@ -31,7 +31,7 @@ export class BulletHandler {
     private spawn(): [Entity, mcEntity] {
         const viewDirection = this.owner.getViewDirection();
         const headLocation = this.owner.getHeadLocation();
-        const [damageComp, gunComp] = [this.gun.getComponent('damage')!, this.gun.getComponent('gun')!];
+        const damageComp = this.gun.getComponent('damage')!;
 
         const bullet = new Bullet();
 
@@ -47,8 +47,8 @@ export class BulletHandler {
 
         const projComp = projectile.getComponent('projectile')!;
         projComp.owner = this.owner;
-        projComp.shoot(Vector.mul(viewDirection, 200), { uncertainty: 0 /* TEST */ });
-
+        projComp.shoot(Vector.mul(viewDirection, 200), { uncertainty: this.owner.getDynamicProperty('xigmaguns:offset') as number });
+        
         const vector = bullet.getComponent('vector')!;
         vector.setVector(viewDirection);
 
