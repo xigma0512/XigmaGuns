@@ -50,7 +50,7 @@ export class BulletHandler {
         projComp.shoot(Vector.mul(viewDirection, 200), { uncertainty: this.owner.getDynamicProperty('xigmaguns:offset') as number });
         
         const vector = bullet.getComponent('vector')!;
-        vector.setVector(viewDirection);
+        vector.setVector(Vector.div(projectile.getVelocity(), 200));
 
         EntityManager.registerEntity(bullet, projectile);
         
