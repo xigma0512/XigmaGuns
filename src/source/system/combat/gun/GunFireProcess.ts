@@ -1,11 +1,11 @@
 import { Entity } from "../../../entity/Entity";
 import { BulletHandler } from "./BulletHandler";
 import { IntervalTask, TaskManager } from "../../TaskManager";
+import { PlayerOffsetManager } from "./OffsetSystem";
 
 import { world } from "@minecraft/server";
 import { EntityDieAfterEvent, ItemStopUseAfterEvent } from "@minecraft/server";
 import { Player } from "@minecraft/server";
-import { PlayerOffsetManager } from "./OffsetSystem";
 
 export class GunFireProcess {
 
@@ -39,7 +39,8 @@ export class GunFireProcess {
             tickFunction: () => {
                 if (consumeAmmo()) {
                     this._owner.setDynamicProperty('xigmaguns:is_shooting', true);
-                    PlayerOffsetManager.get(this._owner).shooting();
+                    const playerOffset = PlayerOffsetManager.instance.get(this._owner);
+                    playerOffset.shooting.shot(this._weaponEntity);
                     new BulletHandler(this._owner, this._weaponEntity);
                     return;
                 }

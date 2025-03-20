@@ -8,7 +8,7 @@ declare type ComponentDataType = {
     'gun'?: IGunComponent;
     'bullet'?: IBulletComponent;
     'damage'?: IDamageComponent;
-    'offset'?: IOffsetComponent;
+    'shot_offset'?: IShotOffsetComponent;
 }
 
 declare interface IHeaderComponent {
@@ -60,8 +60,8 @@ declare interface IDamageComponent {
     readonly far: DamageType;
 }
 
-declare interface IOffsetComponent {
-    readonly max: number;
-    readonly min: number;
-    readonly shot: number;
+declare interface IShotOffsetComponent {
+    readonly upper_limit: number;
+    readonly lower_limit: number;
+    readonly value: number;
 }

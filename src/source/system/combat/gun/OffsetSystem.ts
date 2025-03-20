@@ -1,109 +1,171 @@
 import { Utils } from "../../../../utils/Utils";
-import { OffsetComponent } from "../../../components/OffsetComponent";
-import { customEvents } from "../../../event/custom/CustomEventManager";
-import { IntervalTask, TaskManager } from "../../TaskManager";
+import { Entity } from "../../../entity/Entity";
+import { IntervalTask, TaskManager, TimeoutTask } from "../../TaskManager";
 
 import { Player, world } from "@minecraft/server";
 
-const VALUES = {
-    walk: 0.01,
-    sprint: 0.04,
-    jump: 0.07,
-    refresh: 1
+class OffsetSystem {
+
+    static readonly _MOVEMENT_OFFSET = {
+        walk: 0.05,
+        sprint: 0.08,
+        jump: 0.15,
+        upper_limit: 5,
+        lower_limit: 0
+    }
+
+    static readonly _REFRESH_OFFSET = {
+        value: 1
+    }
+
+    static getLimit(player: Player) {
+        const isMoving = player.getDynamicProperty('xigmaguns:is_moving') as boolean;
+        const isShooting = player.getDynamicProperty('xigmaguns:is_shooting') as boolean;
+        
+        const gun = Utils.getHandEquippedItemEntity(player);
+        if (gun !== undefined) {
+            const gunOffset = gun.getComponent('shot_offset')!;
+            if (isShooting && isMoving) {
+                return [
+                    this._MOVEMENT_OFFSET.upper_limit + gunOffset.upper_limit,
+                    this._MOVEMENT_OFFSET.lower_limit + gunOffset.upper_limit
+                ];
+            }
+            if (isShooting && !isMoving) {
+                return [ gunOffset.upper_limit, gunOffset.lower_limit ];
+            }
+        } 
+        return [this._MOVEMENT_OFFSET.upper_limit, this._MOVEMENT_OFFSET.lower_limit];
+    }
+
+    static modifyOffset(player: Player, value: number) {
+        const currentOffset = player.getDynamicProperty('xigmaguns:offset') as number;
+        let newValue = currentOffset + value;
+        const [max, min] = this.getLimit(player);
+        if (newValue > max) newValue = max;
+        if (newValue < min) newValue = min;
+        player.setDynamicProperty('xigmaguns:offset', newValue);
+    }
+
+}
+
+class MovementOffset {
+
+    private readonly _player: Player;
+    private _taskId = -1;
+
+    constructor(player: Player) {
+        this._player = player;
+        this.execute();
+    }
+
+    private execute() {
+        this._taskId = TaskManager.executeTask(new IntervalTask({
+            tickFunction: () => {
+                const isMoving = this._player.getDynamicProperty('xigmaguns:is_moving') as boolean;
+                const isJumping = this._player.isJumping;
+                const isSneaking = this._player.isSneaking;
+                if (isMoving) OffsetSystem.modifyOffset(this._player, OffsetSystem._MOVEMENT_OFFSET[(isSneaking ? 'walk' : 'sprint')]);
+                if (isJumping) OffsetSystem.modifyOffset(this._player, OffsetSystem._MOVEMENT_OFFSET.jump);
+            }
+        }));
+    }
+
+    close() {
+        TaskManager.removeTask(this._taskId);
+    }
+
+}
+
+class ShootingOffset {
+
+    private readonly _player: Player;
+
+    constructor(player: Player) {
+        this._player = player;
+    }
+
+    shot(entity: Entity) {
+        if (entity === undefined) return;
+        const shotOffset = entity.getComponent('shot_offset');
+        if (shotOffset === undefined) return;
+
+        OffsetSystem.modifyOffset(this._player, shotOffset.value);
+    }
+
+}
+
+class RefreshOffset {
+
+    private readonly _player: Player;
+    private _taskId = -1;
+
+    constructor(player: Player) {
+        this._player = player;
+        this.execute();
+    }
+
+    private execute() {
+        this._taskId = TaskManager.executeTask(new IntervalTask({
+            tickFunction: () => {
+                const isMoving = this._player.getDynamicProperty('xigmaguns:is_moving') as boolean;
+                const isShooting = this._player.getDynamicProperty('xigmaguns:is_shooting') as boolean;
+
+                if (isMoving || isShooting) return;
+                OffsetSystem.modifyOffset(this._player, -OffsetSystem._REFRESH_OFFSET.value);
+            }
+        }));
+    }
+
+    close() {
+        TaskManager.removeTask(this._taskId);
+    }
+
 }
 
 export class PlayerOffsetManager {
 
-    private static _players = new Map<string, PlayerOffset>();
-    static get(player: Player) { return this._players.get(player.id)!; }
-    static remove(playerId: string) { this._players.delete(playerId); }
-    static register(player: Player) {
-        const playerOffset = new PlayerOffset(player);
-        this._players.set(player.id, playerOffset);
-    }
+    private static _instance: PlayerOffsetManager;
+    static get instance() { return (this._instance || (this._instance = new this())); }
 
-}
+    private readonly _players: Map<string, {refresh: RefreshOffset, movement: MovementOffset, shooting: ShootingOffset}>;
 
-class PlayerOffset {
+    private constructor() {
+        this._players = new Map();
 
-    readonly owner: Player;
-    
-    maxOffset: number = 1;
-    minOffset: number = 0;
-    shotOffset: number = 0;
+        world.afterEvents.playerSpawn.subscribe(spawnEvent => {
+            if (!spawnEvent.initialSpawn) return;
+            const player = spawnEvent.player;
+            this.create(player);
 
-    constructor(owner: Player) {
-        this.owner = owner;
-        this.execute();
-    }
-
-    shooting() {
-        this.modifyOffset(this.shotOffset);
-    }
-
-    private refreshing() {
-        const isMoving = this.owner.getDynamicProperty('xigmaguns:is_moving') as boolean;
-        const isShooting = this.owner.getDynamicProperty('xigmaguns:is_shooting') as boolean;
-        if (isMoving || isShooting) return;
-        this.modifyOffset(-VALUES.refresh);
-    }
-
-    private moving() {
-        const isMoving = this.owner.getDynamicProperty('xigmaguns:is_moving') as boolean;
-        if (!isMoving) return;
-        this.modifyOffset(VALUES[(this.owner.isSneaking) ? 'walk' : 'sprint']);
-    }
-
-
-    private updateOffset() {
-        this.maxOffset = 1;
-        this.minOffset = 0;
-        this.shotOffset = 0;
-
-        const entity = Utils.getHandEquippedItemEntity(this.owner);
-        if (entity === undefined) return;
-
-        const offsetComponent = entity.getComponent('offset')!;
-        this.maxOffset = offsetComponent.max;
-        this.minOffset = offsetComponent.min;
-        this.shotOffset = offsetComponent.shot;
-
-        this.owner.setDynamicProperty('xigmaguns:offset', this.minOffset);
-    }
-
-
-    private execute() {
-
-        const playerChangeHotbar = customEvents.playerChangeHotbar.subscribe(ev => {
-            if (ev.player.id !== this.owner.id) return;
-            this.updateOffset();
+            const playerLeave = world.afterEvents.playerLeave.subscribe(ev => {
+                if (ev.playerId !== player.id) return;
+                this.get(player).movement.close();
+                this.get(player).refresh.close();
+                this.remove(player);
+                world.afterEvents.playerLeave.unsubscribe(playerLeave);
+            });
         });
+    }
 
-        const taskId = TaskManager.executeTask(new IntervalTask({
-            tickFunction: () => {
-                this.refreshing();
-                this.moving();
+    create(player: Player) {
+        TaskManager.executeTask(new TimeoutTask({
+            executeFunction: () => {
+                this._players.set(player.id, {
+                    refresh: new RefreshOffset(player),
+                    movement: new MovementOffset(player),
+                    shooting: new ShootingOffset(player)
+                });
             }
         }));
-
-        const playerLeave = world.afterEvents.playerLeave.subscribe(ev => {
-            if (ev.playerId !== this.owner.id) return;
-
-            TaskManager.removeTask(taskId);
-
-            customEvents.playerChangeHotbar.unsubscribe(playerChangeHotbar);
-            world.afterEvents.playerLeave.unsubscribe(playerLeave);
-
-            PlayerOffsetManager.remove(ev.playerId);
-        });
     }
 
-    private modifyOffset(value: number) {
-        const currentOffset = this.owner.getDynamicProperty('xigmaguns:offset') as number;
-        let newValue = currentOffset + value;
-        if (newValue >= this.maxOffset) newValue = this.maxOffset;
-        if (newValue <= this.minOffset) newValue = this.minOffset;
-        this.owner.setDynamicProperty('xigmaguns:offset', newValue);
+    remove(player: Player) {
+        this._players.delete(player.id);
+    }
+
+    get(player: Player) {
+        return this._players.get(player.id)!;
     }
 
 }

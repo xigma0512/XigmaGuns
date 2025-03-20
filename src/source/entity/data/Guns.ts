@@ -17,10 +17,10 @@ export namespace GunData {
             fireRate: 4,
             reload_time: 30
         },
-        'offset': {
-            max: 5,
-            min: 0,
-            shot: 0.4
+        'shot_offset': {
+            upper_limit: 2,
+            lower_limit: 0,
+            value: 0.08
         },
         'damage': {
             near: { head: 10, body: 5, legs: 3 },
