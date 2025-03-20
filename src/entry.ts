@@ -1,3 +1,3 @@
-import { PermanentEvents } from "./source/event/PermanentEvents";
+import { InitSystem } from "./source/system/InitSystem";
 
-PermanentEvents.register();
+InitSystem.worldInit();
