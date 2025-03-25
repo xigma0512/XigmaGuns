@@ -140,8 +140,6 @@ export class PlayerOffsetManager {
 
             const playerLeave = world.afterEvents.playerLeave.subscribe(ev => {
                 if (ev.playerId !== player.id) return;
-                this.get(player).movement.close();
-                this.get(player).refresh.close();
                 this.remove(player);
                 world.afterEvents.playerLeave.unsubscribe(playerLeave);
             });
@@ -161,6 +159,8 @@ export class PlayerOffsetManager {
     }
 
     remove(player: Player) {
+        this.get(player).movement.close();
+        this.get(player).refresh.close();
         this._players.delete(player.id);
     }
 
