@@ -1,13 +1,11 @@
-import { EntityManager } from "../system/EntityManager";
-import { SmokeGrenade } from "../entity/SmokeGrenade";
-
-import { SmokeGenerator } from "../system/combat/equipment/SmokeGenerator";
 import { GunFireProcess } from "../system/combat/gun/GunFireProcess";
-import { ScriptCommandHandler } from "../commands/ScriptCommandHandler";
 import { InitSystem } from "../system/InitSystem";
+import { ScriptCommandHandler } from "../commands/ScriptCommandHandler";
+
+import { Utils } from "../../utils/Utils";
 
 import { system, world } from "@minecraft/server";
-import { Utils } from "../../utils/Utils";
+import { GrenadeSystem } from "../system/combat/equipment/Grenades";
 
 export abstract class PermanentEvents { 
 
@@ -20,9 +18,10 @@ export abstract class PermanentEvents {
         });
 
         world.afterEvents.entitySpawn.subscribe(ev => {
-            if (ev.entity.typeId === 'xigmaguns:smoke_grenade') {
-                EntityManager.registerEntity(new SmokeGrenade(), ev.entity);
-            }
+            const family = ev.entity.getComponent('type_family');
+            if (family === undefined) return;
+
+            if (family.hasTypeFamily('grenade')) return new GrenadeSystem(ev.entity);
         });
 
         world.afterEvents.playerSpawn.subscribe(ev => {
@@ -31,10 +30,6 @@ export abstract class PermanentEvents {
 
         system.afterEvents.scriptEventReceive.subscribe(ev => {
             ScriptCommandHandler.execute(ev);
-        });
-
-        world.beforeEvents.entityRemove.subscribe(ev => {
-            SmokeGenerator.create(ev.removedEntity);
         });
 
     }

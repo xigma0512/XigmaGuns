@@ -5,14 +5,12 @@ import { HeaderComponent } from "./HeaderComponent";
 import { ItemComponent } from "./ItemComponent";
 import { MagazineComponent } from "./MagazineComponent";
 import { ShotOffsetComponent } from "./ShotOffsetComponent";
-import { ParticleComponent } from "./ParticleComponent";
 import { PositionComponent } from "./PositionComponent";
 
 export declare type ComponentTypes = {
     'header': HeaderComponent;
     'item': ItemComponent;
     'magazine': MagazineComponent;
-    'particle': ParticleComponent;
     'position': PositionComponent;
     'gun': GunComponent;
     'bullet': BulletComponent;

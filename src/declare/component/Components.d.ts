@@ -2,7 +2,6 @@ declare type ComponentDataType = {
     'header'?: IHeaderComponent;
     'item'?: IItemComponent;
     'magazine'?: IMagazineComponent;
-    'particle'?: IParticleComponent;
     'position'?: IPositionComponent;
     'gun'?: IGunComponent;
     'bullet'?: IBulletComponent;
@@ -25,12 +24,6 @@ declare interface IItemComponent {
 declare interface IMagazineComponent {
     readonly ammo: number;
     readonly count: number;
-}
-
-declare interface IParticleComponent {
-    readonly typeId: string;
-    readonly interval: number;
-    readonly duration: number;
 }
 
 declare interface IPositionComponent {
