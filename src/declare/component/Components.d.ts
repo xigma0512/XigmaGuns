@@ -4,7 +4,6 @@ declare type ComponentDataType = {
     'magazine'?: IMagazineComponent;
     'particle'?: IParticleComponent;
     'position'?: IPositionComponent;
-    'vector'?: IVectorComponent;
     'gun'?: IGunComponent;
     'bullet'?: IBulletComponent;
     'damage'?: IDamageComponent;
@@ -39,12 +38,6 @@ declare interface IPositionComponent {
     y: number;
     z: number;
     dimension: string;
-}
-
-declare interface IVectorComponent {
-    readonly x: number;
-    readonly y: number;
-    readonly z: number;
 }
 
 declare interface IGunComponent {

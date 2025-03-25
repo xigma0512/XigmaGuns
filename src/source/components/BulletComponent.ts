@@ -14,7 +14,7 @@ export class BulletComponent extends Component {
     get owner() { return this._owner!; }
     get damage() { return this._damage!; }
 
-    init(owner: Player, damage: DamageComponent) {
+    register(owner: Player, damage: DamageComponent) {
         this._owner = owner;
         this._damage = damage;
     }

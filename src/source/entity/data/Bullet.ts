@@ -11,11 +11,6 @@ export namespace BulletData {
             y: 0,
             z: 0,
             dimension: 'overworld'
-        },
-        vector: {
-            x: 0,
-            y: 0,
-            z: 0
         }
     }
 }
