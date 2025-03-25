@@ -26,9 +26,7 @@ export abstract class PermanentEvents {
         });
 
         world.afterEvents.playerSpawn.subscribe(ev => {
-            if (ev.initialSpawn) {
-                InitSystem.init(ev.player);
-            }
+            if (ev.initialSpawn) InitSystem.playerInit(ev.player);
         });
 
         system.afterEvents.scriptEventReceive.subscribe(ev => {

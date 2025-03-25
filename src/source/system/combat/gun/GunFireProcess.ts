@@ -1,11 +1,11 @@
 import { Entity } from "../../../entity/Entity";
 import { BulletHandler } from "./BulletHandler";
 import { IntervalTask, TaskManager } from "../../TaskManager";
-import { EntityManager } from "../../EntityManager";
+import { PlayerOffsetManager } from "./OffsetSystem";
 
 import { world } from "@minecraft/server";
 import { EntityDieAfterEvent, ItemStopUseAfterEvent } from "@minecraft/server";
-import { ItemStack, Player } from "@minecraft/server";
+import { Player } from "@minecraft/server";
 
 export class GunFireProcess {
 
@@ -38,7 +38,11 @@ export class GunFireProcess {
             interval: gunComp.fireRate,
             tickFunction: () => {
                 if (consumeAmmo()) {
-                    return new BulletHandler(this._owner, this._weaponEntity);
+                    this._owner.setDynamicProperty('xigmaguns:is_shooting', true);
+                    const playerOffset = PlayerOffsetManager.instance.get(this._owner);
+                    playerOffset.shooting.shot(this._weaponEntity);
+                    new BulletHandler(this._owner, this._weaponEntity);
+                    return;
                 }
                 this._owner.onScreenDisplay.setActionBar('YOU HAVE NO AMMO.');
             }
@@ -58,6 +62,7 @@ export class GunFireProcess {
     }
 
     private interruption() {
+        this._owner.setDynamicProperty('xigmaguns:is_shooting', false);
         TaskManager.removeTask(this._taskId);
         world.afterEvents.itemStopUse.unsubscribe(this._itemStopUseListener!);
         world.afterEvents.entityDie.unsubscribe(this._playerDieListener!);

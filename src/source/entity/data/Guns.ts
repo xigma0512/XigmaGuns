@@ -14,9 +14,13 @@ export namespace GunData {
             ]
         },
         'gun': {
-            fireRate: 7,
-            offset: 0,
+            fireRate: 4,
             reload_time: 30
+        },
+        'shot_offset': {
+            upper_limit: 2,
+            lower_limit: 0,
+            value: 0.08
         },
         'damage': {
             near: { head: 10, body: 5, legs: 3 },
@@ -24,7 +28,7 @@ export namespace GunData {
             far: { head: 6, body: 3, legs: 1 }
         },
         'magazine': {
-            ammo: 30,
+            ammo: 9999999,
             count: 3
         }
     }

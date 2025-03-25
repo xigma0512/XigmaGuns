@@ -1,11 +1,22 @@
 import { Player } from "@minecraft/server";
+import { PlayerOffsetManager } from "./combat/gun/OffsetSystem";
+import { PermanentEvents } from "../event/PermanentEvents";
+import { CustomEventTrigger } from "../event/custom/CustomEventTrigger";
 
 export class InitSystem {
-    static init(player: Player) {
+    
+    static playerInit(player: Player) {
         player.setDynamicProperties({
             'xigmaguns:is_moving': false,
             'xigmaguns:offset': 0,
             /* TEST CODE */ 'xigmaguns:team': 0
         });
     }
+
+    static worldInit() {
+        PermanentEvents.register();
+        CustomEventTrigger.triggers();
+        PlayerOffsetManager.instance;
+    }
+
 }
