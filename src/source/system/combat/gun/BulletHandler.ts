@@ -1,4 +1,4 @@
-import { Vector } from "../../../../utils/Vector";
+import { RayVector, Vector } from "../../../../utils/Vector";
 import { Bullet } from "../../../entity/Bullet";
 import { Entity } from "../../../entity/Entity";
 import { EntityManager } from "../../EntityManager";
@@ -88,23 +88,22 @@ export class BulletHandler {
     private spawnTrajectory(dest: Vector3) {
 
         const position = this._bullet.getComponent('position')!;
-        const rayVector = Vector.ray_vector(position, dest);
-        const vector = Vector.unit(rayVector);
+        const rayVector = new RayVector(position, dest);
+        const unitVector = rayVector.unit;
 
         let currentPos = { x: position.x, y: position.y, z: position.z };
         const startPoint = currentPos;
-        const pos2dest = Vector.ray_length(rayVector);
 
         let distance = 0;
         while (true) {
-            currentPos = Vector.add(currentPos, Vector.div(vector, 10));
+            currentPos = Vector.add(currentPos, Vector.div(unitVector, 10));
 
             if (distance++ < 10) continue;
             try { this._projectile.dimension.spawnParticle('xigmaguns:locus', currentPos); } catch { }
 
             const currentDist = Vector.distance(startPoint, currentPos);
 
-            if (pos2dest <= currentDist) break;
+            if (rayVector.length <= currentDist) break;
         }
     }
 

@@ -34,22 +34,35 @@ export class Vector {
         };
     }
 
-    static ray_vector(v1: Vector3, v2: Vector3) {
-        return {x: v2.x - v1.x, y: v2.y - v1.y, z: v2.z - v1.z};
-    }
-
     static distance(v1: Vector3, v2: Vector3) {
         const [dx, dy, dz] = [v2.x - v1.x, v2.y - v1.y, v2.z - v1.z];
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
-    static ray_length(vec: Vector3) {
-        return Math.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+}
+
+export class RayVector {
+    
+    readonly x: number;
+    readonly y: number;
+    readonly z: number;
+
+    constructor(v1: Vector3, v2: Vector3) {
+        this.x = v2.x - v1.x;
+        this.y = v2.y - v1.y;
+        this.z = v2.z - v1.z;
+    }
+    
+    get length() {
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
 
-    static unit(vec: Vector3) {
-        const dist = this.ray_length(vec);
-        return {x: vec.x / dist, y: vec.y / dist, z: vec.z / dist};
+    get unit() {;
+        return { 
+            x: this.x / this.length,
+            y: this.y / this.length,
+            z: this.z / this.length
+        };
     }
 
 }
