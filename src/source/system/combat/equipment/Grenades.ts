@@ -1,63 +1,80 @@
-import { SmokeGrenade } from "../../../entity/SmokeGrenade";
-import { EntityManager } from "../../EntityManager";
-import { IntervalTask, TaskManager } from "../../TaskManager";
+import { Vector } from "../../../../utils/Vector";
 
-import { system, world } from "@minecraft/server";
+import { Direction, world } from "@minecraft/server";
 import { Entity as mcEntity } from "@minecraft/server";
+import { ProjectileHitBlockAfterEvent } from "@minecraft/server";
 
-abstract class IGrenadeHandler {
-    constructor(projectile: mcEntity) { }
+interface IGrenadeHandler {
+    projectile: mcEntity;
+    execute(): void;
 }
 
-class SmokeGrenadeHandler {
+class SmokeGrenadeHandler implements IGrenadeHandler {
     
-    readonly projectile: mcEntity;
-    readonly grenade: SmokeGrenade;
+    projectile: mcEntity;
 
     constructor(projectile: mcEntity) {
         this.projectile = projectile;
-        this.grenade = new SmokeGrenade();
-        EntityManager.registerEntity(this.grenade, this.projectile);
-        this.listener();
     }
 
-    private listener() {
-        const entityRemove = world.beforeEvents.entityRemove.subscribe(ev => {
-            if (ev.removedEntity.id !== this.projectile.id) return;
-            const dimension = ev.removedEntity.dimension;
-            const location = ev.removedEntity.location;
-            TaskManager.executeTask(new IntervalTask({
-                duration: 300,
-                tickFunction() {
-                    try { for (let i = 0; i < 2; i++) dimension.spawnParticle('minecraft:huge_explosion_emitter', location);
-                    } catch { }
-                }
-            }));
-            system.run(() => despawn());
-        });
-
-        const despawn = () => {
-            EntityManager.unRegisterEntity(this.grenade.uuid);
-            world.beforeEvents.entityRemove.unsubscribe(entityRemove);
-        }
+    execute() {
+        console.log('execute');
     }
-
 }
 
-export class GrenadeSystem {
+export class Grenade {
 
-    readonly projectile: mcEntity;
     readonly handler: IGrenadeHandler;
-    
+
     constructor(projectile: mcEntity) {
-        this.projectile = projectile;
-        this.handler = this.getHandlerType();
+        this.handler = this.setHandler(projectile);
+        this.projectileRebound();
     }
 
-    private getHandlerType() {
-        const family = this.projectile.getComponent('type_family')!;
-        if (family.hasTypeFamily('smoke_grenade')) return new SmokeGrenadeHandler(this.projectile);
-        throw "[ERROR] 無法找到對應的 Grenade 類別";
+    private setHandler(projectile: mcEntity) {
+        const family = projectile.getComponent('type_family');
+        if (family !== undefined) {
+            if (family.hasTypeFamily('smoke_grenade')) return new SmokeGrenadeHandler(projectile);
+        }
+        throw "[ERROR] 無法找到對應的 Grenade 類型";
+    }
+
+    private projectileRebound() {
+        
+        const mirrored = {
+            [Direction.Down]:{x:1,y:-1,z:1},
+            [Direction.Up]:{x:1,y:-1,z:1},
+            [Direction.West]:{x:-1,y:1,z:1},
+            [Direction.East]:{x:-1,y:1,z:1},
+            [Direction.North]:{x:1,y:1,z:-1},
+            [Direction.South]:{x:1,y:1,z:-1},
+        };
+
+        const bounces = new WeakMap();
+        
+        const hitBlockRebound = async (ev: ProjectileHitBlockAfterEvent) => {
+            if (ev.projectile.id !== this.handler.projectile.id) return;
+
+            const projectile = this.handler.projectile;
+            if (!bounces.has(projectile)) bounces.set(projectile, 1);
+            const count = bounces.get(projectile);
+
+            const hitBlockInfo = ev.getBlockHit();
+            const entity = ev.dimension.spawnEntity(
+                ev.projectile.typeId,
+                Vector.add(hitBlockInfo.block.location, Vector.mul(hitBlockInfo.faceLocation, 1.001))
+            );
+            
+            const projComp = entity.getComponent('projectile')!;
+            projComp.shoot(Vector.div(Vector.mul(projectile.getVelocity(), mirrored[hitBlockInfo.face]), count * 1.1));
+            bounces.set(entity, count + 1);
+            entity.addTag('rebound');
+            
+            this.handler.projectile = entity;
+        }
+
+        world.afterEvents.projectileHitBlock.subscribe(hitBlockRebound);
+
     }
 
 }

@@ -5,7 +5,7 @@ import { ScriptCommandHandler } from "../commands/ScriptCommandHandler";
 import { Utils } from "../../utils/Utils";
 
 import { system, world } from "@minecraft/server";
-import { GrenadeSystem } from "../system/combat/equipment/Grenades";
+import { Grenade } from "../system/combat/equipment/Grenades";
 
 export abstract class PermanentEvents { 
 
@@ -21,7 +21,7 @@ export abstract class PermanentEvents {
             const family = ev.entity.getComponent('type_family');
             if (family === undefined) return;
 
-            if (family.hasTypeFamily('grenade')) return new GrenadeSystem(ev.entity);
+            if (family.hasTypeFamily('grenade') && !ev.entity.hasTag('rebound')) return new Grenade(ev.entity);
         });
 
         world.afterEvents.playerSpawn.subscribe(ev => {
