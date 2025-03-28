@@ -7,7 +7,7 @@
 				"default": "entity_alphatest"
 			},
 			"textures": {
-				"default": "textures/entity/smoke_grenade"
+				"default": "textures/grenades/smoke_grenade"
 			},
 			"geometry": {
 				"default": "geometry.smoke_grenade"
