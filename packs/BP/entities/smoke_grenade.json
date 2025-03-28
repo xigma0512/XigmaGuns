@@ -31,7 +31,7 @@
                     "definition_event": {
                         "affect_projectile": true,
                         "event_trigger": {
-                            "event": "xigmaguns:impact_sound"
+                            "event": "despawn"
                         }
                     },
                     "stick_in_ground": {
@@ -59,19 +59,21 @@
 			}
 		},
         "events": {
-            "xigmaguns:impact_sound": {
+            "despawn": {
                 "add": {
                     "component_groups": [
                         "despawn"
                     ]
-                },
+                }
+            },
+            "execute": {
                 "queue_command": {
                     "command": [
                         "playsound xigmaguns.smoke_grenade @a ~~~ 3 1"
                     ]
                 }
             },
-            "minecraft:entity_spawned": {
+            "throwing": {
                 "queue_command": {
                     "command": [
                         "playsound xigmaguns.smoke @a ~~~ 1 1"

@@ -1,24 +1,41 @@
 import { Vector } from "../../../../utils/Vector";
+import { IntervalTask, TaskManager, TimeoutTask } from "../../TaskManager";
 
 import { Direction, world } from "@minecraft/server";
 import { Entity as mcEntity } from "@minecraft/server";
 import { ProjectileHitBlockAfterEvent } from "@minecraft/server";
 
 interface IGrenadeHandler {
+    readonly executeDelay: number;
     projectile: mcEntity;
     execute(): void;
 }
 
-class SmokeGrenadeHandler implements IGrenadeHandler {
+class SmokeGrenadeHandler {
     
+    readonly executeDelay = 70;
     projectile: mcEntity;
 
     constructor(projectile: mcEntity) {
+        projectile.triggerEvent('throwing');
         this.projectile = projectile;
     }
 
     execute() {
-        console.log('execute');
+        this.projectile.triggerEvent('execute');
+
+        const dimension = this.projectile.dimension;
+        const location = this.projectile.location;
+
+        TaskManager.executeTask(new IntervalTask({
+            duration: 300,
+            tickFunction() {
+                try { 
+                    for (let i = 0; i < 2; i++) dimension.spawnParticle('minecraft:huge_explosion_emitter', location);
+                } catch { }
+            }
+        }));
+        this.projectile.remove();
     }
 }
 
@@ -51,7 +68,6 @@ export class Grenade {
         };
 
         const bounces = new WeakMap();
-        
         const hitBlockRebound = async (ev: ProjectileHitBlockAfterEvent) => {
             if (ev.projectile.id !== this.handler.projectile.id) return;
 
@@ -67,14 +83,19 @@ export class Grenade {
             
             const projComp = entity.getComponent('projectile')!;
             projComp.shoot(Vector.div(Vector.mul(projectile.getVelocity(), mirrored[hitBlockInfo.face]), count * 1.1));
-            bounces.set(entity, count + 1);
+
             entity.addTag('rebound');
-            
+            bounces.set(entity, count + 1);
             this.handler.projectile = entity;
         }
 
-        world.afterEvents.projectileHitBlock.subscribe(hitBlockRebound);
-
+        TaskManager.executeTask(new TimeoutTask({
+            delay: this.handler.executeDelay,
+            executeFunction: () => {
+                this.handler.execute();
+                world.afterEvents.projectileHitBlock.subscribe(hitBlockRebound);
+            }
+        }));
     }
 
 }
