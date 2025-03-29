@@ -17,7 +17,44 @@
                 "movement": "controller.animation.movement"
             }
         },
-        "component_groups": {},
+        "component_groups": {
+            "throwing_smoke_grenade": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "filters": [
+                                {
+                                    "test": "is_sneaking",
+                                    "operator": "==",
+                                    "value": false
+                                }
+                            ],
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "spawn_entity": "xigmaguns:smoke_grenade",
+                            "spawn_event": "set_overhand",
+                            "num_to_spawn": 1
+                        },
+                        {
+                            "filters": [
+                                {
+                                    "test": "is_sneaking",
+                                    "operator": "==",
+                                    "value": true
+                                }
+                            ],
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "spawn_entity": "xigmaguns:smoke_grenade",
+                            "spawn_event": "set_underhand",
+                            "num_to_spawn": 1
+                        }
+                    ]
+                }
+            }
+        },
         "components": {
             "minecraft:type_family": {
                 "family": [
@@ -47,6 +84,14 @@
             "minecraft:conditional_bandwidth_optimization": {},
             "minecraft:block_climber": {}
         },
-        "events": {}
+        "events": {
+            "throwing_smoke_grenade": {
+                "add": {
+                    "component_groups": [
+                        "throwing_smoke_grenade"
+                    ]
+                }    
+            }
+        }
     }
 }

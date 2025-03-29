@@ -11,6 +11,48 @@
         "component_groups": {
             "despawn": {
                 "minecraft:instant_despawn": {}
+            },
+            "overhand_throw": {
+                "minecraft:mark_variant": {
+                    "value": 0
+                },
+                "minecraft:projectile": {
+                    "on_hit": {
+                        "stick_in_ground": {
+                            "shack_time": 0.1
+                        }
+                    },
+                    "ignored_entities": [
+                        "player"
+                    ],
+                    "anchor": 1,
+                    "power": 1.2,
+                    "gravity": 0.08,
+                    "inertia": 1,
+                    "liquid_inertia": 1,
+                    "offset": [0, -0.1, 0]
+                }
+            },
+            "underhand_throw": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                },
+                "minecraft:projectile": {
+                    "on_hit": {
+                        "stick_in_ground": {
+                            "shack_time": 0.1
+                        }
+                    },
+                    "ignored_entities": [
+                        "player"
+                    ],
+                    "anchor": 1,
+                    "power": 0.5,
+                    "gravity": 0.08,
+                    "inertia": 1,
+                    "liquid_inertia": 1,
+                    "offset": [0, -0.1, 0]
+                }
             }
         },
 		"components": {
@@ -18,36 +60,12 @@
                 "family": [
                     "projectile",
                     "grenade",
-                    "equipment",
                     "smoke_grenade"
                 ]
             },
 			"minecraft:collision_box": {
 				"width": 0.2,
 				"height": 0.2
-			},
-			"minecraft:projectile": {
-				"on_hit": {
-                    "definition_event": {
-                        "affect_projectile": true,
-                        "event_trigger": {
-                            "event": "despawn"
-                        }
-                    },
-                    "stick_in_ground": {
-                        "shack_time": 0.1
-                    }
-				},
-				"anchor": 1,
-				"power": 1.2,
-				"gravity": 0.05,
-				"inertia": 1,
-				"liquid_inertia": 1,
-				"offset": [
-					0,
-					-0.1,
-					0
-				]
 			},
 			"minecraft:physics": {},
 			"minecraft:conditional_bandwidth_optimization": {
@@ -59,14 +77,26 @@
 			}
 		},
         "events": {
-            "despawn": {
+            "set_overhand": {
                 "add": {
                     "component_groups": [
-                        "despawn"
+                        "overhand_throw"
+                    ]
+                }
+            },
+            "set_underhand": {
+                "add": {
+                    "component_groups": [
+                        "underhand_throw"
                     ]
                 }
             },
             "execute": {
+                "add": {
+                    "component_groups": [
+                        "despawn"
+                    ]
+                },
                 "queue_command": {
                     "command": [
                         "playsound xigmaguns.smoke_grenade @a ~~~ 3 1"

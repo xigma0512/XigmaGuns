@@ -1,11 +1,14 @@
-import { RayVector, Vector } from "../../../../utils/Vector";
+import { Vector } from "../../../../utils/Vector";
 import { IntervalTask, TaskManager, TimeoutTask } from "../../TaskManager";
 
-import { Direction, world } from "@minecraft/server";
-import { Entity as mcEntity } from "@minecraft/server";
+import { world } from "@minecraft/server";
+import { Dimension } from "@minecraft/server";
+import { Entity as mcEntity, Player, ItemStack } from "@minecraft/server";
+import { Direction, Vector3 } from "@minecraft/server";
 import { ProjectileHitBlockAfterEvent } from "@minecraft/server";
 
 interface IGrenadeHandler {
+    readonly variant: number;
     readonly executeDelay: number;
     projectile: mcEntity;
     execute(): void;
@@ -13,7 +16,8 @@ interface IGrenadeHandler {
 
 class SmokeGrenadeHandler {
     
-    readonly executeDelay = 70;
+    readonly variant: number;
+    readonly executeDelay: number;
     private _projectile: mcEntity;
 
     get projectile() { return this._projectile; }
@@ -23,8 +27,11 @@ class SmokeGrenadeHandler {
     }
 
     constructor(projectile: mcEntity) {
-        projectile.triggerEvent('throwing');
+        this.variant = projectile.getComponent('mark_variant')!.value;
+        this.executeDelay = (this.variant === 0 ? 70 : 40); 
         this._projectile = projectile;
+
+        projectile.triggerEvent('throwing');
     }
 
     execute() {
@@ -41,6 +48,7 @@ class SmokeGrenadeHandler {
         }));
         this.projectile.triggerEvent('execute');
     }
+
 }
 
 export class Grenade {
@@ -63,33 +71,32 @@ export class Grenade {
     private projectileRebound() {
         
         const mirrored = {
-            [Direction.Down]:{x:1,y:-1,z:1},
-            [Direction.Up]:{x:1,y:-1,z:1},
-            [Direction.West]:{x:-1,y:1,z:1},
-            [Direction.East]:{x:-1,y:1,z:1},
-            [Direction.North]:{x:1,y:1,z:-1},
-            [Direction.South]:{x:1,y:1,z:-1},
+            [Direction.Down]: {x:1,y:-1,z:1},
+            [Direction.Up]: {x:1,y:-1,z:1},
+            [Direction.West]: {x:-1,y:1,z:1},
+            [Direction.East]: {x:-1,y:1,z:1},
+            [Direction.North]: {x:1,y:1,z:-1},
+            [Direction.South]: {x:1,y:1,z:-1},
         };
 
-        const bounces = new WeakMap();
+        const bounces = new WeakMap<mcEntity, number>();
         const hitBlockRebound = async (ev: ProjectileHitBlockAfterEvent) => {
             if (ev.projectile.id !== this.handler.projectile.id) return;
             
             const projectile = this.handler.projectile;
-            if (!bounces.has(projectile)) bounces.set(projectile, 0);
-            const count = bounces.get(projectile);
             const hitBlockInfo = ev.getBlockHit();
-            const entity = ev.dimension.spawnEntity(
-                projectile.typeId,
-                Vector.add(hitBlockInfo.block.location, Vector.mul(hitBlockInfo.faceLocation, 1.001))
-            );
+
+            if (!bounces.has(projectile)) bounces.set(projectile, 1);
+            const count = bounces.get(projectile)!;
             
-            const projComp = entity.getComponent('projectile')!;
-            projComp.shoot(Vector.mul(Vector.mul(ev.hitVector, Math.pow(0.5, count)), mirrored[hitBlockInfo.face]));
-            
-            entity.addTag('rebound');
-            bounces.set(entity, count + 1);
+            const entity = this.spawnClone(ev.dimension, Vector.add(hitBlockInfo.block.location, Vector.mul(hitBlockInfo.faceLocation, 1.001)));
             this.handler.projectile = entity;
+            bounces.set(entity, count + 1);
+            
+            const decreaseValue = (this.handler.variant === 0 ? 0.6 : 0.2);
+            entity.getComponent('projectile')!.shoot(
+                Vector.mul(Vector.mul(ev.hitVector, Math.pow(decreaseValue, count)), mirrored[hitBlockInfo.face])
+            );
         }
 
         const projectileHitBlock = world.afterEvents.projectileHitBlock.subscribe(hitBlockRebound);
@@ -101,6 +108,26 @@ export class Grenade {
                 world.afterEvents.projectileHitBlock.unsubscribe(projectileHitBlock);
             }
         }));
+    }
+
+    private spawnClone(dimension: Dimension, location: Vector3) {
+        const typeId = this.handler.projectile.typeId;
+        const throwingType = (this.handler.variant === 0 ? '<set_overhand>' : '<set_underhand>');
+
+        const entity = dimension.spawnEntity(typeId + throwingType, location);
+        entity.addTag('rebound');
+        return entity;
+    }
+
+    static throwing(owner: Player, grenadeItem: ItemStack) {
+        
+        const triggers = {
+            'xigmaguns:smoke_grenade': 'throwing_smoke_grenade'
+        };
+
+        for (const [grenadeType, eventName] of Object.entries(triggers)) {
+            if (grenadeItem.hasTag(grenadeType)) owner.triggerEvent(eventName);
+        }
     }
 
 }
