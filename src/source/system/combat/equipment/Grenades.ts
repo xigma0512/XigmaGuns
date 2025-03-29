@@ -1,4 +1,4 @@
-import { Vector } from "../../../../utils/Vector";
+import { RayVector, Vector } from "../../../../utils/Vector";
 import { IntervalTask, TaskManager, TimeoutTask } from "../../TaskManager";
 
 import { Direction, world } from "@minecraft/server";
@@ -14,19 +14,23 @@ interface IGrenadeHandler {
 class SmokeGrenadeHandler {
     
     readonly executeDelay = 70;
-    projectile: mcEntity;
+    private _projectile: mcEntity;
+
+    get projectile() { return this._projectile; }
+    set projectile(value: mcEntity) {
+        this._projectile.remove();
+        this._projectile = value;
+    }
 
     constructor(projectile: mcEntity) {
         projectile.triggerEvent('throwing');
-        this.projectile = projectile;
+        this._projectile = projectile;
     }
 
     execute() {
-        this.projectile.triggerEvent('execute');
-
         const dimension = this.projectile.dimension;
         const location = this.projectile.location;
-
+        
         TaskManager.executeTask(new IntervalTask({
             duration: 300,
             tickFunction() {
@@ -35,7 +39,7 @@ class SmokeGrenadeHandler {
                 } catch { }
             }
         }));
-        this.projectile.remove();
+        this.projectile.triggerEvent('execute');
     }
 }
 
@@ -70,30 +74,31 @@ export class Grenade {
         const bounces = new WeakMap();
         const hitBlockRebound = async (ev: ProjectileHitBlockAfterEvent) => {
             if (ev.projectile.id !== this.handler.projectile.id) return;
-
+            
             const projectile = this.handler.projectile;
-            if (!bounces.has(projectile)) bounces.set(projectile, 1);
+            if (!bounces.has(projectile)) bounces.set(projectile, 0);
             const count = bounces.get(projectile);
-
             const hitBlockInfo = ev.getBlockHit();
             const entity = ev.dimension.spawnEntity(
-                ev.projectile.typeId,
+                projectile.typeId,
                 Vector.add(hitBlockInfo.block.location, Vector.mul(hitBlockInfo.faceLocation, 1.001))
             );
             
             const projComp = entity.getComponent('projectile')!;
-            projComp.shoot(Vector.div(Vector.mul(projectile.getVelocity(), mirrored[hitBlockInfo.face]), count * 1.1));
-
+            projComp.shoot(Vector.mul(Vector.mul(ev.hitVector, Math.pow(0.5, count)), mirrored[hitBlockInfo.face]));
+            
             entity.addTag('rebound');
             bounces.set(entity, count + 1);
             this.handler.projectile = entity;
         }
 
+        const projectileHitBlock = world.afterEvents.projectileHitBlock.subscribe(hitBlockRebound);
+
         TaskManager.executeTask(new TimeoutTask({
             delay: this.handler.executeDelay,
             executeFunction: () => {
                 this.handler.execute();
-                world.afterEvents.projectileHitBlock.subscribe(hitBlockRebound);
+                world.afterEvents.projectileHitBlock.unsubscribe(projectileHitBlock);
             }
         }));
     }
