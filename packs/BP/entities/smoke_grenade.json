@@ -25,6 +25,7 @@
                     "ignored_entities": [
                         "player"
                     ],
+                    "angle_offset": -20,
                     "anchor": 1,
                     "power": 1.2,
                     "gravity": 0.08,
@@ -46,6 +47,7 @@
                     "ignored_entities": [
                         "player"
                     ],
+                    "angle_offset": -20,
                     "anchor": 1,
                     "power": 0.5,
                     "gravity": 0.08,
@@ -67,6 +69,9 @@
 				"width": 0.2,
 				"height": 0.2
 			},
+            "minecraft:scale": {
+                "value": 0.5
+            },
 			"minecraft:physics": {},
 			"minecraft:conditional_bandwidth_optimization": {
 				"default_values": {
