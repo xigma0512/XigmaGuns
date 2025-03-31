@@ -15,7 +15,13 @@ export abstract class PermanentEvents {
             if (ev.itemStack.hasTag('xigmaguns:gun')) {
                 new GunFireProcess(ev.source, Utils.getHandEquippedItemEntity(ev.source)!).execute();
             }
-            if (ev.itemStack.hasTag('xigmaguns:grenade')) Grenade.throwing(ev.source, ev.itemStack);
+        });
+
+        world.beforeEvents.itemUse.subscribe(ev => {
+            if (ev.itemStack.hasTag('xigmaguns:grenade')) {
+                ev.cancel = true;
+                system.run(() => Grenade.throwing(ev.source, ev.itemStack));
+            }
         });
 
         world.afterEvents.entitySpawn.subscribe(ev => {

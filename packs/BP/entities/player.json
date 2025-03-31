@@ -90,7 +90,12 @@
                     "component_groups": [
                         "throwing_smoke_grenade"
                     ]
-                }    
+                },
+                "queue_command": {
+                    "command": [
+                        "clear @s xigmaguns:smoke_grenade_item 0 1"
+                    ]
+                }
             }
         }
     }
