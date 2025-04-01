@@ -5,7 +5,7 @@ import { ScriptCommandHandler } from "../commands/ScriptCommandHandler";
 import { Utils } from "../../utils/Utils";
 
 import { system, world } from "@minecraft/server";
-import { Grenade } from "../system/combat/equipment/Grenades";
+import { Grenade } from "../system/combat/grenade/Grenade";
 
 export abstract class PermanentEvents { 
 

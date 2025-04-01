@@ -1,5 +1,6 @@
+import { TaskManager, TimeoutTask } from "../../TaskManager";
+import { FlashbangHandler, GrenadeHandler, SmokeGrenadeHandler } from "./GrenadeHandlers";
 import { Vector } from "../../../../utils/Vector";
-import { IntervalTask, TaskManager, TimeoutTask } from "../../TaskManager";
 
 import { world } from "@minecraft/server";
 import { Dimension } from "@minecraft/server";
@@ -7,53 +8,9 @@ import { Entity as mcEntity, Player, ItemStack } from "@minecraft/server";
 import { Direction, Vector3 } from "@minecraft/server";
 import { ProjectileHitBlockAfterEvent } from "@minecraft/server";
 
-interface IGrenadeHandler {
-    readonly variant: number;
-    readonly executeDelay: number;
-    projectile: mcEntity;
-    execute(): void;
-}
-
-class SmokeGrenadeHandler {
-    
-    readonly variant: number;
-    readonly executeDelay: number;
-    private _projectile: mcEntity;
-
-    get projectile() { return this._projectile; }
-    set projectile(value: mcEntity) {
-        this._projectile.remove();
-        this._projectile = value;
-    }
-
-    constructor(projectile: mcEntity) {
-        this.variant = projectile.getComponent('mark_variant')!.value;
-        this.executeDelay = (this.variant === 0 ? 70 : 40); 
-        this._projectile = projectile;
-
-        projectile.triggerEvent('throwing');
-    }
-
-    execute() {
-        const dimension = this.projectile.dimension;
-        const location = this.projectile.location;
-        
-        TaskManager.executeTask(new IntervalTask({
-            duration: 300,
-            tickFunction() {
-                try { 
-                    for (let i = 0; i < 2; i++) dimension.spawnParticle('minecraft:huge_explosion_emitter', location);
-                } catch { }
-            }
-        }));
-        this.projectile.triggerEvent('execute');
-    }
-
-}
-
 export class Grenade {
 
-    readonly handler: IGrenadeHandler;
+    readonly handler: GrenadeHandler;
 
     constructor(projectile: mcEntity) {
         this.handler = this.setHandler(projectile);
@@ -64,6 +21,7 @@ export class Grenade {
         const family = projectile.getComponent('type_family');
         if (family !== undefined) {
             if (family.hasTypeFamily('smoke_grenade')) return new SmokeGrenadeHandler(projectile);
+            if (family.hasTypeFamily('flashbang')) return new FlashbangHandler(projectile);
         }
         throw "[ERROR] 無法找到對應的 Grenade 類型";
     }
@@ -122,7 +80,8 @@ export class Grenade {
     static throwing(owner: Player, grenadeItem: ItemStack) {
         
         const triggers = {
-            'xigmaguns:smoke_grenade': 'throwing_smoke_grenade'
+            'xigmaguns:smoke_grenade': 'throwing_smoke_grenade',
+            'xigmaguns:flashbang': 'throwing_flashbang'
         };
 
         for (const [grenadeType, eventName] of Object.entries(triggers)) {
