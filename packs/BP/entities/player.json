@@ -53,6 +53,42 @@
                         }
                     ]
                 }
+            },
+            "throwing_flashbang": {
+                "minecraft:spawn_entity": {
+                    "entities": [
+                        {
+                            "filters": [
+                                {
+                                    "test": "is_sneaking",
+                                    "operator": "==",
+                                    "value": false
+                                }
+                            ],
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "spawn_entity": "xigmaguns:flashbang",
+                            "spawn_event": "set_overhand",
+                            "num_to_spawn": 1
+                        },
+                        {
+                            "filters": [
+                                {
+                                    "test": "is_sneaking",
+                                    "operator": "==",
+                                    "value": true
+                                }
+                            ],
+                            "min_wait_time": 0,
+                            "max_wait_time": 0,
+                            "single_use": true,
+                            "spawn_entity": "xigmaguns:flashbang",
+                            "spawn_event": "set_underhand",
+                            "num_to_spawn": 1
+                        }
+                    ]
+                }
             }
         },
         "components": {
@@ -94,6 +130,18 @@
                 "queue_command": {
                     "command": [
                         "clear @s xigmaguns:smoke_grenade_item 0 1"
+                    ]
+                }
+            },
+            "throwing_flashbang": {
+                "add": {
+                    "component_groups": [
+                        "throwing_flashbang"
+                    ]
+                },
+                "queue_command": {
+                    "command": [
+                        "clear @s xigmaguns:flashbang_item 0 1"
                     ]
                 }
             }
