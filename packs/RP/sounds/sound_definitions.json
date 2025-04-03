@@ -1,25 +1,45 @@
 {
     "format_version": "1.14.0",
     "sound_definitions": {
-        "xigmaguns.smoke_grenade": {
+        "xigmaguns.smoke_explode": {
             "sounds": [
                 {
-                    "name": "sounds/smoke_grenade",
-                    "volume": 2.0
+                    "name": "sounds/smoke_explode",
+                    "volume": 5
                 } 
             ],
             "category": "ambient",
-            "max_distance": 30.0
+            "max_distance": 256
         },
-        "xigmaguns.smoke": {
+        "xigmaguns.throwing_smoke": {
             "sounds": [
                 {
-                    "name": "sounds/smoke",
-                    "volume": 1.0
+                    "name": "sounds/throwing_smoke",
+                    "volume": 1
                 }
             ],
-            "category": "player",
-            "max_distance": 30.0
+            "category": "ambient",
+            "max_distance": 32
+        },
+        "xigmaguns.flash_explode": {
+            "sounds": [
+                {
+                    "name": "sounds/flash_explode",
+                    "volume": 5
+                }
+            ],
+            "category": "ambient",
+            "max_distance": 256
+        },
+        "xigmaguns.throwing_flash": {
+            "sounds": [
+                {
+                    "name": "sounds/throwing_flash",
+                    "volume": 1
+                }
+            ],
+            "category": "ambient",
+            "max_distance": 32
         }
     }
 }
