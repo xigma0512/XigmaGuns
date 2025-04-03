@@ -1,11 +1,20 @@
+import { RayVector, Vector } from "../../../../utils/Vector";
 import { IntervalTask, TaskManager } from "../../TaskManager";
 
-import { Entity as mcEntity, world } from "@minecraft/server";
+import { world, system } from "@minecraft/server";
+import { Entity as mcEntity, Player } from "@minecraft/server";
+
+export interface IGrenadeHandler {
+    readonly delay: number;
+    readonly variant: number;
+    projectile: mcEntity;
+
+    execute(): void;
+}
 
 export class GrenadeHandler {
 
     readonly variant: number;
-    readonly executeDelay: number;
     private _projectile: mcEntity;
 
     get projectile() { return this._projectile; }
@@ -16,7 +25,6 @@ export class GrenadeHandler {
 
     constructor(projectile: mcEntity) {
         this.variant = projectile.getComponent('mark_variant')!.value;
-        this.executeDelay = (this.variant === 0 ? 70 : 40);
         this._projectile = projectile;
 
         projectile.triggerEvent('throwing');
@@ -24,14 +32,18 @@ export class GrenadeHandler {
 
     execute() {
         this.projectile.triggerEvent('execute');
+        system.run(() => this.projectile.triggerEvent('despawn'));
     }
 
 }
 
 export class SmokeGrenadeHandler extends GrenadeHandler {
+
+    readonly delay: number;
     
     constructor(projectile: mcEntity) {
         super(projectile);
+        this.delay = (this.variant === 0 ? 70 : 40);
     }
 
     execute() {
@@ -53,15 +65,60 @@ export class SmokeGrenadeHandler extends GrenadeHandler {
 
 export class FlashbangHandler extends GrenadeHandler {
 
+    readonly delay: number;
+
     constructor(projectile: mcEntity) {
         super(projectile);
+        this.delay = (this.variant === 0 ? 50 : 20);
     }
 
     execute() {
         for (const player of world.getAllPlayers()) {
-            console.log('flash!');
+            const level = this.getBlindLevel(player);
+            this.applyBlindEffect(player, level.duration, level.fadeOut);
         }
         super.execute();
+    }
+
+    private getBlindLevel(player: Player) {
+
+        const blindLevels = [
+            {min: 0, max: 50, duration: 1.8, fadeOut: 4.5},
+            {min: 50, max: 75, duration: 1, fadeOut: 3.7},
+            {min: 75, max: 135, duration: 0.75, fadeOut: 2.5},
+        ];
+
+        const location = Vector.flatten2d(this.projectile.location);
+        const headLocation = Vector.flatten2d(player.getHeadLocation());
+        
+        const viewDirection = Vector.flatten2d(player.getViewDirection());
+
+        const connect = new RayVector(headLocation, location);
+        const view = new RayVector({x:0, y:0, z:0}, viewDirection);
+        const dot = Vector.dot(view, connect);
+
+        const rad = Math.acos(dot / (view.length * connect.length));
+        const deg = rad * (180 / Math.PI);
+        
+        for (const level of blindLevels) {
+            if (deg >= level.min && deg <= level.max) return { duration: level.duration, fadeOut: level.fadeOut };
+        }
+        return { duration: 0.1, fadeOut: 1 };
+    }
+
+    private applyBlindEffect(player: Player, duration: number, fadeOut: number) {
+        player.camera.fade({
+            fadeColor: {
+                red: 1,
+                green: 0.95,
+                blue: 0.95
+            },
+            fadeTime: {
+                fadeInTime: 0.1,
+                holdTime: duration,
+                fadeOutTime: fadeOut
+            }
+        });
     }
 
 }

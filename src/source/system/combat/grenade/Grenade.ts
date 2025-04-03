@@ -1,5 +1,5 @@
 import { TaskManager, TimeoutTask } from "../../TaskManager";
-import { FlashbangHandler, GrenadeHandler, SmokeGrenadeHandler } from "./GrenadeHandlers";
+import { FlashbangHandler, IGrenadeHandler, SmokeGrenadeHandler } from "./GrenadeHandlers";
 import { Vector } from "../../../../utils/Vector";
 
 import { world } from "@minecraft/server";
@@ -10,7 +10,7 @@ import { ProjectileHitBlockAfterEvent } from "@minecraft/server";
 
 export class Grenade {
 
-    readonly handler: GrenadeHandler;
+    readonly handler: IGrenadeHandler;
 
     constructor(projectile: mcEntity) {
         this.handler = this.setHandler(projectile);
@@ -60,7 +60,7 @@ export class Grenade {
         const projectileHitBlock = world.afterEvents.projectileHitBlock.subscribe(hitBlockRebound);
 
         TaskManager.executeTask(new TimeoutTask({
-            delay: this.handler.executeDelay,
+            delay: this.handler.delay,
             executeFunction: () => {
                 this.handler.execute();
                 world.afterEvents.projectileHitBlock.unsubscribe(projectileHitBlock);
