@@ -79,9 +79,23 @@
 					"max_dropped_ticks": 7,
 					"use_motion_prediction_hints": true
 				}
-			}
+			},
+            "minecraft:timer": {
+                "time": 5,
+                "looping": true,
+                "time_down_event": {
+                    "event": "despawn"
+                }
+            }
 		},
         "events": {
+            "despawn": {
+                "add": {
+                    "component_groups": [
+                        "despawn"
+                    ]
+                }
+            },
             "set_overhand": {
                 "add": {
                     "component_groups": [
@@ -97,21 +111,16 @@
                 }
             },
             "execute": {
-                "add": {
-                    "component_groups": [
-                        "despawn"
-                    ]
-                },
                 "queue_command": {
                     "command": [
-                        "playsound xigmaguns.smoke_grenade @a ~~~ 3 1"
+                        "playsound xigmaguns.smoke_explode @a ~~~ 3 1"
                     ]
                 }
             },
             "throwing": {
                 "queue_command": {
                     "command": [
-                        "playsound xigmaguns.smoke @a ~~~ 1 1"
+                        "playsound xigmaguns.throwing_smoke @a ~~~ 1 1"
                     ]
                 }
             }
