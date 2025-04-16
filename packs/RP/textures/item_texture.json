@@ -1,7 +1,10 @@
 {
 	"texture_data": {
-		"smoke_grenade": {
-			"textures": "textures/items/smoke_grenade"
+        "flashbang_item": {
+			"textures": "textures/items/flashbang_item"
+		},
+		"smoke_grenade_item": {
+			"textures": "textures/items/smoke_grenade_item"
 		},
         "glock17": {
             "textures": "textures/items/glock17"

@@ -1,0 +1,25 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.smoke_grenade_item.first_person_wield": {
+			"loop": true,
+			"bones": {
+				"bb_main": {
+					"rotation": [-287.58315, -64.99814, 146.72277],
+					"position": [-4.6, 29.5, -4.6],
+					"scale": 0.6
+				}
+			}
+		},
+		"animation.smoke_grenade_item.third_person_wield": {
+			"loop": true,
+			"bones": {
+				"bb_main": {
+					"rotation": [90, 0, 0],
+					"position": [0, 22.75, -1],
+					"scale": 0.5
+				}
+			}
+		}
+	}
+}

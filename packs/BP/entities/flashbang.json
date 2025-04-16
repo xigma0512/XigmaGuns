@@ -2,7 +2,7 @@
 	"format_version": "1.16.0",
 	"minecraft:entity": {
 		"description": {
-			"identifier": "xigmaguns:smoke_grenade",
+			"identifier": "xigmaguns:flashbang",
 			"is_spawnable": false,
 			"is_summonable": true,
 			"is_experimental": false,
@@ -25,7 +25,6 @@
                     "ignored_entities": [
                         "player"
                     ],
-                    "angle_offset": -20,
                     "anchor": 1,
                     "power": 1.2,
                     "gravity": 0.08,
@@ -47,7 +46,6 @@
                     "ignored_entities": [
                         "player"
                     ],
-                    "angle_offset": -20,
                     "anchor": 1,
                     "power": 0.5,
                     "gravity": 0.08,
@@ -62,7 +60,7 @@
                 "family": [
                     "projectile",
                     "grenade",
-                    "smoke_grenade"
+                    "flashbang"
                 ]
             },
 			"minecraft:collision_box": {
@@ -113,14 +111,14 @@
             "execute": {
                 "queue_command": {
                     "command": [
-                        "playsound xigmaguns.smoke_explode @a ~~~ 3 1"
+                        "playsound xigmaguns.flash_explode @a ~~~ 5 1"
                     ]
                 }
             },
             "throwing": {
                 "queue_command": {
                     "command": [
-                        "playsound xigmaguns.throwing_smoke @a ~~~ 1 1"
+                        "playsound xigmaguns.throwing_flash @a ~~~ 1 1"
                     ]
                 }
             }
