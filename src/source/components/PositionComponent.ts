@@ -1,5 +1,12 @@
 import { Component } from "./Component";
 
+export interface IPositionComponent {
+    x: number;
+    y: number;
+    z: number;
+    dimension: string;
+}
+
 export class PositionComponent extends Component {
     
     x: number;
@@ -7,7 +14,7 @@ export class PositionComponent extends Component {
     z: number;
     dimension: string;
 
-    constructor(data: IPositionComponent | undefined) {
+    constructor(data?: IPositionComponent) {
         super('position');
 
         this.x = data?.x ?? 0;

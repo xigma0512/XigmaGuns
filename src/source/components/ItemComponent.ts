@@ -2,6 +2,13 @@ import { Component } from "./Component";
 
 import { ItemStack } from "@minecraft/server";
 
+export interface IItemComponent {
+    readonly typeId: string;
+    readonly amount: number;
+    readonly nametag: string;
+    readonly lore: string[];
+}
+
 export class ItemComponent extends Component {
 
     readonly typeId: string;
@@ -10,7 +17,7 @@ export class ItemComponent extends Component {
     readonly lore: string[];
     readonly item: ItemStack;
 
-    constructor(data: IItemComponent | undefined) {
+    constructor(data?: IItemComponent) {
         super('item');
 
         this.typeId = data?.typeId ?? 'minecraft:stick';

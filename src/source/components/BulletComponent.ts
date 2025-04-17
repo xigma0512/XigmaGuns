@@ -1,21 +1,21 @@
 import { Player } from "@minecraft/server";
 import { Component } from "./Component";
-import { DamageComponent } from "./DamageComponent";
+import { IDamageComponent } from "./DamageComponent";
+
+export interface IBulletComponent {
+    readonly owner: Player;
+    readonly damage: IDamageComponent;
+}
 
 export class BulletComponent extends Component {
 
-    private _owner?: Player;
-    private _damage?: DamageComponent;
+    readonly owner: Player;
+    readonly damage: IDamageComponent;
 
-    constructor() {
+    constructor(data: IBulletComponent) {
         super('bullet');
-    }
 
-    get owner() { return this._owner!; }
-    get damage() { return this._damage!; }
-
-    register(owner: Player, damage: DamageComponent) {
-        this._owner = owner;
-        this._damage = damage;
+        this.owner = data.owner;
+        this.damage = data.damage;
     }
 }

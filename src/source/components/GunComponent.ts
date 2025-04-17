@@ -1,11 +1,16 @@
 import { Component } from "./Component";
 
+export interface IGunComponent {
+    readonly fireRate: number;
+    readonly reload_time: number;
+}
+
 export class GunComponent extends Component {
     
     readonly fireRate: number;
     readonly reload_time: number;
 
-    constructor(data: IGunComponent | undefined) {
+    constructor(data?: IGunComponent) {
         super('gun');
 
         this.fireRate = data?.fireRate ?? 4;

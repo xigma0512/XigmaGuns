@@ -1,12 +1,18 @@
 import { Component } from "./Component";
 
+export interface IOffsetComponent {
+    readonly hippie: number;
+    readonly scope: number;
+    readonly movement: number;
+}
+
 export class OffsetComponent extends Component {
 
     readonly hippie: number;
     readonly scope: number;
     readonly movement: number;
 
-    constructor(data: IOffsetComponent | undefined) {
+    constructor(data?: IOffsetComponent) {
         super('offset');
 
         this.hippie = data?.hippie ?? 0;
