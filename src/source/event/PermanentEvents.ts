@@ -1,11 +1,11 @@
-import { GunFireProcess } from "../system/combat/gun/GunFireProcess";
 import { InitSystem } from "../system/InitSystem";
 import { ScriptCommandHandler } from "../commands/ScriptCommandHandler";
 
-import { Utils } from "../../utils/Utils";
-
 import { system, world } from "@minecraft/server";
 import { Grenade } from "../system/combat/grenade/Grenade";
+
+import { GunSystemManager } from "../system/combat/gun/GunSystemManager";
+import { EntityManager } from "../system/EntityManager";
 
 export abstract class PermanentEvents { 
 
@@ -13,7 +13,10 @@ export abstract class PermanentEvents {
         
         world.afterEvents.itemStartUse.subscribe(ev => {
             if (ev.itemStack.hasTag('xigmaguns:gun')) {
-                new GunFireProcess(ev.source, Utils.getHandEquippedItemEntity(ev.source)!).execute();
+                const gunEntity = EntityManager.getEntity(ev.itemStack);
+                if (gunEntity === undefined) return;
+
+                GunSystemManager.instance.get(gunEntity.uuid)!.fire.fire(ev.source);
             }
         });
 

@@ -4,7 +4,7 @@ import { GunComponent } from "./GunComponent";
 import { HeaderComponent } from "./HeaderComponent";
 import { ItemComponent } from "./ItemComponent";
 import { MagazineComponent } from "./MagazineComponent";
-import { ShotOffsetComponent } from "./ShotOffsetComponent";
+import { OffsetComponent } from "./OffsetComponent";
 import { PositionComponent } from "./PositionComponent";
 
 export declare type ComponentTypes = {
@@ -15,7 +15,7 @@ export declare type ComponentTypes = {
     'gun': GunComponent;
     'bullet': BulletComponent;
     'damage': DamageComponent;
-    'shot_offset': ShotOffsetComponent;
+    'offset': OffsetComponent;
 }
 
 export class Component {

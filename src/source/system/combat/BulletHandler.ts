@@ -1,12 +1,13 @@
-import { RayVector, Vector } from "../../../../utils/Vector";
-import { Bullet } from "../../../entity/Bullet";
-import { Entity } from "../../../entity/Entity";
-import { EntityManager } from "../../EntityManager";
+import { RayVector, Vector } from "../../../utils/Vector";
+import { Bullet } from "../../entity/Bullet";
+import { Entity } from "../../entity/Entity";
+import { EntityManager } from "../EntityManager";
 import { DamageSystem } from "./DamageSystem";
-import { TaskManager, TimeoutTask } from "../../TaskManager";
+import { TaskManager, TimeoutTask } from "../TaskManager";
 
 import { Player, Entity as mcEntity, world } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";
+import { GunSystemManager } from "./gun/GunSystemManager";
 
 export class BulletHandler {
     
@@ -16,14 +17,14 @@ export class BulletHandler {
     private _bullet: Entity;
     private _projectile: mcEntity;
 
-    constructor(owner: Player, gun: Entity) {
+    constructor(owner: Player, gun: Entity, offset: number) {
         this.owner = owner;
         this.gun = gun;
 
-        [this._bullet, this._projectile] = this.spawn();
+        [this._bullet, this._projectile] = this.spawn(offset);
     }
 
-    private spawn(): [Entity, mcEntity] {
+    private spawn(offset: number): [Entity, mcEntity] {
         const viewDirection = this.owner.getViewDirection();
         const headLocation = this.owner.getHeadLocation();
         const damageComp = this.gun.getComponent('damage')!;
@@ -42,7 +43,7 @@ export class BulletHandler {
 
         const projComp = projectile.getComponent('projectile')!;
         projComp.owner = this.owner;
-        projComp.shoot(Vector.mul(viewDirection, 200), { uncertainty: this.owner.getDynamicProperty('xigmaguns:offset') as number });
+        projComp.shoot(Vector.mul(viewDirection, 200), { uncertainty: offset });
 
         EntityManager.registerEntity(bullet, projectile);
         

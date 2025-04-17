@@ -1,5 +1,5 @@
-import { Entity } from "../../../entity/Entity";
-import { Vector } from "../../../../utils/Vector";
+import { Entity } from "../../entity/Entity";
+import { Vector } from "../../../utils/Vector";
 
 import { Player, Entity as mcEntity } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";

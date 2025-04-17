@@ -1,5 +1,4 @@
 import { Player } from "@minecraft/server";
-import { PlayerOffsetManager } from "./combat/gun/OffsetSystem";
 import { PermanentEvents } from "../event/PermanentEvents";
 import { CustomEventTrigger } from "../event/custom/CustomEventTrigger";
 
@@ -16,7 +15,6 @@ export class InitSystem {
     static worldInit() {
         PermanentEvents.register();
         CustomEventTrigger.triggers();
-        PlayerOffsetManager.instance;
     }
 
 }
