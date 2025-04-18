@@ -3,10 +3,10 @@ import { GunFireSystem } from "./GunFireSystem";
 import { GunMagazineSystem } from "./GunMagazineSystem";
 import { GunReloadSystem } from "./GunReloadSystem";
 
-interface IGunSystems {
-    readonly fire: GunFireSystem;
-    readonly reload: GunReloadSystem;
-    readonly magazine: GunMagazineSystem;
+type GunSystems = {
+    'fire': GunFireSystem;
+    'reload': GunReloadSystem;
+    'magazine': GunMagazineSystem;
 }
 
 export class GunSystemManager {
@@ -14,7 +14,7 @@ export class GunSystemManager {
     private static _instance: GunSystemManager;
     static get instance() { return (this._instance || (this._instance = new this())); }
 
-    private _systems: Map<string, IGunSystems>;
+    private _systems: Map<string, GunSystems>;
 
     private constructor() {
         this._systems = new Map;
