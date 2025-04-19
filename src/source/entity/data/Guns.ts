@@ -1,5 +1,7 @@
+import { ComponentDataTypes } from "../../components/Component";
+
 export namespace GunData {
-    export const Glock17: ComponentDataType = {
+    export const Glock17: ComponentDataTypes = {
         'header': {
             name: 'Glock17',
             description: 'I\'m Glock17'
@@ -17,10 +19,10 @@ export namespace GunData {
             fireRate: 4,
             reload_time: 30
         },
-        'shot_offset': {
-            upper_limit: 2,
-            lower_limit: 0,
-            value: 0.08
+        'offset': {
+            hippie: 10,
+            movement: 2,
+            scope: 0.1
         },
         'damage': {
             near: { head: 10, body: 5, legs: 3 },
@@ -29,7 +31,7 @@ export namespace GunData {
         },
         'magazine': {
             ammo: 9999999,
-            count: 3
+            count: 3,
         }
     }
 }

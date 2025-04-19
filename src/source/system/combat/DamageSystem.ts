@@ -1,5 +1,5 @@
-import { Entity } from "../../../entity/Entity";
-import { Vector } from "../../../../utils/Vector";
+import { IEntity } from "../../entity/Entity";
+import { Vector } from "../../../utils/Vector";
 
 import { Player, Entity as mcEntity } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";
@@ -20,14 +20,14 @@ export class DamageSystem {
         this._targetTeam = target.getDynamicProperty('xigmaguns:team') as number;
     }
     
-    applyGunDamage(bulletEntity: Entity, hitLocation: Vector3) {
+    applyGunDamage(bulletEntity: IEntity, hitLocation: Vector3) {
         if (this._attackerTeam === this._targetTeam) return;
 
         const bulletComp = bulletEntity.getComponent('bullet')!;
         const damageComp = bulletComp.damage;
 
         const hitType = this.getHitType(hitLocation, this._target);
-        const damage = damageComp.getDamage(this.distance())[hitType];
+        const damage = damageComp[this.distance()][hitType];
 
         const healthComp = this._target.getComponent('health')!;
         let is_alive = true;

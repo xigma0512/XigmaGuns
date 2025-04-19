@@ -1,13 +1,23 @@
 import { Utils } from "../../utils/Utils";
 import { Component, ComponentTypes } from "../components/Component";
 
+export interface IEntity {
+    readonly uuid: string;
+    readonly typeId: string;
+
+    hasComponent(componentId: keyof ComponentTypes): boolean;
+    getComponent<T extends keyof ComponentTypes>(componentId: T): ComponentTypes[T] | undefined;
+}
+
 export class Entity {
 
     readonly uuid: string;
+    readonly typeId: string;
     protected readonly components = new Map<keyof ComponentTypes, Component>;
 
-    constructor() {
+    constructor(typeId: string) {
         this.uuid = Utils.randomUUID();
+        this.typeId = typeId;
     }
 
     hasComponent(componentId: keyof ComponentTypes) {

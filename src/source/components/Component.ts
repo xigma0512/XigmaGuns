@@ -1,21 +1,29 @@
-import { BulletComponent } from "./BulletComponent";
-import { DamageComponent } from "./DamageComponent";
-import { GunComponent } from "./GunComponent";
-import { HeaderComponent } from "./HeaderComponent";
-import { ItemComponent } from "./ItemComponent";
-import { MagazineComponent } from "./MagazineComponent";
-import { ShotOffsetComponent } from "./ShotOffsetComponent";
-import { PositionComponent } from "./PositionComponent";
+import { IBulletComponent, BulletComponentData } from "./BulletComponent";
+import { IDamageComponent, DamageComponentData } from "./DamageComponent";
+import { IGunComponent, GunComponentData } from "./GunComponent";
+import { IHeaderComponent, HeaderComponentData } from "./HeaderComponent";
+import { IItemComponent, ItemComponentData } from "./ItemComponent";
+import { IMagazineComponent, MagazineComponentData } from "./MagazineComponent";
+import { IOffsetComponent, OffsetComponentData } from "./OffsetComponent";
 
-export declare type ComponentTypes = {
-    'header': HeaderComponent;
-    'item': ItemComponent;
-    'magazine': MagazineComponent;
-    'position': PositionComponent;
-    'gun': GunComponent;
-    'bullet': BulletComponent;
-    'damage': DamageComponent;
-    'shot_offset': ShotOffsetComponent;
+export declare interface ComponentTypes {
+    'header': IHeaderComponent;
+    'item': IItemComponent;
+    'magazine': IMagazineComponent;
+    'gun': IGunComponent;
+    'bullet': IBulletComponent;
+    'damage': IDamageComponent;
+    'offset': IOffsetComponent;
+}
+
+export declare type ComponentDataTypes = {
+    'header'?: HeaderComponentData;
+    'item'?: ItemComponentData;
+    'magazine'?: MagazineComponentData;
+    'gun'?: GunComponentData;
+    'bullet'?: BulletComponentData;
+    'damage'?: DamageComponentData;
+    'offset'?: OffsetComponentData;
 }
 
 export class Component {
