@@ -1,11 +1,11 @@
-import { Entity } from "../entity/Entity";
+import { IEntity } from "../entity/Entity";
 
 import { Entity as mcEntity } from "@minecraft/server";
 import { ItemStack } from "@minecraft/server";
 
 export class EntityManager {
 
-    private static _entities = new Map<string, Entity>;
+    private static _entities = new Map<string, IEntity>;
     
     static getEntity(target: mcEntity | ItemStack) {
         const uuid = target.getDynamicProperty('xigmaguns:uuid') as string;
@@ -18,7 +18,7 @@ export class EntityManager {
         this._entities.delete(uuid);
     }
 
-    static registerEntity(entity: Entity, target?: ItemStack | mcEntity) {
+    static registerEntity(entity: IEntity, target?: ItemStack | mcEntity) {
         this._entities.set(entity.uuid, entity);
         if (target === undefined) return;
         target.setDynamicProperty('xigmaguns:uuid', entity.uuid);

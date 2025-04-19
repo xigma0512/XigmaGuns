@@ -1,4 +1,4 @@
-import { Entity } from "../../entity/Entity";
+import { IEntity } from "../../entity/Entity";
 import { Vector } from "../../../utils/Vector";
 
 import { Player, Entity as mcEntity } from "@minecraft/server";
@@ -20,7 +20,7 @@ export class DamageSystem {
         this._targetTeam = target.getDynamicProperty('xigmaguns:team') as number;
     }
     
-    applyGunDamage(bulletEntity: Entity, hitLocation: Vector3) {
+    applyGunDamage(bulletEntity: IEntity, hitLocation: Vector3) {
         if (this._attackerTeam === this._targetTeam) return;
 
         const bulletComp = bulletEntity.getComponent('bullet')!;

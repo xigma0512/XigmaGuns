@@ -1,14 +1,14 @@
 import { Player, world } from "@minecraft/server";
-import { Entity } from "../../../entity/Entity";
+import { IEntity } from "../../../entity/Entity";
 import { GunSystemManager } from "./GunSystemManager";
 import { IntervalTask, TaskManager } from "../../TaskManager";
 import { customEvents } from "../../../event/custom/CustomEventManager";
 
 export class GunReloadSystem {
     
-    readonly gun: Entity;
+    readonly gun: IEntity;
 
-    constructor(gun: Entity) {
+    constructor(gun: IEntity) {
         this.gun = gun;
     }
 

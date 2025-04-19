@@ -1,5 +1,5 @@
 import { Player, world } from "@minecraft/server";
-import { Entity } from "../../../entity/Entity";
+import { IEntity } from "../../../entity/Entity";
 
 import { GunSystemManager } from "./GunSystemManager";
 import { BulletHandler } from "../bullet/BulletHandler";
@@ -8,9 +8,9 @@ import { PlayerOffsetSystem } from "../PlayerOffsetSystem";
 
 export class GunFireSystem {
     
-    readonly gun: Entity;
+    readonly gun: IEntity;
 
-    constructor(gun: Entity) {
+    constructor(gun: IEntity) {
         this.gun = gun;
     }
 

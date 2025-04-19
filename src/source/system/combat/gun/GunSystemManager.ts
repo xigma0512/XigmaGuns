@@ -1,4 +1,4 @@
-import { Entity } from "../../../entity/Entity";
+import { IEntity } from "../../../entity/Entity";
 import { GunFireSystem } from "./GunFireSystem";
 import { GunMagazineSystem } from "./GunMagazineSystem";
 import { GunReloadSystem } from "./GunReloadSystem";
@@ -24,7 +24,7 @@ export class GunSystemManager {
         return this._systems.get(uuid);
     }
 
-    register(gun: Entity) {
+    register(gun: IEntity) {
         this._systems.set(gun.uuid, {
             fire: new GunFireSystem(gun),
             reload: new GunReloadSystem(gun),
