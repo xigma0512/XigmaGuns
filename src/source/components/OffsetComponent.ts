@@ -6,13 +6,15 @@ export interface IOffsetComponent {
     readonly movement: number;
 }
 
+export type OffsetComponentData = IOffsetComponent;
+
 export class OffsetComponent extends Component {
 
     readonly hippie: number;
     readonly scope: number;
     readonly movement: number;
 
-    constructor(data?: IOffsetComponent) {
+    constructor(data?: OffsetComponentData) {
         super('offset');
 
         this.hippie = data?.hippie ?? 0;

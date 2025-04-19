@@ -7,12 +7,14 @@ export interface IBulletComponent {
     readonly damage: IDamageComponent;
 }
 
+export type BulletComponentData = IBulletComponent;
+
 export class BulletComponent extends Component {
 
     readonly owner: Player;
     readonly damage: IDamageComponent;
 
-    constructor(data: IBulletComponent) {
+    constructor(data: BulletComponentData) {
         super('bullet');
 
         this.owner = data.owner;
