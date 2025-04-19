@@ -1,5 +1,7 @@
+import { ComponentDataTypes } from "../../components/Component";
+
 export namespace GunData {
-    export const Glock17: ComponentDataType = {
+    export const Glock17: ComponentDataTypes = {
         'header': {
             name: 'Glock17',
             description: 'I\'m Glock17'
@@ -29,7 +31,7 @@ export namespace GunData {
         },
         'magazine': {
             ammo: 9999999,
-            count: 3
+            count: 3,
         }
     }
 }
