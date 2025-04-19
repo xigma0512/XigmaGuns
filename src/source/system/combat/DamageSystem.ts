@@ -27,7 +27,7 @@ export class DamageSystem {
         const damageComp = bulletComp.damage;
 
         const hitType = this.getHitType(hitLocation, this._target);
-        const damage = damageComp.getDamage(this.distance())[hitType];
+        const damage = damageComp[this.distance()][hitType];
 
         const healthComp = this._target.getComponent('health')!;
         let is_alive = true;

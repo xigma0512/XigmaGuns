@@ -2,7 +2,7 @@ import { Player, world } from "@minecraft/server";
 import { Entity } from "../../../entity/Entity";
 
 import { GunSystemManager } from "./GunSystemManager";
-import { BulletHandler } from "../BulletHandler";
+import { BulletHandler } from "../bullet/BulletHandler";
 import { IntervalTask, TaskManager } from "../../TaskManager";
 import { PlayerOffsetSystem } from "../PlayerOffsetSystem";
 
@@ -24,7 +24,7 @@ export class GunFireSystem {
             tickFunction: () => {
                 if (magazineSystem.fireCheck()) {
                     const playerOffset = PlayerOffsetSystem.getOffset(owner);
-                    new BulletHandler(owner, this.gun, playerOffset);
+                    new BulletHandler(owner).launch(playerOffset);
                     return;
                 }
             }
