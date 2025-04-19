@@ -15,16 +15,12 @@ function deleteOldFiles(targetDest) {
     if (!fs.existsSync(targetDest)) return;
 
     fs.rmSync(targetDest, { recursive:true });
-    console.log(`Removed '${path.relative(DEST, targetDest)}'`);
 }
 
 function copyFolder(src, dest) {
 
-    console.log(`Copy '${src}' to '${path.relative(DEST, dest)}'.`);
-
     if (!fs.existsSync(dest)) {
         fs.mkdirSync(dest, { recursive: true });
-        console.log(`Created '${path.relative(DEST, dest)}' folder.`);
     }
 
     fs.readdirSync(src).forEach(file => {
@@ -39,11 +35,8 @@ function copyFolder(src, dest) {
 console.log('Remove Old Files...');
 deleteOldFiles(path.join(behaviorPack_dest, PACK_NAME));
 deleteOldFiles(path.join(resourcePack_dest, PACK_NAME));
-console.log('----');
 
 console.log('Copy Files to Dest Folders.');
 copyFolder(behaviorPack_source, path.join(behaviorPack_dest, PACK_NAME));
 copyFolder(resourcePack_source, path.join(resourcePack_dest, PACK_NAME));
-console.log('----');
-
 console.log('Done!');
