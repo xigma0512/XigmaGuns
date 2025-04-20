@@ -2,10 +2,6 @@ import { ComponentDataTypes } from "../../components/Component";
 
 export namespace GunData {
     export const Glock17: ComponentDataTypes = {
-        'header': {
-            name: 'Glock17',
-            description: 'I\'m Glock17'
-        },
         'item': {
             typeId: 'xigmaguns:glock17',
             amount: 1,
