@@ -1,13 +1,8 @@
 import { IEntity } from "../../../entity/Entity";
-import { GunFireSystem } from "./GunFireSystem";
+import { FullyAutoFire, SemiAutoFire } from "./GunFireSystem";
 import { GunMagazineSystem } from "./GunMagazineSystem";
 import { GunReloadSystem } from "./GunReloadSystem";
-
-type GunSystems = {
-    'fire': GunFireSystem;
-    'reload': GunReloadSystem;
-    'magazine': GunMagazineSystem;
-}
+import { GunSystems } from "./IGunSystem";
 
 export class GunSystemManager {
 
@@ -25,8 +20,12 @@ export class GunSystemManager {
     }
 
     register(gun: IEntity) {
+        const gunComponent = gun.getComponent('gun')!;
+
+        const fireHandlers = (gunComponent.fireMode === 'semi-auto') ? new SemiAutoFire(gun) : new FullyAutoFire(gun);
+
         this._systems.set(gun.uuid, {
-            fire: new GunFireSystem(gun),
+            fire: fireHandlers,
             reload: new GunReloadSystem(gun),
             magazine: new GunMagazineSystem(gun)
         });

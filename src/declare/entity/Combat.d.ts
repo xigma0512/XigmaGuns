@@ -6,3 +6,5 @@ declare interface DamageType {
     body: number;
     legs: number;
 }
+
+declare type FireModeType = 'fully-auto' | 'semi-auto'

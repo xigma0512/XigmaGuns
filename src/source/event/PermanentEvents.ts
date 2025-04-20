@@ -4,21 +4,9 @@ import { ScriptCommandHandler } from "../commands/ScriptCommandHandler";
 import { system, world } from "@minecraft/server";
 import { Grenade } from "../system/combat/grenade/Grenade";
 
-import { GunSystemManager } from "../system/combat/gun/GunSystemManager";
-import { EntityManager } from "../system/EntityManager";
-
 export abstract class PermanentEvents { 
 
     static register() {
-        
-        world.afterEvents.itemStartUse.subscribe(ev => {
-            if (ev.itemStack.hasTag('xigmaguns:gun')) {
-                const gunEntity = EntityManager.getEntity(ev.itemStack);
-                if (gunEntity === undefined) return;
-
-                GunSystemManager.instance.get(gunEntity.uuid)!.fire.fire(ev.source);
-            }
-        });
 
         world.beforeEvents.itemUse.subscribe(ev => {
             if (ev.itemStack.hasTag('xigmaguns:grenade')) {
