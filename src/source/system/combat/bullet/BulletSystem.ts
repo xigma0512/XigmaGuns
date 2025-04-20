@@ -47,7 +47,7 @@ export class BulletSystem {
             currentPos = Vector.add(currentPos, Vector.div(unitVector, 10));
 
             if (distance++ < 10) continue;
-            try { dimension.spawnParticle('xigmaguns:locus', currentPos); } catch { }
+            try { dimension.spawnParticle('xigmaguns:locus', currentPos); } catch { break; }
 
             const currentDist = Vector.distance(startPoint, currentPos);
 

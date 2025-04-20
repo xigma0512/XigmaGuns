@@ -34,7 +34,9 @@ export class BulletHandler {
             const entity = EntityManager.getEntity(ev.projectile);
             if (entity === undefined) return;
             if (entity.uuid !== uuid) return;
-            BulletSystem.instance.spawnTrajectory(ev.source!.getHeadLocation(), ev.location, ev.dimension);
+
+            const spawnLocation = Vector.add(ev.source!.getHeadLocation(), {x:0, y:0.1, z:0});
+            BulletSystem.instance.spawnTrajectory(spawnLocation, ev.location, ev.dimension);
             despawn(projectile);
         });
 
@@ -42,8 +44,11 @@ export class BulletHandler {
             const entity = EntityManager.getEntity(ev.projectile);
             if (entity === undefined) return;
             if (entity.uuid !== uuid) return;
+
             new DamageSystem(this.owner, ev.source!).applyGunDamage(entity, ev.location);
-            BulletSystem.instance.spawnTrajectory(ev.source!.getHeadLocation(), ev.location, ev.dimension);
+
+            const spawnLocation = Vector.add(ev.source!.getHeadLocation(), {x:0, y:0.1, z:0});
+            BulletSystem.instance.spawnTrajectory(spawnLocation, ev.location, ev.dimension);
             despawn(projectile);
         });
 
@@ -51,7 +56,8 @@ export class BulletHandler {
             delay: 2,
             executeFunction: () => {
                 if (!projectile.isValid) return;
-                BulletSystem.instance.spawnTrajectory(this.owner.getHeadLocation(), projectile.location, this.owner.dimension);
+                const spawnLocation = Vector.add(this.owner.getHeadLocation(), {x:0, y:0.1, z:0});
+                BulletSystem.instance.spawnTrajectory(spawnLocation, projectile.location, this.owner.dimension);
                 despawn(projectile);
             }
         }));
