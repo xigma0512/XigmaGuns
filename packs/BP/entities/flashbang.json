@@ -68,7 +68,7 @@
 				"height": 0.2
 			},
             "minecraft:scale": {
-                "value": 0.5
+                "value": 0.25
             },
 			"minecraft:physics": {},
 			"minecraft:conditional_bandwidth_optimization": {

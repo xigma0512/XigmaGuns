@@ -4,20 +4,20 @@
 		"animation.flashbang_item.first_person_wield": {
 			"loop": true,
 			"bones": {
-				"bb_main": {
-					"rotation": [-287.58315, -64.99814, 146.72277],
-					"position": [-4.6, 29.5, -4.6],
-					"scale": 0.6
+				"body": {
+					"rotation": [-296.37407, -59.15255, 148.52945],
+					"position": [-10.5, 2.3, -3.8],
+					"scale": 0.4
 				}
 			}
 		},
 		"animation.flashbang_item.third_person_wield": {
 			"loop": true,
 			"bones": {
-				"bb_main": {
-					"rotation": [90, 0, 0],
-					"position": [0, 22.75, -1],
-					"scale": 0.5
+				"body": {
+					"rotation": [80, 0, 0],
+					"position": [-4, 3.3, -6.7],
+					"scale": 0.2
 				}
 			}
 		}
