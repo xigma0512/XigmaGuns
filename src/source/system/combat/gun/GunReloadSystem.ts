@@ -7,18 +7,19 @@ import { customEvents } from "../../../event/custom/CustomEventManager";
 export class GunReloadSystem {
     
     readonly gun: IEntity;
+    private _reloading: boolean = false;
 
     constructor(gun: IEntity) {
         this.gun = gun;
     }
 
     reload(owner: Player) {
-        if (owner.hasTag('xigmaguns:reloading')) return;
-        
         const gunComponent = this.gun.getComponent('gun')!;
         const magazineSystem = GunSystemManager.instance.get(this.gun.uuid)!.magazine;
         if (magazineSystem.ammo === magazineSystem.capacity) return;
         if (magazineSystem.storageAmmo === 0) return;
+        if (this._reloading) return;
+        this._reloading = true;
 
         const taskId = TaskManager.executeTask(new IntervalTask({
             duration: gunComponent.reload_time,
@@ -28,9 +29,8 @@ export class GunReloadSystem {
                 owner.onScreenDisplay.setActionBar(`${tick}`);
             }
         }));
-        watchInterruptions();
 
-        function watchInterruptions() {
+        (function() {
             const changeHotbar = customEvents.playerChangeHotbar.subscribe(ev => {
                 if (ev.player.id === owner.id) {
                     interruption();
@@ -44,13 +44,14 @@ export class GunReloadSystem {
                     world.afterEvents.entityDie.unsubscribe(playerDie);
                 }
             });
+        })();
+
+        const interruption = () => {
+            this._reloading = false;
+            TaskManager.removeTask(taskId);
         }
 
-        function interruption() {
-            TaskManager.removeTask(taskId);    
-        }
-
-        function completion() {
+        const completion = () => {
             interruption();
             magazineSystem.reloaded();
             owner.sendMessage('CompleteReload.');
