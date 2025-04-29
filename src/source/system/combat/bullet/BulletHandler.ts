@@ -31,6 +31,7 @@ export class BulletHandler {
     private _addImpactListener(uuid: string, projectile: Entity) {
 
         const projectileHitBlock = world.afterEvents.projectileHitBlock.subscribe(ev => {
+            if (!ev.projectile.isValid) return;
             const entity = EntityManager.getEntity(ev.projectile);
             if (entity === undefined) return;
             if (entity.uuid !== uuid) return;
@@ -41,6 +42,7 @@ export class BulletHandler {
         });
 
         const projectileHitEntity = world.afterEvents.projectileHitEntity.subscribe(ev => {
+            if (!ev.projectile.isValid) return;
             const entity = EntityManager.getEntity(ev.projectile);
             if (entity === undefined) return;
             if (entity.uuid !== uuid) return;
