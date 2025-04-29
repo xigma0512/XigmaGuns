@@ -16,6 +16,7 @@ export abstract class PermanentEvents {
         });
 
         world.afterEvents.entitySpawn.subscribe(ev => {
+            if (!ev.entity.isValid) return;
             const family = ev.entity.getComponent('type_family');
             if (family === undefined) return;
 
