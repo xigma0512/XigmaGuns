@@ -3,21 +3,22 @@
 	"animations": {
 		"animation.smoke_grenade_item.first_person_wield": {
 			"loop": true,
+			"animation_length": 0.0417,
 			"bones": {
-				"bb_main": {
-					"rotation": [-287.58315, -64.99814, 146.72277],
-					"position": [-4.6, 29.5, -4.6],
-					"scale": 0.6
+				"main": {
+					"rotation": [-329.46625, -38.90584, 201.52476],
+					"position": [5.75, 25.5, 3.5],
+					"scale": 0.4
 				}
 			}
 		},
 		"animation.smoke_grenade_item.third_person_wield": {
 			"loop": true,
 			"bones": {
-				"bb_main": {
-					"rotation": [90, 0, 0],
-					"position": [0, 22.75, -1],
-					"scale": 0.5
+				"main": {
+					"rotation": [90.34723, 0.05344, 180.02472],
+					"position": [0, 23, -1.7],
+					"scale": 0.15
 				}
 			}
 		}
