@@ -35,8 +35,8 @@ export class BulletSystem {
         return {bullet, projectile};
     }
 
-    spawnTrajectory(from: Vector3, to: Vector3, dimension: Dimension) {
-        const rayVector = new RayVector(from, to);
+    spawnTrajectory(from: Vector3, vec: Vector3, dimension: Dimension) {
+        const rayVector = new RayVector({ x:0, y:0, z:0 }, vec);
         const unitVector = rayVector.unit;
 
         let currentPos = from;
@@ -44,14 +44,14 @@ export class BulletSystem {
 
         let distance = 0;
         while (true) {
-            currentPos = Vector.add(currentPos, Vector.div(unitVector, 10));
+            currentPos = Vector.add(currentPos, Vector.div(unitVector, 3));
 
-            if (distance++ < 10) continue;
+            if (distance++ < 5) continue;
             try { dimension.spawnParticle('xigmaguns:locus', currentPos); } catch { break; }
 
             const currentDist = Vector.distance(startPoint, currentPos);
 
-            if (rayVector.length <= currentDist) break;
+            if (currentDist >= 100) break;
         }
     }
 

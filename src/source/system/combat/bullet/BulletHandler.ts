@@ -25,51 +25,32 @@ export class BulletHandler {
         projectileComponent.owner = this.owner;
         projectileComponent.shoot(Vector.mul(this.owner.getViewDirection(), 1000), { uncertainty: offset });
 
+        BulletSystem.instance.spawnTrajectory(projectile.location, projectile.getVelocity(), this.owner.dimension);
+        
         this._addImpactListener(bullet.uuid, projectile);
     }
 
     private _addImpactListener(uuid: string, projectile: Entity) {
 
-        const projectileHitBlock = world.afterEvents.projectileHitBlock.subscribe(ev => {
-            if (!ev.projectile.isValid) return;
-            const entity = EntityManager.getEntity(ev.projectile);
-            if (entity === undefined) return;
-            if (entity.uuid !== uuid) return;
-
-            const spawnLocation = Vector.add(ev.source!.getHeadLocation(), {x:0, y:0.1, z:0});
-            BulletSystem.instance.spawnTrajectory(spawnLocation, ev.location, ev.dimension);
-            despawn(projectile);
-        });
-
         const projectileHitEntity = world.afterEvents.projectileHitEntity.subscribe(ev => {
-            if (!ev.projectile.isValid) return;
             const entity = EntityManager.getEntity(ev.projectile);
             if (entity === undefined) return;
             if (entity.uuid !== uuid) return;
 
             new DamageSystem(this.owner, ev.source!).applyGunDamage(entity, ev.location);
-
-            const spawnLocation = Vector.add(ev.source!.getHeadLocation(), {x:0, y:0.1, z:0});
-            BulletSystem.instance.spawnTrajectory(spawnLocation, ev.location, ev.dimension);
-            despawn(projectile);
+            
+            world.afterEvents.projectileHitEntity.unsubscribe(projectileHitEntity);
+            projectile.remove();
         });
 
-        const taskId = TaskManager.executeTask(new TimeoutTask({
-            delay: 2,
+        TaskManager.executeTask(new TimeoutTask({
+            delay: 1,
             executeFunction: () => {
                 if (!projectile.isValid) return;
-                const spawnLocation = Vector.add(this.owner.getHeadLocation(), {x:0, y:0.1, z:0});
-                BulletSystem.instance.spawnTrajectory(spawnLocation, projectile.location, this.owner.dimension);
-                despawn(projectile);
+                projectile.remove();
             }
         }));
-
-        function despawn(entity: Entity) {
-            world.afterEvents.projectileHitBlock.unsubscribe(projectileHitBlock);
-            world.afterEvents.projectileHitEntity.unsubscribe(projectileHitEntity);
-            TaskManager.removeTask(taskId);
-            entity.remove();
-        }
+        
     }
 
 }
