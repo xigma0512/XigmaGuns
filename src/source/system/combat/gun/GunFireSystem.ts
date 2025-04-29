@@ -6,6 +6,7 @@ import { BulletHandler } from "../bullet/BulletHandler";
 import { IntervalTask, TaskManager, TimeoutTask } from "../../TaskManager";
 import { PlayerOffsetSystem } from "../PlayerOffsetSystem";
 import { EntityManager } from "../../EntityManager";
+import { GunFireAnimation } from "./animation/GunFireAnimation";
 
 export class FullyAutoFire {
     
@@ -49,6 +50,7 @@ export class FullyAutoFire {
                     for (let i = gunComponent.bulletSpread; i>0; i--) {
                         new BulletHandler(owner).launch(playerOffset);
                     }
+                    GunFireAnimation.fireShacking(owner, 0.05);
                     return;
                 }
             }
