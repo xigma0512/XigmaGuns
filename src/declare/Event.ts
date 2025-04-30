@@ -1,0 +1,1 @@
+type EventType<E> = (event: E) => void;

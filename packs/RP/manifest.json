@@ -1,0 +1,21 @@
+{
+	"format_version": 2,
+	"metadata": {
+		"authors": ["xigma0512"]
+		
+	},
+	"header": {
+		"name": "Xigma Guns v1.0",
+		"description": "",
+		"min_engine_version": [1,21,60],
+		"uuid": "7e0b9313-5b05-418d-a5c0-fe0c09b88f22",
+		"version": [1,0,0]
+	},
+	"modules": [
+		{
+			"type": "resources",
+			"uuid": "03c16119-16cc-40fb-a3af-9c16fc1c4cda",
+			"version": [1,0,0]
+		}
+	]
+}
