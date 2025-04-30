@@ -4,7 +4,7 @@ import { Vector } from "../../../../utils/Vector";
 
 import { world } from "@minecraft/server";
 import { Dimension } from "@minecraft/server";
-import { Entity as mcEntity, Player, ItemStack } from "@minecraft/server";
+import { Entity , Player, ItemStack } from "@minecraft/server";
 import { Direction, Vector3 } from "@minecraft/server";
 import { ProjectileHitBlockAfterEvent } from "@minecraft/server";
 
@@ -12,12 +12,12 @@ export class Grenade {
 
     readonly handler: IGrenadeHandler;
 
-    constructor(projectile: mcEntity) {
+    constructor(projectile: Entity) {
         this.handler = this.setHandler(projectile);
         this.projectileRebound();
     }
 
-    private setHandler(projectile: mcEntity) {
+    private setHandler(projectile: Entity) {
         const family = projectile.getComponent('type_family');
         if (family !== undefined) {
             if (family.hasTypeFamily('smoke_grenade')) return new SmokeGrenadeHandler(projectile);
@@ -37,7 +37,7 @@ export class Grenade {
             [Direction.South]: {x:1,y:1,z:-1},
         };
 
-        const bounces = new WeakMap<mcEntity, number>();
+        const bounces = new WeakMap<Entity, number>();
         const hitBlockRebound = async (ev: ProjectileHitBlockAfterEvent) => {
             if (ev.projectile.id !== this.handler.projectile.id) return;
             

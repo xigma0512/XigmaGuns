@@ -1,18 +1,18 @@
 import { IElement } from "../../element/Element";
 import { Vector } from "../../../utils/Vector";
 
-import { Player, Entity as mcEntity } from "@minecraft/server";
+import { Player, Entity } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";
 
 export class DamageSystem {
 
     private _attacker: Player;
-    private _target: mcEntity;
+    private _target: Entity;
     
     private _attackerTeam: number;
     private _targetTeam: number;
 
-    constructor(attacker: Player, target: mcEntity) {
+    constructor(attacker: Player, target: Entity) {
         this._attacker = attacker;
         this._target = target;
 
@@ -55,7 +55,7 @@ export class DamageSystem {
         return 'far';
     }
 
-    private getHitType(hitLocation: Vector3, target: mcEntity): BulletHitType {
+    private getHitType(hitLocation: Vector3, target: Entity): BulletHitType {
         if (!(target instanceof Player)) return 'head';
         const targetPosition = target.location;
 

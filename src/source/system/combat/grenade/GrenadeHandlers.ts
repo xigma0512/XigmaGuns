@@ -2,12 +2,12 @@ import { RayVector, Vector } from "../../../../utils/Vector";
 import { IntervalTask, TaskManager } from "../../TaskManager";
 
 import { world, system } from "@minecraft/server";
-import { Entity as mcEntity, Player } from "@minecraft/server";
+import { Entity , Player } from "@minecraft/server";
 
 export interface IGrenadeHandler {
     readonly delay: number;
     readonly variant: number;
-    projectile: mcEntity;
+    projectile: Entity;
 
     execute(): void;
 }
@@ -15,15 +15,15 @@ export interface IGrenadeHandler {
 export class GrenadeHandler {
 
     readonly variant: number;
-    private _projectile: mcEntity;
+    private _projectile: Entity;
 
     get projectile() { return this._projectile; }
-    set projectile(value: mcEntity) {
+    set projectile(value: Entity) {
         this._projectile.remove();
         this._projectile = value;
     }
 
-    constructor(projectile: mcEntity) {
+    constructor(projectile: Entity) {
         this.variant = projectile.getComponent('mark_variant')!.value;
         this._projectile = projectile;
 
@@ -41,7 +41,7 @@ export class SmokeGrenadeHandler extends GrenadeHandler {
 
     readonly delay: number;
     
-    constructor(projectile: mcEntity) {
+    constructor(projectile: Entity) {
         super(projectile);
         this.delay = (this.variant === 0 ? 70 : 40);
     }
@@ -73,7 +73,7 @@ export class FlashbangHandler extends GrenadeHandler {
 
     readonly delay: number;
 
-    constructor(projectile: mcEntity) {
+    constructor(projectile: Entity) {
         super(projectile);
         this.delay = (this.variant === 0 ? 40 : 20);
     }
