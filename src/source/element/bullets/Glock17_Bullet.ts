@@ -1,9 +1,9 @@
 import { Player } from "@minecraft/server";
 import { BulletComponent } from "../../components/BulletComponent";
 import { GunData } from "../data/Guns";
-import { Entity } from "../Entity";
+import { Element } from "../Element";
 
-export class Glock17_Bullet extends Entity {
+export class Glock17_Bullet extends Element {
     constructor(owner: Player) {
         super('glock17_bullet');
 

@@ -1,4 +1,4 @@
-import { EntityManager } from "../source/system/EntityManager";
+import { ElementManager } from "../source/system/ElementManager";
 
 import { Player } from "@minecraft/server";
 import { EquipmentSlot } from "@minecraft/server";
@@ -14,10 +14,10 @@ export class Utils {
         });
     }
 
-    static getHandEquippedItemEntity(player: Player) {
+    static getHandEquippedItemElement(player: Player) {
         const handItem = player.getComponent('equippable')?.getEquipment(EquipmentSlot.Mainhand); 
         if (handItem === undefined) return;
-        return EntityManager.getEntity(handItem);
+        return ElementManager.getElement(handItem);
     }
 
 }

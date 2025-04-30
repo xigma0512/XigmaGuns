@@ -1,18 +1,18 @@
 import { Player, world } from "@minecraft/server";
-import { IEntity } from "../../../entity/Entity";
+import { IElement } from "../../../element/Element";
 
 import { GunSystemManager } from "./GunSystemManager";
 import { BulletHandler } from "../bullet/BulletHandler";
 import { IntervalTask, TaskManager, TimeoutTask } from "../../TaskManager";
 import { PlayerOffsetSystem } from "../PlayerOffsetSystem";
-import { EntityManager } from "../../EntityManager";
+import { ElementManager } from "../../ElementManager";
 import { GunFireAnimation } from "./animation/GunFireAnimation";
 
 export class FullyAutoFire {
     
-    readonly gun: IEntity;
+    readonly gun: IElement;
 
-    constructor(gun: IEntity) {
+    constructor(gun: IElement) {
         this.gun = gun;
         this._addListener();
     }
@@ -22,7 +22,7 @@ export class FullyAutoFire {
         if (gunComponent.releaseToFire) {
             world.afterEvents.itemReleaseUse.subscribe(ev => {
                 if (ev.itemStack === undefined) return;
-                const gunEntity = EntityManager.getEntity(ev.itemStack);
+                const gunEntity = ElementManager.getElement(ev.itemStack);
                 if (gunEntity === undefined) return;
                 if (gunEntity.uuid !== this.gun.uuid) return;    
                 this.fire(ev.source);
@@ -30,7 +30,7 @@ export class FullyAutoFire {
         }
         else {
             world.afterEvents.itemStartUse.subscribe(ev => {
-                const gunEntity = EntityManager.getEntity(ev.itemStack);
+                const gunEntity = ElementManager.getElement(ev.itemStack);
                 if (gunEntity === undefined) return;
                 if (gunEntity.uuid !== this.gun.uuid) return;    
                 this.fire(ev.source);
@@ -50,8 +50,7 @@ export class FullyAutoFire {
                     for (let i = gunComponent.bulletSpread; i>0; i--) {
                         new BulletHandler(owner).launch(playerOffset);
                     }
-                    GunFireAnimation.fireShacking(owner, 0.05);
-                    return;
+                    return GunFireAnimation.fireShacking(owner, 0.05);
                 }
             }
         }));
@@ -82,10 +81,10 @@ export class FullyAutoFire {
 
 export class SemiAutoFire {
 
-    readonly gun: IEntity;
+    readonly gun: IElement;
     private _cooldown: boolean = false;
 
-    constructor(gun: IEntity) {
+    constructor(gun: IElement) {
         this.gun = gun;
         this._addListener();
     }
@@ -95,7 +94,7 @@ export class SemiAutoFire {
         if (gunComponent.releaseToFire) {
             world.afterEvents.itemReleaseUse.subscribe(ev => {
                 if (ev.itemStack === undefined) return;
-                const gunEntity = EntityManager.getEntity(ev.itemStack);
+                const gunEntity = ElementManager.getElement(ev.itemStack);
                 if (gunEntity === undefined) return;
                 if (gunEntity.uuid !== this.gun.uuid) return;
                 this.fire(ev.source);
@@ -103,7 +102,7 @@ export class SemiAutoFire {
         }
         else {
             world.afterEvents.itemStartUse.subscribe(ev => {
-                const gunEntity = EntityManager.getEntity(ev.itemStack);
+                const gunEntity = ElementManager.getElement(ev.itemStack);
                 if (gunEntity === undefined) return;
                 if (gunEntity.uuid !== this.gun.uuid) return;
                 this.fire(ev.source);

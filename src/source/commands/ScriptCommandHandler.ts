@@ -5,7 +5,7 @@ import { GunSystemManager } from "../system/combat/gun/GunSystemManager";
 
 const Scripts = {
     reload: function (player: Player) {
-        const entity = Utils.getHandEquippedItemEntity(player);
+        const entity = Utils.getHandEquippedItemElement(player);
         if (entity === undefined) return;
         GunSystemManager.instance.get(entity.uuid)!.reload.reload(player);
     },

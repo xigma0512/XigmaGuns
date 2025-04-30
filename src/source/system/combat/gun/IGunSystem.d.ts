@@ -1,5 +1,5 @@
 import { Player } from "@minecraft/server";
-import { IEntity } from "../../../entity/Entity";
+import { IElement } from "../../../element/Element";
 
 declare type GunSystems = {
     'fire': IGunFireSystem;
@@ -8,17 +8,17 @@ declare type GunSystems = {
 }
 
 declare interface IGunFireSystem {
-    readonly gun: IEntity;
+    readonly gun: IElement;
     fire(owner: Player): void;
 }
 
 declare interface IGunReloadSystem {
-    readonly gun: IEntity;
+    readonly gun: IElement;
     reload(owner: Player): void;
 }
 
 declare interface IGunMagazineSystem {
-    readonly gun: IEntity;
+    readonly gun: IElement;
     ammo: number;
     readonly capacity: number;
     storageAmmo: number;

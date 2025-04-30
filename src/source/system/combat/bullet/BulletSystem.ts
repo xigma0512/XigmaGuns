@@ -1,7 +1,7 @@
-import { Bullets, GunTypes } from "../../../../declare/entity/BulletTypes";
+import { Bullets, GunTypes } from "../../../../declare/element/BulletTypes";
 import { RayVector, Vector } from "../../../../utils/Vector";
-import { IEntity } from "../../../entity/Entity";
-import { EntityManager } from "../../EntityManager";
+import { IElement } from "../../../element/Element";
+import { ElementManager } from "../../ElementManager";
 
 import { Dimension, Player, system, world } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";
@@ -10,10 +10,10 @@ export class BulletSystem {
 
     private static _instance: BulletSystem;
     static get instance() { return (this._instance || (this._instance = new this())); }
-    private _bullets: Map<string, IEntity>;
+    private _bullets: Map<string, IElement>;
 
     private constructor() {
-        this._bullets = new Map<string, IEntity>();
+        this._bullets = new Map<string, IElement>();
     }
 
     spawnBullet(owner: Player, gunType: GunTypes) {
@@ -30,7 +30,7 @@ export class BulletSystem {
         };
 
         const projectile = owner.dimension.spawnEntity('xigmaguns:bullet', spawnLocation);
-        EntityManager.registerEntity(bullet, projectile);
+        ElementManager.createElement(bullet, projectile);
 
         return {bullet, projectile};
     }
@@ -57,12 +57,12 @@ export class BulletSystem {
 
     private _addClearListener(uuid: string) {
         const entityRemove = world.beforeEvents.entityRemove.subscribe(ev => {
-            const entity = EntityManager.getEntity(ev.removedEntity);
+            const entity = ElementManager.getElement(ev.removedEntity);
             if (entity === undefined) return;
             if (entity.uuid !== uuid) return;
             
             this._bullets.delete(uuid);
-            EntityManager.unRegisterEntity(uuid);
+            ElementManager.removeElement(uuid);
             system.run(()=> world.beforeEvents.entityRemove.unsubscribe(entityRemove));
         });
     }

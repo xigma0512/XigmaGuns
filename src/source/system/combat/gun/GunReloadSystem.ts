@@ -1,15 +1,15 @@
 import { Player, world } from "@minecraft/server";
-import { IEntity } from "../../../entity/Entity";
+import { IElement } from "../../../element/Element";
 import { GunSystemManager } from "./GunSystemManager";
 import { IntervalTask, TaskManager } from "../../TaskManager";
 import { customEvents } from "../../../event/custom/CustomEventManager";
 
 export class GunReloadSystem {
     
-    readonly gun: IEntity;
+    readonly gun: IElement;
     private _reloading: boolean = false;
 
-    constructor(gun: IEntity) {
+    constructor(gun: IElement) {
         this.gun = gun;
     }
 

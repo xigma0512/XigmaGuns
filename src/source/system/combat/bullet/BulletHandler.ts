@@ -1,6 +1,6 @@
 import { BulletSystem } from "./BulletSystem";
-import { GunTypes } from "../../../../declare/entity/BulletTypes";
-import { EntityManager } from "../../EntityManager";
+import { GunTypes } from "../../../../declare/element/BulletTypes";
+import { ElementManager } from "../../ElementManager";
 import { TaskManager, TimeoutTask } from "../../TaskManager";
 import { DamageSystem } from "../DamageSystem";
 
@@ -18,7 +18,7 @@ export class BulletHandler {
     }
 
     launch(offset: number) {
-        const handWeapon = Utils.getHandEquippedItemEntity(this.owner);
+        const handWeapon = Utils.getHandEquippedItemElement(this.owner);
         const {bullet, projectile} = BulletSystem.instance.spawnBullet(this.owner, handWeapon!.typeId as GunTypes);
         
         const projectileComponent = projectile.getComponent('projectile')!;
@@ -33,7 +33,7 @@ export class BulletHandler {
     private _addImpactListener(uuid: string, projectile: Entity) {
 
         const projectileHitEntity = world.afterEvents.projectileHitEntity.subscribe(ev => {
-            const entity = EntityManager.getEntity(ev.projectile);
+            const entity = ElementManager.getElement(ev.projectile);
             if (entity === undefined) return;
             if (entity.uuid !== uuid) return;
 

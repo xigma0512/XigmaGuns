@@ -1,10 +1,10 @@
-import { IEntity } from "../../../entity/Entity";
+import { IElement } from "../../../element/Element";
 
 export class GunMagazineSystem {
 
-    readonly gun: IEntity;
+    readonly gun: IElement;
 
-    constructor(gun: IEntity) {
+    constructor(gun: IElement) {
         this.gun = gun;
     }
 

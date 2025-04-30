@@ -4,7 +4,7 @@ import { Utils } from "../../../utils/Utils";
 export class PlayerOffsetSystem {
 
     static getOffset(owner: Player) {
-        const handWeapon = Utils.getHandEquippedItemEntity(owner);
+        const handWeapon = Utils.getHandEquippedItemElement(owner);
         if (handWeapon === undefined) return 0;
         
         const offsetComponent = handWeapon.getComponent('offset');

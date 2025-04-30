@@ -1,4 +1,4 @@
-import { IEntity } from "../../../entity/Entity";
+import { IElement } from "../../../element/Element";
 import { FullyAutoFire, SemiAutoFire } from "./GunFireSystem";
 import { GunMagazineSystem } from "./GunMagazineSystem";
 import { GunReloadSystem } from "./GunReloadSystem";
@@ -19,7 +19,7 @@ export class GunSystemManager {
         return this._systems.get(uuid);
     }
 
-    register(gun: IEntity) {
+    register(gun: IElement) {
         const gunComponent = gun.getComponent('gun')!;
 
         const fireHandlers = (gunComponent.fireMode === 'semi-auto') ? new SemiAutoFire(gun) : new FullyAutoFire(gun);
