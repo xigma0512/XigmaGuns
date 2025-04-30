@@ -17,6 +17,8 @@ export namespace GunData {
             bulletSpread: 7,
             releaseToFire: false,
             fireRate: 4,
+            shackingLevel: 0.05,
+            shackingDuration: 0.15,
             reload_time: 30
         },
         'offset': {
@@ -50,6 +52,8 @@ export namespace GunData {
             bulletSpread: 1,
             releaseToFire: true,
             fireRate: 4,
+            shackingLevel: 0.05,
+            shackingDuration: 0.15,
             reload_time: 30
         },
         'offset': {

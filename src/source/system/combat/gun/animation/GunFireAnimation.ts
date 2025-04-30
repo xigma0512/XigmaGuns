@@ -1,7 +1,7 @@
 import { Player } from "@minecraft/server";
 
 export class GunFireAnimation {
-    static fireShacking(target: Player, level: number) {
-        target.runCommand(`camerashake add @s ${level} 0.15 rotational`);
+    static fireShacking(target: Player, level: number, duration: number) {
+        target.runCommand(`camerashake add @s ${level} ${duration} rotational`);
     }
 }

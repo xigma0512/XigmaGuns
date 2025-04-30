@@ -7,6 +7,8 @@ export interface IGunComponent {
     
     readonly bulletSpread: number;
     readonly fireRate: number;
+    readonly shackingLevel: number;
+    readonly shackingDuration: number;
     readonly reload_time: number;
 }
 
@@ -20,6 +22,8 @@ export class GunComponent extends Component {
     
     readonly bulletSpread: number;
     readonly fireRate: number;
+    readonly shackingLevel: number;
+    readonly shackingDuration: number;
     readonly reload_time: number;
 
     constructor(data?: GunComponentData) {
@@ -29,6 +33,8 @@ export class GunComponent extends Component {
         this.bulletSpread = data?.bulletSpread ?? 1;
         this.releaseToFire = data?.releaseToFire ?? false;
         this.fireRate = data?.fireRate ?? 4;
+        this.shackingLevel = data?.shackingLevel ?? 0.05;
+        this.shackingDuration = data?.shackingDuration ?? 0.15;
         this.reload_time = data?.reload_time ?? 0;
     }
 

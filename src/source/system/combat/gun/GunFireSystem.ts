@@ -50,7 +50,7 @@ export class FullyAutoFire {
                     for (let i = gunComponent.bulletSpread; i>0; i--) {
                         new BulletHandler(owner).launch(playerOffset);
                     }
-                    return GunFireAnimation.fireShacking(owner, 0.05);
+                    return GunFireAnimation.fireShacking(owner, gunComponent.shackingLevel, gunComponent.shackingDuration);
                 }
             }
         }));
@@ -120,6 +120,8 @@ export class SemiAutoFire {
             for (let i = gunComponent.bulletSpread; i>0; i--) {
                 new BulletHandler(owner).launch(playerOffset);
             }
+            GunFireAnimation.fireShacking(owner, gunComponent.shackingLevel, gunComponent.shackingDuration);
+            
             this._cooldown = true;
 
             TaskManager.executeTask(new TimeoutTask({
