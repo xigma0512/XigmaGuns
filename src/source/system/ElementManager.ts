@@ -28,7 +28,7 @@ export class ElementManager {
     static createElement(entity: IElement, target?: Entity | ItemStack) {
         this._entities.set(entity.uuid, entity);
         if (target === undefined) return;
-        if (target instanceof Entity) this._nativeIds.set(entity.uuid, target.id);
+        if (target instanceof Entity) this._nativeIds.set(target.id, entity.uuid);
         target.setDynamicProperty('xigmaguns:uuid', entity.uuid);
     }
 
