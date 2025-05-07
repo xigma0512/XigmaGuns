@@ -31,16 +31,11 @@ export class DamageSystem {
         const damage = damageComp[this.distance()][hitType];
 
         const healthComp = this._target.getComponent('health')!;
-        let is_alive = true;
         if (healthComp.currentValue - damage > 0) {
             healthComp.setCurrentValue(healthComp.currentValue - damage);
         } else {
-            is_alive = false;
-            if (this._target instanceof Player) this._target.setGameMode(GameMode.spectator);
+            this._target.runCommand(`scriptevent xf:shot_death ${this._attacker.id}`);
         }
-
-        this._target.runCommand(`scriptevent xf:under_attack ${this._attacker.id}`);
-        set_scoreboard_property(this._target, 'is_alive', is_alive);
 
         this._attacker.playSound('game.player.hurt');
         if (this._target instanceof Player) this._target.playSound('random.hurt');
