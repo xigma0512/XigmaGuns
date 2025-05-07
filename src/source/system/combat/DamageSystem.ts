@@ -1,7 +1,7 @@
 import { IElement } from "../../element/Element";
 import { Vector } from "../../../utils/Vector";
 
-import { Player, Entity } from "@minecraft/server";
+import { Player, Entity, world } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";
 
 export class DamageSystem {
@@ -16,8 +16,8 @@ export class DamageSystem {
         this._attacker = attacker;
         this._target = target;
 
-        this._attackerTeam = attacker.getDynamicProperty('xigmaguns:team') as number;
-        this._targetTeam = target.getDynamicProperty('xigmaguns:team') as number;
+        this._attackerTeam = world.scoreboard.getObjective('team')!.getScore(attacker) as number;
+        this._targetTeam = world.scoreboard.getObjective('team')!.getScore(target) as number;
     }
     
     applyGunDamage(bulletEntity: IElement, hitLocation: Vector3) {
@@ -36,11 +36,9 @@ export class DamageSystem {
         } else {
             is_alive = false;
         }
-        
-        this._target.setDynamicProperties({
-            'xigmaguns:damage.attackerId': this._attacker.id,
-            'xigmaguns:is_alive': is_alive
-        });
+
+        this._target.runCommand(`scriptevent xf:under_attack ${this._attacker.id}`)
+        world.scoreboard.getObjective('is_alive')!.setScore(this._target, Number(is_alive));
 
         this._attacker.playSound('game.player.hurt');
         if (this._target instanceof Player) this._target.playSound('random.hurt');
