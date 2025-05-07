@@ -2,6 +2,7 @@ import { IElement } from "../element/Element";
 
 import { Entity } from "@minecraft/server";
 import { ItemStack } from "@minecraft/server";
+import { entity_property, set_entity_property } from "../../utils/Property";
 
 export class ElementManager {
 
@@ -12,7 +13,7 @@ export class ElementManager {
     static getElement(target: Entity | ItemStack) {
         const uuid = (target instanceof Entity) 
             ? this._nativeIds.get(target.id) 
-            : target.getDynamicProperty('xigmaguns:uuid') as string | undefined;
+            : entity_property(target, 'uuid');
         
         if (uuid === undefined) return undefined;
         return this._entities.get(uuid);
@@ -29,7 +30,7 @@ export class ElementManager {
         this._entities.set(entity.uuid, entity);
         if (target === undefined) return;
         if (target instanceof Entity) this._nativeIds.set(target.id, entity.uuid);
-        target.setDynamicProperty('xigmaguns:uuid', entity.uuid);
+        set_entity_property(target, 'uuid', entity.uuid);
     }
 
 }

@@ -1,7 +1,8 @@
 import { IElement } from "../../element/Element";
 import { Vector } from "../../../utils/Vector";
+import { scoreboard_property, set_scoreboard_property } from "../../../utils/Property";
 
-import { Player, Entity, world } from "@minecraft/server";
+import { Player, Entity, GameMode } from "@minecraft/server";
 import { Vector3 } from "@minecraft/server";
 
 export class DamageSystem {
@@ -16,8 +17,8 @@ export class DamageSystem {
         this._attacker = attacker;
         this._target = target;
 
-        this._attackerTeam = world.scoreboard.getObjective('team')!.getScore(attacker) as number;
-        this._targetTeam = world.scoreboard.getObjective('team')!.getScore(target) as number;
+        this._attackerTeam = scoreboard_property(this._attacker, 'team');
+        this._targetTeam = scoreboard_property(this._target, 'team');
     }
     
     applyGunDamage(bulletEntity: IElement, hitLocation: Vector3) {
@@ -35,10 +36,11 @@ export class DamageSystem {
             healthComp.setCurrentValue(healthComp.currentValue - damage);
         } else {
             is_alive = false;
+            if (this._target instanceof Player) this._target.setGameMode(GameMode.spectator);
         }
 
-        this._target.runCommand(`scriptevent xf:under_attack ${this._attacker.id}`)
-        world.scoreboard.getObjective('is_alive')!.setScore(this._target, Number(is_alive));
+        this._target.runCommand(`scriptevent xf:under_attack ${this._attacker.id}`);
+        set_scoreboard_property(this._target, 'is_alive', is_alive);
 
         this._attacker.playSound('game.player.hurt');
         if (this._target instanceof Player) this._target.playSound('random.hurt');
