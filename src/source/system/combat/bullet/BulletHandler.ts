@@ -37,10 +37,9 @@ export class BulletHandler {
             if (entity === undefined) return;
             if (entity.uuid !== uuid) return;
 
-            new DamageSystem(this.owner, ev.source!).applyGunDamage(entity, ev.location);
+            new DamageSystem(this.owner, ev.getEntityHit().entity!).applyGunDamage(entity, ev.location);
             
             world.afterEvents.projectileHitEntity.unsubscribe(projectileHitEntity);
-            projectile.remove();
         });
 
         TaskManager.executeTask(new TimeoutTask({

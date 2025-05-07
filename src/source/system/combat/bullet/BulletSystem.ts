@@ -1,6 +1,5 @@
 import { Bullets, GunTypes } from "../../../../declare/element/BulletTypes";
 import { RayVector, Vector } from "../../../../utils/Vector";
-import { IElement } from "../../../element/Element";
 import { ElementManager } from "../../ElementManager";
 
 import { Dimension, Player, system, world } from "@minecraft/server";
@@ -10,15 +9,12 @@ export class BulletSystem {
 
     private static _instance: BulletSystem;
     static get instance() { return (this._instance || (this._instance = new this())); }
-    private _bullets: Map<string, IElement>;
 
     private constructor() {
-        this._bullets = new Map<string, IElement>();
     }
 
     spawnBullet(owner: Player, gunType: GunTypes) {
         const bullet = new Bullets[gunType](owner);
-        this._bullets.set(bullet.uuid, bullet);
         this._addClearListener(bullet.uuid);
 
         const headLocation = owner.getHeadLocation();
@@ -61,9 +57,10 @@ export class BulletSystem {
             if (entity === undefined) return;
             if (entity.uuid !== uuid) return;
             
-            this._bullets.delete(uuid);
-            ElementManager.removeElement(uuid);
-            system.run(()=> world.beforeEvents.entityRemove.unsubscribe(entityRemove));
+            system.run(() => {
+                ElementManager.removeElement(uuid);
+                world.beforeEvents.entityRemove.unsubscribe(entityRemove);
+            });
         });
     }
 
