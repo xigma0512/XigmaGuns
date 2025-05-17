@@ -22,7 +22,7 @@ export namespace GunData {
             reload_time: 30
         },
         'offset': {
-            hippie: 4,
+            hipfire: 4,
             movement: 2,
             scope: 0.1
         },
@@ -57,7 +57,7 @@ export namespace GunData {
             reload_time: 30
         },
         'offset': {
-            hippie: 0.1,
+            hipfire: 0.1,
             movement: 4,
             scope: 0.1
         },

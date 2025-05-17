@@ -12,8 +12,8 @@ export class PlayerOffsetSystem {
         if (offsetComponent === undefined) return 0;
 
         if (owner.isSneaking) return offsetComponent.scope;
-        if (entity_property(owner, 'is_moving')) return offsetComponent.hippie + offsetComponent.movement;
-        return offsetComponent.hippie;
+        if (entity_property(owner, 'is_moving')) return offsetComponent.hipfire + offsetComponent.movement;
+        return offsetComponent.hipfire;
     }
 
 }
