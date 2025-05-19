@@ -3,7 +3,7 @@ import { RayVector, Vector } from "../../../../utils/Vector";
 import { ElementManager } from "../../ElementManager";
 
 import { Dimension, Player, system, world } from "@minecraft/server";
-import { Vector3 } from "@minecraft/server";
+import { Vector3, VanillaEntityIdentifier } from "@minecraft/server";
 
 export class BulletSystem {
 
@@ -25,7 +25,7 @@ export class BulletSystem {
             z: headLocation.z + viewDirection.z
         };
 
-        const projectile = owner.dimension.spawnEntity('xigmaguns:bullet', spawnLocation);
+        const projectile = owner.dimension.spawnEntity('xigmaguns:bullet' as keyof VanillaEntityIdentifier, spawnLocation);
         ElementManager.createElement(bullet, projectile);
 
         return {bullet, projectile};
