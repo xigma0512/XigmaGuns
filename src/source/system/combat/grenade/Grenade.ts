@@ -5,7 +5,7 @@ import { Vector } from "../../../../utils/Vector";
 import { world } from "@minecraft/server";
 import { Dimension } from "@minecraft/server";
 import { Entity , Player, ItemStack } from "@minecraft/server";
-import { Direction, Vector3 } from "@minecraft/server";
+import { Direction, Vector3, VanillaEntityIdentifier } from "@minecraft/server";
 import { ProjectileHitBlockAfterEvent } from "@minecraft/server";
 
 export class Grenade {
@@ -69,10 +69,10 @@ export class Grenade {
     }
 
     private spawnClone(dimension: Dimension, location: Vector3) {
-        const typeId = this.handler.projectile.typeId;
-        const throwingType = (this.handler.variant === 0 ? '<set_overhand>' : '<set_underhand>');
+        const typeId = this.handler.projectile.typeId as keyof VanillaEntityIdentifier;
+        const spawnEvent = (this.handler.variant === 0 ? 'set_overhand' : 'set_underhand');
 
-        const entity = dimension.spawnEntity(typeId + throwingType, location);
+        const entity = dimension.spawnEntity(typeId, location, {'spawnEvent': spawnEvent});
         entity.addTag('rebound');
         return entity;
     }
