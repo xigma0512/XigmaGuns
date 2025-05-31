@@ -19,6 +19,8 @@
                 "tpp_hold": "animation.glock17.tpp_hold",
                 "draw": "animation.glock17.draw",
                 "reload": "animation.glock17.reload",
+                "reloadempty": "animation.glock17.reloadempty",
+                "inspect": "animation.glock17.inspect",
                 "fpp_controller": "controller.animation.item.fpp_glock17",
                 "tpp_controller": "controller.animation.item.tpp_glock17"
             },

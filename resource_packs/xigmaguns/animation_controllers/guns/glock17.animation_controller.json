@@ -12,6 +12,14 @@
                         { "draw": "1" }
                     ]
                 },
+                "hold": {
+                    "animations": [
+                        "fpp_hold"
+                    ],
+                    "transitions": [
+                        { "reload": "c.owning_entity->q.property('gun:is_reloading')" }
+                    ]
+                },
                 "draw": {
                     "animations": [
                         "draw"
@@ -29,12 +37,20 @@
                         { "hold": "q.all_animations_finished" }
                     ]
                 },
-                "hold": {
+                "reloadempty": {
                     "animations": [
-                        "fpp_hold"
+                        "reloadempty"
                     ],
                     "transitions": [
-                        { "reload": "c.owning_entity->q.property('gun:is_reloading')" }
+                        { "hold": "q.all_animations_finished" }
+                    ]
+                },
+                "inspect": {
+                    "animations": [
+                        "inspect"
+                    ],
+                    "transitions": [
+                        { "hold": "q.all_animations_finished" }
                     ]
                 }
             }
