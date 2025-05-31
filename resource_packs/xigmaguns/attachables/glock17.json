@@ -19,11 +19,13 @@
                 "tpp_hold": "animation.glock17.tpp_hold",
                 "draw": "animation.glock17.draw",
                 "reload": "animation.glock17.reload",
-                "controller": "controller.animation.item.glock17"
+                "fpp_controller": "controller.animation.item.fpp_glock17",
+                "tpp_controller": "controller.animation.item.tpp_glock17"
             },
             "scripts": {
                 "animate": [
-                    "controller"
+                    { "fpp_controller": "c.is_first_person" },
+                    { "tpp_controller": "!c.is_first_person" }
                 ]
             },
             "render_controllers": [

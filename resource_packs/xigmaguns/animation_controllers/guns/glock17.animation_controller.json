@@ -1,17 +1,15 @@
 {
     "format_version": "1.20.0",
     "animation_controllers": {
-        "controller.animation.item.glock17": {
-            "initial_state": "default",
+        "controller.animation.item.fpp_glock17": {
+            "initial_state": "fpp_default",
             "states": {
-                "default": {
+                "fpp_default": {
+                    "animations": [
+                        "fpp_hold"
+                    ],
                     "transitions": [
-                        {
-                            "draw": "c.is_first_person"
-                        },
-                        {
-                            "tpp_hold": "!c.is_first_person"
-                        }
+                        { "draw": "1" }
                     ]
                 },
                 "draw": {
@@ -19,12 +17,8 @@
                         "draw"
                     ],
                     "transitions": [
-                        {
-                            "hold": "q.all_animations_finished"
-                        },
-                        {
-                            "reload": "c.owning_entity->q.property('gun:is_reloading')"
-                        }
+                        { "hold": "q.all_animations_finished" },
+                        { "reload": "c.owning_entity->q.property('gun:is_reloading')" }
                     ]
                 },
                 "reload": {
@@ -32,32 +26,23 @@
                         "reload"
                     ],
                     "transitions": [
-                        {
-                            "hold": "q.all_animations_finished"
-                        }
+                        { "hold": "q.all_animations_finished" }
                     ]
                 },
                 "hold": {
-                    "transitions": [
-                        {
-                            "fpp_hold": "q.all_animations_finished && c.is_first_person"
-                        },
-                        {
-                            "tpp_hold": "q.all_animations_finished && !c.is_first_person"
-                        }
-                    ]
-                },
-                "fpp_hold": {
                     "animations": [
                         "fpp_hold"
                     ],
                     "transitions": [
-                        {
-                            "reload": "c.owning_entity->q.property('gun:is_reloading')"
-                        }
+                        { "reload": "c.owning_entity->q.property('gun:is_reloading')" }
                     ]
-                },
-                "tpp_hold": {
+                }
+            }
+        },
+        "controller.animation.item.tpp_glock17": {
+            "initial_state": "tpp_default",
+            "states": {
+                "tpp_default": {
                     "animations": [
                         "tpp_hold"
                     ]
