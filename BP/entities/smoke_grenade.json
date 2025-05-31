@@ -1,0 +1,129 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "xigmaguns:smoke_grenade",
+			"is_spawnable": false,
+			"is_summonable": true,
+			"is_experimental": false,
+			"runtime_identifier": "snowball"
+		},
+        "component_groups": {
+            "despawn": {
+                "minecraft:instant_despawn": {}
+            },
+            "overhand_throw": {
+                "minecraft:mark_variant": {
+                    "value": 0
+                },
+                "minecraft:projectile": {
+                    "on_hit": {
+                        "stick_in_ground": {
+                            "shack_time": 0.1
+                        }
+                    },
+                    "ignored_entities": [
+                        "player"
+                    ],
+                    "angle_offset": -20,
+                    "anchor": 1,
+                    "power": 1.2,
+                    "gravity": 0.08,
+                    "inertia": 1,
+                    "liquid_inertia": 1,
+                    "offset": [0, -0.1, 0]
+                }
+            },
+            "underhand_throw": {
+                "minecraft:mark_variant": {
+                    "value": 1
+                },
+                "minecraft:projectile": {
+                    "on_hit": {
+                        "stick_in_ground": {
+                            "shack_time": 0.1
+                        }
+                    },
+                    "ignored_entities": [
+                        "player"
+                    ],
+                    "angle_offset": -20,
+                    "anchor": 1,
+                    "power": 0.5,
+                    "gravity": 0.08,
+                    "inertia": 1,
+                    "liquid_inertia": 1,
+                    "offset": [0, -0.1, 0]
+                }
+            }
+        },
+		"components": {
+            "minecraft:type_family": {
+                "family": [
+                    "projectile",
+                    "grenade",
+                    "smoke_grenade"
+                ]
+            },
+			"minecraft:collision_box": {
+				"width": 0.2,
+				"height": 0.2
+			},
+            "minecraft:scale": {
+                "value": 0.2
+            },
+			"minecraft:physics": {},
+			"minecraft:conditional_bandwidth_optimization": {
+				"default_values": {
+					"max_optimized_distance": 100,
+					"max_dropped_ticks": 7,
+					"use_motion_prediction_hints": true
+				}
+			},
+            "minecraft:timer": {
+                "time": 5,
+                "looping": true,
+                "time_down_event": {
+                    "event": "despawn"
+                }
+            }
+		},
+        "events": {
+            "despawn": {
+                "add": {
+                    "component_groups": [
+                        "despawn"
+                    ]
+                }
+            },
+            "set_overhand": {
+                "add": {
+                    "component_groups": [
+                        "overhand_throw"
+                    ]
+                }
+            },
+            "set_underhand": {
+                "add": {
+                    "component_groups": [
+                        "underhand_throw"
+                    ]
+                }
+            },
+            "execute": {
+                "queue_command": {
+                    "command": [
+                        "playsound xigmaguns.smoke_explode @a ~~~ 3 1"
+                    ]
+                }
+            },
+            "throwing": {
+                "queue_command": {
+                    "command": [
+                        "playsound xigmaguns.throwing_smoke @a ~~~ 1 1"
+                    ]
+                }
+            }
+        }
+	}
+}
