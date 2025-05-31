@@ -1,0 +1,42 @@
+{
+    "format_version": "1.8.0",
+    "animations": {
+        "animation.smoke_grenade_item.fpp_hold": {
+            "loop": true,
+            "animation_length": 0.0417,
+            "bones": {
+                "main": {
+                    "rotation": [
+                        -329.46625,
+                        -38.90584,
+                        201.52476
+                    ],
+                    "position": [
+                        5.75,
+                        25.5,
+                        3.5
+                    ],
+                    "scale": 0.4
+                }
+            }
+        },
+        "animation.smoke_grenade_item.tpp_hold": {
+            "loop": true,
+            "bones": {
+                "main": {
+                    "rotation": [
+                        90.34723,
+                        0.05344,
+                        180.02472
+                    ],
+                    "position": [
+                        0,
+                        23,
+                        -1.7
+                    ],
+                    "scale": 0.15
+                }
+            }
+        }
+    }
+}

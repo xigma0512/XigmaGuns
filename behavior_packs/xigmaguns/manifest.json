@@ -1,0 +1,60 @@
+{
+    "format_version": 2,
+    "metadata": {
+        "authors": [
+            "xigma0512"
+        ]
+    },
+    "header": {
+        "name": "XigmaGuns - v1.0",
+        "description": "",
+        "uuid": "f259f096-f207-47c7-be22-a19298396778",
+        "version": [
+            1,
+            0,
+            0
+        ],
+        "min_engine_version": [
+            1,
+            21,
+            51
+        ]
+    },
+    "modules": [
+        {
+            "type": "data",
+            "uuid": "b3c6045c-3ac0-45ad-ac49-550b994ae692",
+            "version": [
+                1,
+                0,
+                0
+            ]
+        },
+        {
+            "description": "",
+            "type": "script",
+            "language": "javascript",
+            "uuid": "36cb68e8-7971-4346-80a1-48ee8ff4caac",
+            "version": [
+                1,
+                0,
+                0
+            ],
+            "entry": "scripts/main.js"
+        }
+    ],
+    "dependencies": [
+        {
+            "module_name": "@minecraft/server",
+            "version": "2.0.0-beta"
+        },
+        {
+            "uuid": "7e0b9313-5b05-418d-a5c0-fe0c09b88f22",
+            "version": [
+                1,
+                0,
+                0
+            ]
+        }
+    ]
+}
