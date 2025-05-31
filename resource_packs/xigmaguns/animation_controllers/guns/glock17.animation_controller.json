@@ -1,0 +1,68 @@
+{
+    "format_version": "1.20.0",
+    "animation_controllers": {
+        "controller.animation.item.glock17": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "draw": "c.is_first_person"
+                        },
+                        {
+                            "tpp_hold": "!c.is_first_person"
+                        }
+                    ]
+                },
+                "draw": {
+                    "animations": [
+                        "draw"
+                    ],
+                    "transitions": [
+                        {
+                            "hold": "q.all_animations_finished"
+                        },
+                        {
+                            "reload": "c.owning_entity->q.property('gun:is_reloading')"
+                        }
+                    ]
+                },
+                "reload": {
+                    "animations": [
+                        "reload"
+                    ],
+                    "transitions": [
+                        {
+                            "hold": "q.all_animations_finished"
+                        }
+                    ]
+                },
+                "hold": {
+                    "transitions": [
+                        {
+                            "fpp_hold": "q.all_animations_finished && c.is_first_person"
+                        },
+                        {
+                            "tpp_hold": "q.all_animations_finished && !c.is_first_person"
+                        }
+                    ]
+                },
+                "fpp_hold": {
+                    "animations": [
+                        "fpp_hold"
+                    ],
+                    "transitions": [
+                        {
+                            "reload": "c.owning_entity->q.property('gun:is_reloading')"
+                        }
+                    ]
+                },
+                "tpp_hold": {
+                    "animations": [
+                        "tpp_hold"
+                    ]
+                }
+            }
+        }
+    }
+}

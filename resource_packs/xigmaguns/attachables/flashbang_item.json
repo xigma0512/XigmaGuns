@@ -1,0 +1,36 @@
+{
+    "format_version": "1.20.0",
+    "minecraft:attachable": {
+        "description": {
+            "identifier": "xigmaguns:flashbang_item",
+            "materials": {
+                "default": "entity_alphatest",
+                "enchanted": "entity_alphatest_glint"
+            },
+            "textures": {
+                "default": "textures/grenades/flashbang",
+                "enchanted": "textures/misc/enchanted_item_glint"
+            },
+            "geometry": {
+                "default": "geometry.flashbang"
+            },
+            "animations": {
+                "fpp_hold": "animation.flashbang_item.fpp_hold",
+                "tpp_hold": "animation.flashbang_item.tpp_hold"
+            },
+            "scripts": {
+                "animate": [
+                    {
+                        "fpp_hold": "c.is_first_person"
+                    },
+                    {
+                        "tpp_hold": "!c.is_first_person"
+                    }
+                ]
+            },
+            "render_controllers": [
+                "controller.render.item_default"
+            ]
+        }
+    }
+}

@@ -1,0 +1,27 @@
+{
+	"format_version": "1.20.80",
+	"minecraft:item": {
+		"description": {
+			"identifier": "xigmaguns:flashbang_item",
+			"menu_category": {
+				"category": "equipment"
+			}
+		},
+		"components": {
+            "minecraft:tags": {
+                "tags": [
+                    "xigmaguns:grenade",
+                    "xigmaguns:flashbang"
+                ]
+            },
+            "minecraft:max_stack_size": 16,
+            "minecraft:icon": "flashbang_item",
+            "minecraft:display_name": {
+                "value": "Flashbang"
+            },
+            "minecraft:projectile": {
+                "projectile_entity": "xigmaguns:flashbang"
+            }
+		}
+	}
+}

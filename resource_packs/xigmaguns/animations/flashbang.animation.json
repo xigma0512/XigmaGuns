@@ -1,0 +1,41 @@
+{
+    "format_version": "1.8.0",
+    "animations": {
+        "animation.flashbang_item.fpp_hold": {
+            "loop": true,
+            "bones": {
+                "body": {
+                    "rotation": [
+                        -296.37407,
+                        -59.15255,
+                        148.52945
+                    ],
+                    "position": [
+                        -10.5,
+                        2.3,
+                        -3.8
+                    ],
+                    "scale": 0.4
+                }
+            }
+        },
+        "animation.flashbang_item.tpp_hold": {
+            "loop": true,
+            "bones": {
+                "body": {
+                    "rotation": [
+                        80,
+                        0,
+                        0
+                    ],
+                    "position": [
+                        -4,
+                        3.3,
+                        -6.7
+                    ],
+                    "scale": 0.2
+                }
+            }
+        }
+    }
+}
