@@ -15,6 +15,17 @@
             "animations": {
                 "reload": "controller.animation.reload",
                 "movement": "controller.animation.movement"
+            },
+            "properties": {
+                "gun:is_reloading": {
+                    "client_sync": true,
+                    "type": "int",
+                    "default": 0,
+                    "range": [
+                        0,
+                        1
+                    ]
+                }
             }
         },
         "component_groups": {
@@ -143,6 +154,16 @@
                     "command": [
                         "clear @s xigmaguns:flashbang_item 0 1"
                     ]
+                }
+            },
+            "add_reloading": {
+                "set_property": {
+                    "gun:is_reloading": 1
+                }
+            },
+            "remove_reloading": {
+                "set_property": {
+                    "gun:is_reloading": 0
                 }
             }
         }

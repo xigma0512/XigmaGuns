@@ -5,6 +5,10 @@
 			"initial_state": "default",
 			"states": {
 				"default": {
+                    "on_entry": [
+						"/scriptevent xg:reload",
+                        "/event entity @s remove_reloading"
+					],
 					"transitions": [
                         {
                             "reload": "query.is_sneaking&&query.is_alive&&variable.attack_time"
@@ -14,7 +18,7 @@
 				"reload": {
 					"on_entry": [
 						"/scriptevent xg:reload",
-                        "say hello"
+                        "/event entity @s add_reloading"
 					],
 					"transitions": [
 						{
